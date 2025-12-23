@@ -7,7 +7,7 @@ export default function UploadPanel({ file, setFile, uploading, onUpload }) {
       <h2 className="font-semibold">Upload FRA Document</h2>
       <input
         type="file"
-        accept=".pdf"
+        accept=".pdf,.csv,.xlsx,.xls,.jpg,.jpeg,.png"
         onChange={(e) => setFile(e.target.files[0])}
         className="border p-2 rounded"
       />

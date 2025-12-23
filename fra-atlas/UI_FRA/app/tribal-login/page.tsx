@@ -8,8 +8,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Alert } from "@/components/ui/alert";
-import { Loader2, Smartphone, Key } from "lucide-react";
+import { Loader2, Smartphone } from "lucide-react";
 import { useLanguage } from "@/components/LanguageProvider";
+
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE || ""; // e.g. http://localhost:8000
 
 export default function TribalLoginPage() {
   const { t, lang } = useLanguage?.() ?? { t: (s: string) => s, lang: "en" };
@@ -30,19 +32,38 @@ export default function TribalLoginPage() {
     setError("");
     setInfo("");
     if (!isValidMobile(identifier) && !isValidAadhaar(identifier)) {
-      setError(lang === "hi" ? "कृपया मान्य मोबाइल (10 अंकों) या आधार (12 अंकों) दर्ज करें।" : "Please enter a valid mobile (10 digits) or Aadhaar (12 digits).");
+      setError(
+        lang === "hi"
+          ? "कृपया मान्य मोबाइल (10 अंकों) या आधार (12 अंकों) दर्ज करें।"
+          : "Please enter a valid mobile (10 digits) or Aadhaar (12 digits)."
+      );
       return;
     }
 
     setLoading(true);
     try {
-      // TODO: call backend to send OTP
-      // await api.sendOtp({ identifier })
-      await new Promise((r) => setTimeout(r, 900)); // mock delay
+      const resp = await fetch(`${API_BASE}/auth/tribal/send-otp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ method: isValidMobile(identifier) ? "mobile" : "aadhaar", value: identifier }),
+      });
+
+      const data = await resp.json().catch(() => ({}));
+      if (!resp.ok) {
+        // backend might return { detail: "..."} or { message: "..." }
+        const msg = data?.detail || data?.message || (lang === "hi" ? "OTP भेजने में त्रुटि।" : "Failed to send OTP.");
+        throw new Error(msg);
+      }
+
       setOtpSent(true);
-      setInfo(lang === "hi" ? "OTP भेज दिया गया है — कृपया अपने मोबाइल/आधार रजिस्टर किए हुए नंबर पर देखें।" : "OTP sent — please check the registered mobile/Aadhaar channel.");
+      setInfo(
+        data?.message ||
+          (lang === "hi"
+            ? "OTP भेज दिया गया है — कृपया अपने मोबाइल/आधार रजिस्टर किए हुए नंबर पर देखें।"
+            : "OTP sent — please check the registered mobile/Aadhaar channel.")
+      );
     } catch (err: any) {
-      setError(lang === "hi" ? "OTP भेजने में त्रुटि। पुनः प्रयास करें।" : "Failed to send OTP. Please try again.");
+      setError(err?.message || (lang === "hi" ? "OTP भेजने में त्रुटि। पुनः प्रयास करें।" : "Failed to send OTP. Please try again."));
     } finally {
       setLoading(false);
     }
@@ -64,15 +85,35 @@ export default function TribalLoginPage() {
 
     setLoading(true);
     try {
-      // TODO: verify OTP with backend
-      // await api.verifyOtp({ identifier, otp })
-      await new Promise((r) => setTimeout(r, 900)); // mock delay
+      const resp = await fetch(`${API_BASE}/auth/tribal/verify-otp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ method: isValidMobile(identifier) ? "mobile" : "aadhaar", value: identifier, otp }),
+      });
 
-      // On success: redirect to tribal dashboard or set auth token
-      // router.push("/tribal/dashboard")
-      setInfo(lang === "hi" ? "सफलतापूर्वक लॉगिन किया गया।" : "Logged in successfully.");
+      const data = await resp.json().catch(() => ({}));
+      if (!resp.ok) {
+        const msg = data?.detail || data?.message || (lang === "hi" ? "OTP सत्यापन विफल।" : "OTP verification failed.");
+        throw new Error(msg);
+      }
+
+      // Backend should return { token: "...", user: { ... } } or similar
+      if (data?.token) {
+        try {
+          localStorage.setItem("token", data.token);
+        } catch (e) {
+          // storage failures are non-fatal to login flow
+          console.warn("Unable to set token in localStorage", e);
+        }
+      }
+
+      setInfo(data?.message || (lang === "hi" ? "सफलतापूर्वक लॉगिन किया गया।" : "Logged in successfully."));
+
+      // redirect to tribal dashboard (using full URL navigation to avoid next/router in some environments)
+      // you can change to router.push("/tribal/dashboard") if you prefer
+      window.location.href = "/tribal/dashboard";
     } catch (err: any) {
-      setError(lang === "hi" ? "OTP सत्यापन विफल। पुनः प्रयास करें।" : "OTP verification failed. Please try again.");
+      setError(err?.message || (lang === "hi" ? "OTP सत्यापन विफल। पुनः प्रयास करें।" : "OTP verification failed. Please try again."));
     } finally {
       setLoading(false);
     }
@@ -175,6 +216,7 @@ export default function TribalLoginPage() {
                         setOtp("");
                         setOtpSent(false);
                         setInfo("");
+                        setError("");
                       }}
                       className="w-full h-12"
                     >

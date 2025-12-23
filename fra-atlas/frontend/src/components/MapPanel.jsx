@@ -1,47 +1,107 @@
-// src/components/MapPanel.jsx
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   MapContainer,
   TileLayer,
-  Marker,
-  Popup,
   GeoJSON,
-  LayersControl,
   Tooltip,
+  Popup,
+  Marker,
   useMap,
-  useMapEvent,
 } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import { API_BASE } from "../config";
+import { authFetch } from "../libs/apiClient";
 
-import mpBoundary from "../geojson/mp.json";
-import tripuraBoundary from "../geojson/tripura.json";
-import odishaBoundary from "../geojson/odisha.json";
-import telanganaBoundary from "../geojson/telangana.json";
+// Resolve API base
+const API = (() => {
+  const b = String(API_BASE || "").replace(/\/$/, "");
+  if (!b) return "/api";
+  if (b.endsWith("/api")) return b;
+  if (b.includes("/api/")) return b.replace(/\/$/, "");
+  return b + "/api";
+})();
 
-import mpShivpuri from "../geojson/districts/mp_shivpuri.json";
-import mpChhindwara from "../geojson/districts/mp_chhindwara.json";
-import odKoraput from "../geojson/districts/odisha_koraput.json";
-import odKandhamal from "../geojson/districts/odisha_kandhamal.json";
-import tgWarangal from "../geojson/districts/telangana_warangal.json";
-import tgAdilabad from "../geojson/districts/telangana_adilabad.json";
-import trWest from "../geojson/districts/tripura_west.json";
-
-import { grantedIcon, pendingIcon, villageIcon, villageIconActive } from "../utils/mapIcons";
-
-/* Small helpers */
-function MapResetter({ resetKey, center, zoom }) {
-  const map = useMap();
-  useEffect(() => {
-    if (resetKey > 0) map.setView(center, zoom);
-  }, [resetKey, center, zoom, map]);
+// Helpers
+function getLayerBounds(layer) {
+  return layer && typeof layer.getBounds === "function" ? layer.getBounds() : null;
+}
+function asFC(data) {
+  if (!data) return null;
+  if (data.type === "FeatureCollection") return data;
+  if (data.type === "Feature") return { type: "FeatureCollection", features: [data] };
   return null;
 }
-function MapClickHandler({ onMapClick }) {
-  useMapEvent("click", (e) => {
-    onMapClick && onMapClick({ lat: e.latlng.lat, lon: e.latlng.lng });
-  });
-  return null;
+function tagStateName(fc, name) {
+  if (!fc || !fc.features) return fc;
+  return {
+    ...fc,
+    features: fc.features.map(f => ({
+      ...f,
+      properties: { ...(f.properties || {}), state: name },
+    })),
+  };
+}
+function getStateName(p = {}) {
+  return p.state || p.State || p.STATE || p.ST_NM || p.NAME_1 || p.name || "";
+}
+function getDistrictName(p = {}) {
+  return p.district || p.DISTRICT || p.DIST_NAME || p.NAME_2 || p.name || "";
+}
+
+// Custom Icons
+const pendingIcon = L.divIcon({
+  className: "custom-icon",
+  html: `
+    <div style="
+      width: 22px; height: 22px;
+      background: #dc2626;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 14px; font-weight: bold;">
+      🔒
+    </div>
+  `,
+  iconSize: [22, 22],
+  iconAnchor: [11, 11],
+});
+
+const grantedIcon = L.divIcon({
+  className: "custom-icon",
+  html: `
+    <div style="
+      width: 22px; height: 22px;
+      background: #22c55e;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 14px; font-weight: bold;">
+      ✓
+    </div>
+  `,
+  iconSize: [22, 22],
+  iconAnchor: [11, 11],
+});
+
+// Small helper that uses the real map instance from React-Leaflet v4
+function ZoomToLandButton({ position, zoom = 15, children = "Zoom to land" }) {
+  const map = useMap();
+  return (
+    <button
+      onClick={() => map && map.flyTo(position, zoom, { animate: true })}
+      style={{
+        width: "100%",
+        marginTop: 6,
+        padding: "6px 10px",
+        borderRadius: 6,
+        border: "1px solid #ddd",
+        background: "#e0f2fe",
+        cursor: "pointer",
+        fontSize: 13,
+      }}
+    >
+      {children}
+    </button>
+  );
 }
 
 export default function MapPanel({
@@ -52,213 +112,364 @@ export default function MapPanel({
   onMapClick,
   onStateSelected,
   onDistrictSelected,
-  onVillageClick,
   onRunDiagnostics,
-  onZoomToClaim,
-  zoomToVillageAndShowClaims,
-  visibleVillages = [],
+
+  // layer toggles + chips
   showStates = true,
   showDistricts = true,
-  showVillages = true,
-  showClaimsVisible = false,
-  claimsDrawerVillage = null,
-  claimsCacheRef,
   showGranted = true,
   showPending = true,
+
+  // NEW: cascading selections from header
+  selectedState: selectedStateProp = "",
+  selectedDistrict: selectedDistrictProp = "",
+  selectedVillage: selectedVillageProp = "",
 }) {
-  const localMapRef = useRef(null);
+  const mapRef = useRef(null);
 
-  const districtLayers = useMemo(
-    () => [
-      { data: mpShivpuri, color: "#6b46c1" },
-      { data: mpChhindwara, color: "#6b46c1" },
-      { data: odKoraput, color: "#b7791f" },
-      { data: odKandhamal, color: "#b7791f" },
-      { data: tgWarangal, color: "#dd6b20" },
-      { data: tgAdilabad, color: "#dd6b20" },
-      { data: trWest, color: "#e53e3e" },
-    ],
-    []
-  );
+  const [statesFC, setStatesFC] = useState(null);
+  const [districtsFC] = useState(null); // placeholder
+  // Internal selection (click-driven) — kept as-is
+  const [selectedStateInternal, setSelectedStateInternal] = useState(null);
+  const [selectedDistrictInternal, setSelectedDistrictInternal] = useState(null);
 
-  function getStateName(feature) {
-    return (
-      feature?.properties?.STATE ||
-      feature?.properties?.st_name ||
-      feature?.properties?.name ||
-      feature?.properties?.NAME_1 ||
-      "State"
-    );
-  }
+  const [claims, setClaims] = useState([]);
+  const [basemap, setBasemap] = useState("osm");
 
-  function onEachState(feature, layer) {
-    const name = getStateName(feature);
-    layer.bindTooltip(name, { sticky: true });
-    layer.on("click", (e) => {
-      e.originalEvent && e.originalEvent.stopPropagation && e.originalEvent.stopPropagation();
-      try {
-        const b = layer.getBounds();
-        const isValid = b && typeof b.isValid === "function" ? b.isValid() : true;
-        if (isValid) layer._map.fitBounds(b, { padding: [20, 20], maxZoom: 7 });
-        else {
-          const center = b && b.getCenter ? b.getCenter() : null;
-          if (center) layer._map.setView(center, 6);
-        }
-      } catch (err) {
-        try {
-          layer._map.setView(defaultCenter, 6);
-        } catch (_) {}
+  // === DERIVED (sync dropdowns with map selection without changing click logic) ===
+  const selectedState = (selectedStateProp || "").trim() || selectedStateInternal || "";
+  const selectedDistrict = (selectedDistrictProp || "").trim() || selectedDistrictInternal || "";
+  const selectedVillage = (selectedVillageProp || "").trim() || "";
+
+  // Load 4 states (served from /public/geojson/*.json)
+  useEffect(() => {
+    let cancel = false;
+    (async () => {
+      const sources = [
+        { url: "/geojson/mp.json",        label: "Madhya Pradesh" },
+        { url: "/geojson/odisha.json",    label: "Odisha" },
+        { url: "/geojson/telangana.json", label: "Telangana" },
+        { url: "/geojson/tripura.json",   label: "Tripura" },
+      ];
+      const results = await Promise.allSettled(
+        sources.map(s =>
+          fetch(s.url)
+            .then(r => {
+              if (!r.ok) throw new Error(`HTTP ${r.status}`);
+              return r.json();
+            })
+            .then(j => ({ label: s.label, data: j }))
+        )
+      );
+      const fcs = results.flatMap((res, i) => {
+        if (res.status !== "fulfilled") return [];
+        const fc = tagStateName(asFC(res.value.data), sources[i].label);
+        return fc?.features?.length ? [fc] : [];
+      });
+      const merged = fcs.length
+        ? { type: "FeatureCollection", features: fcs.flatMap(fc => fc.features) }
+        : null;
+      if (!cancel) setStatesFC(merged);
+    })();
+    return () => { cancel = true; };
+  }, []);
+
+  // --- Sync map view when header selection changes (fit to state bounds) ---
+  useEffect(() => {
+    if (!mapRef.current || !statesFC) return;
+
+    // When dropdown sets state, update internal to keep both sources aligned
+    if (selectedStateProp) {
+      setSelectedStateInternal(selectedStateProp);
+      // Fit to that state's polygon
+      const match = statesFC.features.find(
+        f => getStateName(f.properties).toLowerCase() === selectedStateProp.toLowerCase()
+      );
+      if (match) {
+        const b = L.geoJSON(match).getBounds();
+        if (b && b.isValid()) mapRef.current.fitBounds(b.pad(0.05), { animate: true });
       }
+    } else {
+      // No state selected → show all states extent
+      fitToAllStates();
+      setSelectedStateInternal(null);
+    }
+
+    // If header cleared the district, clear internal too
+    if (!selectedDistrictProp) setSelectedDistrictInternal(null);
+    else setSelectedDistrictInternal(selectedDistrictProp);
+  }, [selectedStateProp, selectedDistrictProp, statesFC]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Fetch claims — when selection changes (state/district/village)
+  useEffect(() => {
+    let cancel = false;
+    (async () => {
+      try {
+        if (!selectedState && !selectedDistrict) {
+          if (!cancel) setClaims([]);
+          return;
+        }
+        const qs = new URLSearchParams();
+        if (selectedState) qs.set("state", selectedState);
+        if (selectedDistrict) qs.set("district", selectedDistrict);
+        if (selectedVillage) qs.set("village", selectedVillage);
+        const url = `${API}/claims?${qs.toString()}`;
+        const res = await authFetch(url);
+        const json = await res.json();
+        const arr = Array.isArray(json) ? json : json?.claims || [];
+        const normalized = arr
+          .map(c => {
+            let { lat, lon } = c;
+            if ((lat == null || lon == null) && Array.isArray(c.coordinates)) {
+              lon = Number(c.coordinates[0]);
+              lat = Number(c.coordinates[1]);
+            }
+            return { ...c, lat: Number(lat), lon: Number(lon) };
+          })
+          .filter(c => Number.isFinite(c.lat) && Number.isFinite(c.lon));
+        if (!cancel) setClaims(normalized);
+      } catch (e) {
+        if (!cancel) setClaims([]);
+        console.warn("Failed to fetch claims:", e);
+      }
+    })();
+    return () => { cancel = true; };
+  }, [selectedState, selectedDistrict, selectedVillage]);
+
+  // Fit to all 4 states (used by Reset)
+  const fitToAllStates = () => {
+    if (!mapRef.current || !statesFC) {
+      if (mapRef.current) mapRef.current.setView(defaultCenter, defaultZoom, { animate: true });
+      return;
+    }
+    const tmp = L.geoJSON(statesFC);
+    const b = tmp.getBounds();
+    if (b && b.isValid()) {
+      mapRef.current.fitBounds(b.pad(0.05), { animate: true });
+    } else {
+      mapRef.current.setView(defaultCenter, defaultZoom, { animate: true });
+    }
+  };
+
+  // Reset when parent bumps resetTick
+  useEffect(() => {
+    setSelectedStateInternal(null);
+    setSelectedDistrictInternal(null);
+    setClaims([]); // explicitly hide claims after reset
+    fitToAllStates();
+  }, [resetTick]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Styles
+  const stateStyle = feature => {
+    const sName = getStateName(feature.properties);
+    const active = !selectedState || selectedState === sName;
+    return {
+      color: active ? "#0057B7" : "#cfcfcf",
+      weight: active ? 2 : 1,
+      fillColor: active ? "#7FB3FF" : "#efefef",
+      fillOpacity: active ? 0.35 : 0.05,
+      opacity: active ? 1 : 0.6,
+    };
+  };
+  const districtStyle = () => ({
+    color: "#888",
+    weight: 1,
+    fillColor: "#ddd",
+    fillOpacity: 0.12,
+    opacity: 1,
+  });
+
+  // Click handlers (UNCHANGED logic)
+  const onEachState = (feature, layer) => {
+    layer.on("click", () => {
+      const name = getStateName(feature.properties);
+      setSelectedStateInternal(name);          // keep internal selection (map click)
+      setSelectedDistrictInternal(null);
+      const b = getLayerBounds(layer);
+      if (b && mapRef.current) mapRef.current.fitBounds(b.pad(0.05), { animate: true });
       onStateSelected && onStateSelected(feature);
     });
-  }
-
-  function onEachDistrict(feature, layer) {
-    const name =
-      feature?.properties?.DISTRICT || feature?.properties?.district || feature?.properties?.name || "District";
-    layer.bindTooltip(name, { sticky: true });
-    layer.on("click", (e) => {
-      e.originalEvent && e.originalEvent.stopPropagation && e.originalEvent.stopPropagation();
-      try {
-        const bounds = layer.getBounds();
-        const isValid = bounds && typeof bounds.isValid === "function" ? bounds.isValid() : true;
-        if (isValid) layer._map.fitBounds(bounds, { padding: [20, 20], maxZoom: 11 });
-        else {
-          const center = bounds && bounds.getCenter ? bounds.getCenter() : null;
-          if (center) layer._map.setView(center, 9);
-        }
-      } catch (err) {
-        try {
-          layer._map.setView(layer._map ? layer._map.getCenter() : defaultCenter, 9);
-        } catch (_) {}
-      }
+    layer.on("mouseover", () => layer.setStyle({ weight: 3 }));
+    layer.on("mouseout", () => layer.setStyle({ weight: 2 }));
+  };
+  const onEachDistrict = (feature, layer) => {
+    layer.on("click", () => {
+      const dName = getDistrictName(feature.properties);
+      setSelectedDistrictInternal(dName);      // keep internal selection (map click)
+      const b = getLayerBounds(layer);
+      if (b && mapRef.current) mapRef.current.fitBounds(b.pad(0.06), { animate: true });
       onDistrictSelected && onDistrictSelected(feature);
     });
-  }
+  };
 
-  function handleCreated(map) {
-    localMapRef.current = map;
-    if (typeof onMapCreated === "function") onMapCreated(map);
-    try {
-      if (!map.getPane("maskPane")) {
-        map.createPane("maskPane");
-        const p = map.getPane("maskPane");
-        p.style.zIndex = 450;
-        p.style.pointerEvents = "none";
+  // === Filtered states FC: when a state is selected, only render that state's polygon ===
+  const filteredStatesFC = useMemo(() => {
+    if (!statesFC) return null;
+    if (!selectedState) return statesFC; // show all when nothing selected
+    const feats = statesFC.features.filter(
+      f => getStateName(f.properties).toLowerCase() === selectedState.toLowerCase()
+    );
+    return { type: "FeatureCollection", features: feats };
+  }, [statesFC, selectedState]);
+
+  // Claims visibility after selection
+  const visibleClaims = useMemo(() => {
+    return claims.filter(c => {
+      if (c.status === "Granted" && !showGranted) return false;
+      if (c.status === "Pending" && !showPending) return false;
+
+      if (selectedVillage) {
+        return (c.village || "").toLowerCase() === selectedVillage.toLowerCase();
       }
-    } catch (e) {}
-    map.on("zoomend", () => {});
-  }
+      if (selectedDistrict) {
+        return (c.district || "").toLowerCase() === selectedDistrict.toLowerCase();
+      }
+      if (selectedState) {
+        return (c.state || "").toLowerCase() === selectedState.toLowerCase();
+      }
+      return false;
+    });
+  }, [claims, showGranted, showPending, selectedState, selectedDistrict, selectedVillage]);
+
+  // Basemap
+  const tile =
+    basemap === "sat"
+      ? {
+          url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+          attr: "Tiles © Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+        }
+      : {
+          url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          attr: "© OpenStreetMap",
+        };
 
   return (
-    <div className="h-full w-full">
-      <MapContainer center={defaultCenter} zoom={defaultZoom} scrollWheelZoom={true} className="h-full w-full" whenCreated={handleCreated}>
-        <MapResetter resetKey={resetTick} center={defaultCenter} zoom={defaultZoom} />
-        <MapClickHandler onMapClick={onMapClick} />
+    <div style={{ position: "relative", height: "100%", width: "100%" }}>
+      {/* Overlay controls */}
+      <div
+        style={{
+          position: "absolute",
+          zIndex: 1000,
+          top: 12,
+          right: 12,
+          background: "rgba(255,255,255,0.95)",
+          borderRadius: 8,
+          boxShadow: "0 2px 10px rgba(0,0,0,0.15)",
+          padding: 8,
+          display: "flex",
+          gap: 8,
+          alignItems: "center",
+        }}
+      >
+        <label style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13 }}>
+          <input
+            type="checkbox"
+            checked={basemap === "sat"}
+            onChange={(e) => setBasemap(e.target.checked ? "sat" : "osm")}
+          />
+          Satellite
+        </label>
 
-        <LayersControl position="topright">
-          <LayersControl.BaseLayer name="OpenStreetMap" checked>
-            <TileLayer attribution="&copy; OpenStreetMap contributors" url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-          </LayersControl.BaseLayer>
-          <LayersControl.BaseLayer name="Carto Positron">
-            <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
-          </LayersControl.BaseLayer>
-          <LayersControl.BaseLayer name="Esri World Imagery">
-            <TileLayer url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}" />
-          </LayersControl.BaseLayer>
+        <button
+          onClick={() => {
+            // UI reset: clear INTERNAL selection (header may also clear via resetTick)
+            setSelectedStateInternal(null);
+            setSelectedDistrictInternal(null);
+            setClaims([]);
+            const wantsAll = !selectedStateProp; // if header hasn't forced a state, show all
+            wantsAll ? fitToAllStates() : null;
+          }}
+          style={{
+            fontSize: 13,
+            padding: "6px 10px",
+            borderRadius: 6,
+            border: "1px solid #ddd",
+            background: "#f6f6f6",
+            cursor: "pointer",
+          }}
+        >
+          Reset
+        </button>
+      </div>
 
-          {showStates && (
-            <LayersControl.Overlay name="State Boundaries" checked>
-              <div>
-                <GeoJSON data={mpBoundary} style={{ color: "blue", weight: 2 }} onEachFeature={onEachState} />
-                <GeoJSON data={tripuraBoundary} style={{ color: "red", weight: 2 }} onEachFeature={onEachState} />
-                <GeoJSON data={odishaBoundary} style={{ color: "green", weight: 2 }} onEachFeature={onEachState} />
-                <GeoJSON data={telanganaBoundary} style={{ color: "orange", weight: 2 }} onEachFeature={onEachState} />
-              </div>
-            </LayersControl.Overlay>
-          )}
+      <MapContainer
+        center={defaultCenter}
+        zoom={defaultZoom}
+        style={{ height: "100%", width: "100%" }}
+        whenCreated={(mapInstance) => {
+          mapRef.current = mapInstance;
+          onMapCreated && onMapCreated(mapInstance);
+          mapInstance.on("click", e => onMapClick && onMapClick([e.latlng.lat, e.latlng.lng]));
+        }}
+      >
+        <TileLayer url={tile.url} attribution={tile.attr} />
 
-          {showDistricts && (
-            <LayersControl.Overlay name="District Boundaries" checked>
-              <div>
-                {districtLayers.map((d, idx) => (
-                  <GeoJSON key={idx} data={d.data} style={{ color: d.color, weight: 1.5, fillOpacity: 0.05 }} onEachFeature={onEachDistrict} />
-                ))}
-              </div>
-            </LayersControl.Overlay>
-          )}
+        {/* STATES */}
+        {showStates && filteredStatesFC && (
+          <GeoJSON
+            key={`states-${selectedState || "all"}`}
+            data={filteredStatesFC}
+            style={stateStyle}
+            onEachFeature={onEachState}
+          />
+        )}
 
-          {showClaimsVisible && claimsDrawerVillage && (
-            <LayersControl.Overlay name={`Claims: ${claimsDrawerVillage}`} checked>
-              <div>
-                {(() => {
-                  const claimsForVillage = (claimsCacheRef?.current?.[claimsDrawerVillage]?.claims) || [];
-                  return claimsForVillage
-                    .filter((c) => c && c.lat != null && c.lon != null)
-                    .filter((c) => {
-                      if (c.status === "Granted" && !showGranted) return false;
-                      if (c.status === "Pending" && !showPending) return false;
-                      return true;
-                    })
-                    .map((claim) => (
-                      <Marker key={`drawer-overlay-claim-${claim.id || (claim.lat + "-" + claim.lon)}`} position={[Number(claim.lat), Number(claim.lon)]} icon={claim.status === "Granted" ? grantedIcon : pendingIcon}>
-                        <Tooltip direction="top" offset={[0, -10]} opacity={1}>{claim.village}</Tooltip>
-                        <Popup>
-                          <div style={{ fontSize: 13 }}>
-                            <strong>{claim.village}</strong><br />State: {claim.state}<br />District: {claim.district}<br />Patta Holder: {claim.patta_holder}<br />Area: {claim.land_area}<br />Status: {claim.status}
-                            <div style={{ marginTop: 8, display: "flex", gap: 8 }}>
-                              <button style={{ padding: "6px 8px", borderRadius: 6 }} onClick={(e) => { e?.stopPropagation?.(); onZoomToClaim && onZoomToClaim(claim); }}>Zoom</button>
-                              {claim.status === "Granted" && <button style={{ padding: "6px 10px", borderRadius: 6, background: "#16a34a", color: "#fff" }} onClick={(e) => { e?.stopPropagation?.(); onRunDiagnostics && onRunDiagnostics(claim); }}>Run diagnostics</button>}
-                            </div>
-                          </div>
-                        </Popup>
-                      </Marker>
-                    ));
-                })()}
-              </div>
-            </LayersControl.Overlay>
-          )}
-        </LayersControl>
+        {/* DISTRICTS (placeholder if you add per-state districts later) */}
+        {showDistricts && districtsFC && (
+          <GeoJSON
+            key={`districts-${selectedState || "all"}-${selectedDistrict || "all"}`}
+            data={districtsFC}
+            style={districtStyle}
+            onEachFeature={onEachDistrict}
+          />
+        )}
 
-        {showVillages && visibleVillages.map((v) => {
-          if (v.lat == null || v.lon == null) return null;
-          const isActive = false;
+        {/* CLAIM MARKERS */}
+        {visibleClaims.map((c, idx) => {
+          const icon = c.status === "Granted" ? grantedIcon : pendingIcon;
+          const pos = [c.lat, c.lon];
           return (
-            <Marker key={`village-${v.id}`} position={[v.lat, v.lon]} icon={isActive ? villageIconActive : villageIcon} eventHandlers={{ click: () => onVillageClick && onVillageClick(v) }}>
-              <Tooltip direction="top" offset={[0, -10]}>{v.village}</Tooltip>
+            <Marker key={idx} position={pos} icon={icon}>
+              <Tooltip>
+                <div>
+                  <strong>{c.patta_holder || "Claim"}</strong>
+                  <br />{[c.village, c.district, c.state].filter(Boolean).join(", ")}
+                </div>
+              </Tooltip>
               <Popup>
-                <strong>{v.village}</strong><br />District: {v.district}<br />State: {v.state}
-                <div style={{ marginTop: 6 }}>
-                  <button className="px-2 py-1 rounded bg-sky-600 text-white" onClick={(e) => { e?.stopPropagation?.(); zoomToVillageAndShowClaims && zoomToVillageAndShowClaims(v); }}>
-                    {`Show Claims${(claimsCacheRef?.current?.[v.village]?.count) ? ` (${claimsCacheRef.current[v.village].count})` : ""}`}
+                <div style={{ minWidth: 220, fontSize: 13 }}>
+                  <div><strong>Name:</strong> {c.patta_holder || "-"}</div>
+                  <div><strong>State:</strong> {c.state || "-"}</div>
+                  <div><strong>District:</strong> {c.district || "-"}</div>
+                  <div><strong>Village:</strong> {c.village || "-"}</div>
+                  <div><strong>Status:</strong> {c.status || c.claim_status || "-"}</div>
+                  {c.land_area && <div><strong>Area:</strong> {c.land_area}</div>}
+                  {c.date && <div><strong>Date:</strong> {c.date}</div>}
+
+                  <button
+                    onClick={() => onRunDiagnostics && onRunDiagnostics(c)}
+                    style={{
+                      width: "100%",
+                      marginTop: 8,
+                      padding: "6px 10px",
+                      borderRadius: 6,
+                      border: "1px solid #ddd",
+                      background: "#f6f6f6",
+                      cursor: "pointer",
+                      fontSize: 13,
+                    }}
+                  >
+                    Run diagnostics
                   </button>
+
+                  <ZoomToLandButton position={pos} zoom={15}>
+                    Zoom to land
+                  </ZoomToLandButton>
                 </div>
               </Popup>
             </Marker>
           );
         })}
-
-        {showClaimsVisible && claimsDrawerVillage && (() => {
-          const claimsForVillage = (claimsCacheRef?.current?.[claimsDrawerVillage]?.claims) || [];
-          return claimsForVillage.map((c, i) => {
-            const icon = c.status === "Granted" ? grantedIcon : pendingIcon;
-            if (c.lat == null || c.lon == null) return null;
-            return (
-              <Marker key={`drawer-claim-${c.id || i}`} position={[Number(c.lat), Number(c.lon)]} icon={icon}>
-                <Popup>
-                  <div style={{ fontSize: 13 }}>
-                    <strong>{c.patta_holder || "Claim"}</strong><br />{c.village || "—"} — {c.district || "—"}, {c.state || "—"}<br />Area: {c.land_area || "—"}<br />Status: {c.status || "—"}
-                    <div style={{ marginTop: 8, display: "flex", gap: 8 }}>
-                      <button onClick={(e) => { e?.stopPropagation?.(); onZoomToClaim && onZoomToClaim(c); }}>Zoom</button>
-                      {c.status === "Granted" && <button onClick={(e) => { e?.stopPropagation?.(); onRunDiagnostics && onRunDiagnostics(c); }}>Run diagnostics</button>}
-                    </div>
-                  </div>
-                </Popup>
-                <Tooltip direction="top" offset={[0, -10]} opacity={1}>{c.village || "Claim"}</Tooltip>
-              </Marker>
-            );
-          });
-        })()}
       </MapContainer>
     </div>
   );

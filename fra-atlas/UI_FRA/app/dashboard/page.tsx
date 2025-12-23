@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useCallback, useMemo } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -38,8 +38,8 @@ import { clearToken } from "@/lib/api"
 // <-- language hook
 import { useLanguage } from "@/components/LanguageProvider"
 
-// Mock data as specified
-const areaData = {
+// --- DEFAULT MOCKS (used as fallback until real data loads) ---
+const DEFAULT_AREA = {
   total_villages: 14,
   cumulative_area: 18560,
   area_registered: 12640,
@@ -53,14 +53,14 @@ const areaData = {
   special_verification_pending_area: 370,
 }
 
-const grievanceData = {
+const DEFAULT_GRIEVANCE = {
   total_grievances: 72,
   solved_grievances: 58,
   pending_grievances: 10,
   pending_grievances_sdm: 4,
 }
 
-const panchayatData = [
+const DEFAULT_PANCHAYAT = [
   { district: "Shivpuri", total_villages: 52, claims_submitted: 180, claims_verified: 120, claims_pending: 60 },
   { district: "Chhindwara", total_villages: 47, claims_submitted: 210, claims_verified: 150, claims_pending: 60 },
   { district: "Koraput", total_villages: 39, claims_submitted: 165, claims_verified: 110, claims_pending: 55 },
@@ -71,8 +71,7 @@ const panchayatData = [
   { district: "TOTAL", total_villages: 290, claims_submitted: 1125, claims_verified: 790, claims_pending: 335 },
 ]
 
-// Mock grievance table data
-const mockGrievances = [
+const DEFAULT_GRIEVANCES_LIST = [
   {
     id: "GRV001",
     raisedBy: "राम कुमार",
@@ -120,6 +119,12 @@ const mockGrievances = [
   },
 ]
 
+// ---- Config ----
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE || ""
+const POLL_INTERVAL_MS = 8000
+
+type Claim = Record<string, any>
+
 export default function DashboardPage() {
   const router = useRouter()
   const [activeTab, setActiveTab] = useState("area-details")
@@ -128,12 +133,165 @@ export default function DashboardPage() {
   const [showNotifications, setShowNotifications] = useState(false)
 
   // language
-  const { t,lang } = useLanguage()
+  const { t, lang } = useLanguage()
+
+  // live data state
+  const [claims, setClaims] = useState<Claim[] | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const fetchClaims = useCallback(async (signal?: AbortSignal) => {
+    setLoading(true)
+    setError(null)
+    try {
+      const resp = await fetch(`${API_BASE}/api/claims`, { signal })
+      if (!resp.ok) {
+        const txt = await resp.text()
+        throw new Error(`Failed to fetch claims: ${resp.status} ${txt}`)
+      }
+      const data = await resp.json()
+      // adapt if backend returns { rows: [...] }
+      const rows = Array.isArray(data) ? data : data?.rows || []
+      setClaims(rows)
+    } catch (err: any) {
+      if (err?.name !== "AbortError") {
+        console.error(err)
+        setError(err?.message || "Failed to fetch claims")
+      }
+    } finally {
+      setLoading(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    const controller = new AbortController()
+    fetchClaims(controller.signal)
+
+    const id = setInterval(() => {
+      const c = new AbortController()
+      fetchClaims(c.signal)
+    }, POLL_INTERVAL_MS)
+
+    return () => {
+      controller.abort()
+      clearInterval(id)
+    }
+  }, [fetchClaims])
 
   const handleExport = (type: string) => {
-    // Mock export functionality
+    // keep existing behavior — you can wire this to generate CSV from `claims`
     console.log(`Exporting ${type} data...`)
   }
+
+  // --- Derived dashboard metrics ---
+  const areaData = useMemo(() => {
+    if (!claims || claims.length === 0) return DEFAULT_AREA
+
+    const villages = new Set<string>()
+    let cumulative_area = 0
+    let area_registered = 0
+    let farmers = new Set<string>()
+    let today_registered_area = 0
+
+    const todayISO = new Date().toISOString().slice(0, 10)
+
+    for (const c of claims) {
+      if (c.village) villages.add(c.village)
+      // common field names: land_area, area, hectare
+      const area = Number(c.land_area ?? c.area ?? c.hectares ?? 0) || 0
+      cumulative_area += area
+      // registered area heuristic: if status contains 'registered' or c.registered_area exists
+      if (c.registered_area) area_registered += Number(c.registered_area) || 0
+      if (c.patta_holder) farmers.add(c.patta_holder)
+      if ((c.date || c.created_at || c.created) && ((c.date || c.created_at || c.created).slice?.(0,10) === todayISO)) {
+        today_registered_area += area
+      }
+    }
+
+    return {
+      total_villages: villages.size || DEFAULT_AREA.total_villages,
+      cumulative_area: Math.round(cumulative_area) || DEFAULT_AREA.cumulative_area,
+      area_registered: Math.round(area_registered) || DEFAULT_AREA.area_registered,
+      farmers_registered: farmers.size || DEFAULT_AREA.farmers_registered,
+      today_registered_area: Math.round(today_registered_area) || DEFAULT_AREA.today_registered_area,
+      mismatch_area: DEFAULT_AREA.mismatch_area,
+      verified_mismatch_area: DEFAULT_AREA.verified_mismatch_area,
+      pending_mismatch_area: DEFAULT_AREA.pending_mismatch_area,
+      special_verification_area: DEFAULT_AREA.special_verification_area,
+      special_verification_verified_area: DEFAULT_AREA.special_verification_verified_area,
+      special_verification_pending_area: DEFAULT_AREA.special_verification_pending_area,
+    }
+  }, [claims])
+
+  const grievanceData = useMemo(() => {
+    if (!claims || claims.length === 0) return DEFAULT_GRIEVANCE
+    let solved = 0
+    let pending = 0
+    let pendingSDM = 0
+    for (const c of claims) {
+      const s = String(c.status || "").toLowerCase()
+      if (s.includes("solved") || s.includes("closed") || s.includes("resolved")) solved += 1
+      else if (s.includes("sdm") || s.includes("pending with sdm")) pendingSDM += 1
+      else pending += 1
+    }
+    return {
+      total_grievances: claims.length,
+      solved_grievances: solved,
+      pending_grievances: pending,
+      pending_grievances_sdm: pendingSDM,
+    }
+  }, [claims])
+
+  const panchayatData = useMemo(() => {
+    if (!claims || claims.length === 0) return DEFAULT_PANCHAYAT
+    const byDistrict: Record<string, { villages: Set<string>; submitted: number; verified: number; pending: number }> = {}
+    for (const c of claims) {
+      const d = c.district || "UNKNOWN"
+      if (!byDistrict[d]) byDistrict[d] = { villages: new Set(), submitted: 0, verified: 0, pending: 0 }
+      if (c.village) byDistrict[d].villages.add(c.village)
+      byDistrict[d].submitted += 1
+      const s = String(c.status || "").toLowerCase()
+      if (s.includes("solved") || s.includes("verified") || s.includes("closed")) byDistrict[d].verified += 1
+      else byDistrict[d].pending += 1
+    }
+
+    const rows = Object.keys(byDistrict).map((d) => ({
+      district: d,
+      total_villages: byDistrict[d].villages.size,
+      claims_submitted: byDistrict[d].submitted,
+      claims_verified: byDistrict[d].verified,
+      claims_pending: byDistrict[d].pending,
+    }))
+
+    // compute TOTAL
+    const total = rows.reduce(
+      (acc, r) => ({
+        district: "TOTAL",
+        total_villages: acc.total_villages + r.total_villages,
+        claims_submitted: acc.claims_submitted + r.claims_submitted,
+        claims_verified: acc.claims_verified + r.claims_verified,
+        claims_pending: acc.claims_pending + r.claims_pending,
+      }),
+      { district: "TOTAL", total_villages: 0, claims_submitted: 0, claims_verified: 0, claims_pending: 0 }
+    )
+
+    return [...rows, total]
+  }, [claims])
+
+  const grievanceList = useMemo(() => {
+    if (!claims || claims.length === 0) return DEFAULT_GRIEVANCES_LIST
+    // Map claims to grievance rows — pick fields defensively
+    return claims.slice(0, 200).map((c: any, i: number) => ({
+      id: c.id ?? c.claim_id ?? `CLM${i + 1}`,
+      raisedBy: c.patta_holder || c.raised_by || c.owner || "-",
+      type: c.type || c.issue || c.category || "Claim",
+      status: c.status || "Pending",
+      officer: c.assigned_officer || c.officer || "-",
+      date: (c.date || c.created_at || c.created) ?? null,
+      priority: c.priority || "Normal",
+      raw: c,
+    }))
+  }, [claims])
 
   return (
     // ProtectedRoute removed — returning dashboard directly
@@ -148,6 +306,18 @@ export default function DashboardPage() {
     >
       {/* Main Content: add id so HeaderClient's "SKIP TO MAIN CONTENT" works */}
       <div id="main-content" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-4 flex items-center justify-between gap-4">
+          <h1 className="text-2xl font-semibold">{t("dashboard")}</h1>
+          <div className="flex items-center gap-2">
+            <Button onClick={() => fetchClaims()} disabled={loading}>
+              {loading ? "Refreshing..." : t("refresh")}
+            </Button>
+            <span className="text-sm text-muted-foreground">
+              {error ? `Error: ${error}` : `Total claims: ${claims ? claims.length : "-"}`}
+            </span>
+          </div>
+        </div>
+
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           {/* adjusted TabsList to center the three tabs and give consistent spacing */}
           <TabsList className="flex justify-center items-center space-x-4 bg-white rounded-lg shadow-sm p-2">
@@ -171,8 +341,7 @@ export default function DashboardPage() {
             </TabsTrigger>
           </TabsList>
 
-          {/* Tab contents unchanged (still using t(...) per your request) */}
-          {/* Tab 1: Area-wise Land Details */}
+          {/* Tab contents unchanged visually; just wired to derived data above */}
           <TabsContent value="area-details" className="space-y-6">
             {/* Summary Cards Row 1 */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -237,7 +406,7 @@ export default function DashboardPage() {
               </Card>
             </div>
 
-            {/* (The rest of the dashboard remains exactly the same as in the translated version) */}
+            {/* (The rest of the dashboard remains visually the same) */}
             {/* Mismatch & Verification Row 2 */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
               <Card className="bg-white shadow-sm">
@@ -300,7 +469,9 @@ export default function DashboardPage() {
                 <CardContent>
                   <div className="h-48 flex items-center justify-center bg-gray-50 rounded-lg">
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-[#2c6e49]">68%</div>
+                      <div className="text-2xl font-bold text-[#2c6e49]">
+                        {Math.round((areaData.area_registered / Math.max(1, areaData.cumulative_area)) * 100)}%
+                      </div>
                       <div className="text-sm text-gray-600">{t("registered_vs_remaining")}</div>
                       <div className="text-xs text-gray-500 mt-2">
                         {areaData.area_registered.toLocaleString()} / {areaData.cumulative_area.toLocaleString()} ha
@@ -350,7 +521,7 @@ export default function DashboardPage() {
                       <div className="text-3xl font-bold text-blue-600">{areaData.today_registered_area}</div>
                       <div className="text-sm text-gray-600">{t("hectares_registered_today")}</div>
                       <div className="text-xs text-gray-500 mt-2">
-                        {((areaData.today_registered_area / areaData.cumulative_area) * 100).toFixed(2)}% {t("of_total_area")}
+                        {((areaData.today_registered_area / Math.max(1, areaData.cumulative_area)) * 100).toFixed(2)}% {t("of_total_area")}
                       </div>
                     </div>
                   </div>
@@ -438,7 +609,7 @@ export default function DashboardPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {mockGrievances.map((grievance) => (
+                    {grievanceList.map((grievance) => (
                       <TableRow
                         key={grievance.id}
                         className="cursor-pointer hover:bg-gray-50"
@@ -461,7 +632,7 @@ export default function DashboardPage() {
                           </Badge>
                         </TableCell>
                         <TableCell>{grievance.officer}</TableCell>
-                        <TableCell>{new Date(grievance.date).toLocaleDateString("en-IN")}</TableCell>
+                        <TableCell>{grievance.date ? new Date(grievance.date).toLocaleDateString("en-IN") : "-"}</TableCell>
                         <TableCell>
                           <Badge
                             className={
@@ -495,7 +666,7 @@ export default function DashboardPage() {
                   <div className="h-48 flex items-center justify-center bg-gray-50 rounded-lg">
                     <div className="text-center space-y-2">
                       <div className="text-2xl font-bold text-green-600">
-                        {Math.round((grievanceData.solved_grievances / grievanceData.total_grievances) * 100)}%
+                        {Math.round((grievanceData.solved_grievances / Math.max(1, grievanceData.total_grievances)) * 100)}%
                       </div>
                       <div className="text-sm text-gray-600">{t("resolution_rate")}</div>
                     </div>
@@ -515,15 +686,15 @@ export default function DashboardPage() {
                     <div className="text-center space-y-2">
                       <div className="flex justify-between items-center w-32">
                         <span className="text-sm">{t("high")}</span>
-                        <span className="font-bold text-red-600">2</span>
+                        <span className="font-bold text-red-600">{grievanceList.filter(g => g.priority === 'High').length}</span>
                       </div>
                       <div className="flex justify-between items-center w-32">
                         <span className="text-sm">{t("medium")}</span>
-                        <span className="font-bold text-yellow-600">2</span>
+                        <span className="font-bold text-yellow-600">{grievanceList.filter(g => g.priority === 'Medium').length}</span>
                       </div>
                       <div className="flex justify-between items-center w-32">
                         <span className="text-sm">{t("low")}</span>
-                        <span className="font-bold text-green-600">1</span>
+                        <span className="font-bold text-green-600">{grievanceList.filter(g => g.priority === 'Low').length}</span>
                       </div>
                     </div>
                   </div>
@@ -544,8 +715,8 @@ export default function DashboardPage() {
             {/* District Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {panchayatData
-                .filter((d) => d.district !== "TOTAL")
-                .map((district) => (
+                .filter((d: any) => d.district !== "TOTAL")
+                .map((district: any) => (
                   <Card
                     key={district.district}
                     className="bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer"
@@ -593,7 +764,7 @@ export default function DashboardPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {panchayatData.map((district) => (
+                    {panchayatData.map((district: any) => (
                       <TableRow
                         key={district.district}
                         className={
@@ -625,9 +796,9 @@ export default function DashboardPage() {
                 <CardContent>
                   <div className="h-48 flex items-center justify-center bg-gray-50 rounded-lg">
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-[#2c6e49]">1,125</div>
+                      <div className="text-2xl font-bold text-[#2c6e49]">{panchayatData.reduce((s: any, r: any) => s + (r.claims_submitted||0), 0)}</div>
                       <div className="text-sm text-gray-600">{t("total_claims_submitted")}</div>
-                      <div className="text-xs text-gray-500 mt-2">{t("across_n_districts", { n: 7 })}</div>
+                      <div className="text-xs text-gray-500 mt-2">{t("across_n_districts", { n: panchayatData.length-1 })}</div>
                     </div>
                   </div>
                 </CardContent>
@@ -643,9 +814,9 @@ export default function DashboardPage() {
                 <CardContent>
                   <div className="h-48 flex items-center justify-center bg-gray-50 rounded-lg">
                     <div className="text-center space-y-2">
-                      <div className="text-2xl font-bold text-green-600">70%</div>
+                      <div className="text-2xl font-bold text-green-600">{Math.round((panchayatData.reduce((s: any, r: any) => s + (r.claims_verified||0), 0) / Math.max(1, panchayatData.reduce((s: any, r: any) => s + (r.claims_submitted||0), 0))) * 100)}%</div>
                       <div className="text-sm text-gray-600">{t("verification_rate")}</div>
-                      <div className="text-xs text-gray-500 mt-2">{t("verified_out_of_total", { verified: 790, total: 1125 })}</div>
+                      <div className="text-xs text-gray-500 mt-2">{t("verified_out_of_total", { verified: panchayatData.reduce((s: any, r: any) => s + (r.claims_verified||0), 0), total: panchayatData.reduce((s: any, r: any) => s + (r.claims_submitted||0), 0) })}</div>
                     </div>
                   </div>
                 </CardContent>
@@ -701,8 +872,7 @@ export default function DashboardPage() {
               <div>
                 <label className="text-sm font-medium text-gray-600">{t("description")}</label>
                 <p className="text-sm bg-gray-50 p-3 rounded">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore
-                  et dolore magna aliqua.
+                  {selectedGrievance.raw?.description || "No description available."}
                 </p>
               </div>
               <div className="flex justify-end space-x-2">
@@ -722,127 +892,126 @@ export default function DashboardPage() {
       </Dialog>
 
       {/* District Detail Modal */}
-<Dialog open={!!selectedDistrict} onOpenChange={() => setSelectedDistrict(null)}>
-  <DialogContent className="max-w-4xl w-full">
-    <DialogHeader>
-      <DialogTitle>{t("panchayat_details_title", { district: selectedDistrict?.district })}</DialogTitle>
-    </DialogHeader>
+      <Dialog open={!!selectedDistrict} onOpenChange={() => setSelectedDistrict(null)}>
+        <DialogContent className="max-w-4xl w-full">
+          <DialogHeader>
+            <DialogTitle>{t("panchayat_details_title", { district: selectedDistrict?.district })}</DialogTitle>
+          </DialogHeader>
 
-    {selectedDistrict && (
-      <div className="space-y-4 max-h-[70vh] overflow-auto pr-2">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card>
-            <CardContent className="p-4">
-              <div className="text-2xl font-bold text-[#0f2a44]">{selectedDistrict.total_villages}</div>
-              <div className="text-sm text-gray-600">{t("total_villages")}</div>
-            </CardContent>
-          </Card>
+          {selectedDistrict && (
+            <div className="space-y-4 max-h-[70vh] overflow-auto pr-2">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="text-2xl font-bold text-[#0f2a44]">{selectedDistrict.total_villages}</div>
+                    <div className="text-sm text-gray-600">{t("total_villages")}</div>
+                  </CardContent>
+                </Card>
 
-          <Card>
-            <CardContent className="p-4">
-              <div className="text-2xl font-bold text-[#0f2a44]">{selectedDistrict.claims_submitted}</div>
-              <div className="text-sm text-gray-600">{t("claims_submitted")}</div>
-            </CardContent>
-          </Card>
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="text-2xl font-bold text-[#0f2a44]">{selectedDistrict.claims_submitted}</div>
+                    <div className="text-sm text-gray-600">{t("claims_submitted")}</div>
+                  </CardContent>
+                </Card>
 
-          <Card>
-            <CardContent className="p-4">
-              <div className="text-2xl font-bold text-green-600">{selectedDistrict.claims_verified}</div>
-              <div className="text-sm text-gray-600">{t("claims_verified")}</div>
-            </CardContent>
-          </Card>
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="text-2xl font-bold text-green-600">{selectedDistrict.claims_verified}</div>
+                    <div className="text-sm text-gray-600">{t("claims_verified")}</div>
+                  </CardContent>
+                </Card>
 
-          <Card>
-            <CardContent className="p-4">
-              <div className="text-2xl font-bold text-yellow-600">{selectedDistrict.claims_pending}</div>
-              <div className="text-sm text-gray-600">{t("claims_pending")}</div>
-            </CardContent>
-          </Card>
-        </div>
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="text-2xl font-bold text-yellow-600">{selectedDistrict.claims_pending}</div>
+                    <div className="text-sm text-gray-600">{t("claims_pending")}</div>
+                  </CardContent>
+                </Card>
+              </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>{t("panchayat_wise_breakdown")}</CardTitle>
-          </CardHeader>
+              <Card>
+                <CardHeader>
+                  <CardTitle>{t("panchayat_wise_breakdown")}</CardTitle>
+                </CardHeader>
 
-          <CardContent>
-            {/* Horizontal scroll wrapper so date column is visible */}
-            <div className="overflow-x-auto">
-              <div className="min-w-[760px]">
-                <ScrollArea className="w-full">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>{t("table_panchayat")}</TableHead>
-                        <TableHead>{t("table_land_type")}</TableHead>
-                        <TableHead>{t("table_area")}</TableHead>
-                        <TableHead>{t("table_status")}</TableHead>
-                        <TableHead className="whitespace-nowrap">{t("table_last_survey")}</TableHead>
-                      </TableRow>
-                    </TableHeader>
+                <CardContent>
+                  {/* Horizontal scroll wrapper so date column is visible */}
+                  <div className="overflow-x-auto">
+                    <div className="min-w-[760px]">
+                      <ScrollArea className="w-full">
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>{t("table_panchayat")}</TableHead>
+                              <TableHead>{t("table_land_type")}</TableHead>
+                              <TableHead>{t("table_area")}</TableHead>
+                              <TableHead>{t("table_status")}</TableHead>
+                              <TableHead className="whitespace-nowrap">{t("table_last_survey")}</TableHead>
+                            </TableRow>
+                          </TableHeader>
 
-                    <TableBody>
-                      {(
-                        (selectedDistrict as any).panchayats?.length
-                          ? (selectedDistrict as any).panchayats
-                          : [
-                              { name: "Panchayat A", landType: "Forest Land", area: 125.5, status: "verified", lastSurvey: "2024-01-15" },
-                              { name: "Panchayat B", landType: "Agricultural", area: 89.2, status: "pending", lastSurvey: "2024-01-20" },
-                              { name: "Panchayat C", landType: "Mixed Use", area: 156.8, status: "verified", lastSurvey: "2024-01-25" },
-                            ]
-                      ).map((p: any, idx: number) => (
-                        <TableRow key={p.name ?? idx}>
-                          <TableCell>{p.name}</TableCell>
-                          {/* If you have translations for land types, ensure keys exist; otherwise show raw */}
-                          <TableCell>{t(p.landType) || p.landType}</TableCell>
-                          <TableCell>{p.area}</TableCell>
-                          <TableCell>
-                            {p.status === "verified" ? (
-                              <Badge className="bg-green-100 text-green-800">{t("verified")}</Badge>
-                            ) : p.status === "pending" ? (
-                              <Badge className="bg-yellow-100 text-yellow-800">{t("pending")}</Badge>
-                            ) : (
-                              <Badge className="bg-gray-100 text-gray-800">{t(p.status)}</Badge>
-                            )}
-                          </TableCell>
-                          <TableCell className="whitespace-nowrap">
-                            {p.lastSurvey
-                              ? new Date(p.lastSurvey).toLocaleDateString(lang === "hi" ? "hi-IN" : "en-IN")
-                              : "-"}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </ScrollArea>
+                          <TableBody>
+                            {(
+                              (selectedDistrict as any).panchayats?.length
+                                ? (selectedDistrict as any).panchayats
+                                : [
+                                    { name: "Panchayat A", landType: "Forest Land", area: 125.5, status: "verified", lastSurvey: "2024-01-15" },
+                                    { name: "Panchayat B", landType: "Agricultural", area: 89.2, status: "pending", lastSurvey: "2024-01-20" },
+                                    { name: "Panchayat C", landType: "Mixed Use", area: 156.8, status: "verified", lastSurvey: "2024-01-25" },
+                                  ]
+                            ).map((p: any, idx: number) => (
+                              <TableRow key={p.name ?? idx}>
+                                <TableCell>{p.name}</TableCell>
+                                {/* If you have translations for land types, ensure keys exist; otherwise show raw */}
+                                <TableCell>{t(p.landType) || p.landType}</TableCell>
+                                <TableCell>{p.area}</TableCell>
+                                <TableCell>
+                                  {p.status === "verified" ? (
+                                    <Badge className="bg-green-100 text-green-800">{t("verified")}</Badge>
+                                  ) : p.status === "pending" ? (
+                                    <Badge className="bg-yellow-100 text-yellow-800">{t("pending")}</Badge>
+                                  ) : (
+                                    <Badge className="bg-gray-100 text-gray-800">{t(p.status)}</Badge>
+                                  )}
+                                </TableCell>
+                                <TableCell className="whitespace-nowrap">
+                                  {p.lastSurvey
+                                    ? new Date(p.lastSurvey).toLocaleDateString(lang === "hi" ? "hi-IN" : "en-IN")
+                                    : "-"}
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </ScrollArea>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
+                <div className="w-full sm:w-auto">
+                  <Button type="button" variant="outline" className="w-full sm:w-auto">
+                    {t("upload_survey_documents")}
+                  </Button>
+                </div>
+
+                <div className="flex gap-2 w-full sm:w-auto justify-end">
+                  <Button type="button" onClick={() => setSelectedDistrict(null)} variant="outline">
+                    {t("close")}
+                  </Button>
+
+                  <Button type="button" className="bg-[#2c6e49] hover:bg-[#1e4d35]">
+                    <Download className="w-4 h-4 mr-2" />
+                    {t("download_report")}
+                  </Button>
+                </div>
               </div>
             </div>
-          </CardContent>
-        </Card>
-
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
-          <div className="w-full sm:w-auto">
-            <Button type="button" variant="outline" className="w-full sm:w-auto">
-              {t("upload_survey_documents")}
-            </Button>
-          </div>
-
-          <div className="flex gap-2 w-full sm:w-auto justify-end">
-            <Button type="button" onClick={() => setSelectedDistrict(null)} variant="outline">
-              {t("close")}
-            </Button>
-
-            <Button type="button" className="bg-[#2c6e49] hover:bg-[#1e4d35]">
-              <Download className="w-4 h-4 mr-2" />
-              {t("download_report")}
-            </Button>
-          </div>
-        </div>
-      </div>
-    )}
-  </DialogContent>
-</Dialog>
-
+          )}
+        </DialogContent>
+      </Dialog>
 
 
       {/* Notification Panel */}

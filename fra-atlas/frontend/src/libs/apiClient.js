@@ -1,6 +1,9 @@
 // frontend/src/libs/apiClient.js
 import { API_BASE } from "../config";
 
+// -----------------------------
+// Normalize API base
+// -----------------------------
 function normalizeBase(b) {
   const s = String(b || "").replace(/\/$/, "");
   if (!s) return "/api";
@@ -10,13 +13,37 @@ function normalizeBase(b) {
 }
 const API = normalizeBase(API_BASE);
 
+// -----------------------------
+// Custom Error with status
+// -----------------------------
+export class HttpError extends Error {
+  constructor(message, status) {
+    super(message);
+    this.name = "HttpError";
+    this.status = status;
+  }
+}
+
+// -----------------------------
+// Token helpers
+// -----------------------------
 export function getToken() {
   if (typeof window === "undefined") return null;
   return localStorage.getItem("fra_token");
 }
 
+export function removeToken() {
+  if (typeof window !== "undefined") {
+    localStorage.removeItem("fra_token");
+  }
+}
+
+// -----------------------------
+// Auth fetch wrapper
+// -----------------------------
 export async function authFetch(urlOrPath, options = {}) {
   let finalUrl = urlOrPath;
+
   if (typeof urlOrPath === "string") {
     if (urlOrPath.startsWith("/")) {
       finalUrl = API + urlOrPath;
@@ -38,27 +65,21 @@ export async function authFetch(urlOrPath, options = {}) {
 }
 
 // -----------------------------
-// Helpers: removeToken & fetchCurrentUser
+// Current user fetch
 // -----------------------------
-export function removeToken() {
-  if (typeof window !== "undefined") {
-    localStorage.removeItem("fra_token");
-  }
-}
-
 export async function fetchCurrentUser() {
-  // ✅ always call /api/me
   const res = await authFetch("/api/me");
+
   if (!res.ok) {
-    const err = new Error(`Failed to fetch current user: ${res.status}`);
-    // attach status so callers can act on 401 specifically
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    err.status = res.status;
-    throw err;
+    // Don’t attach status directly to Error, just throw an object
+    throw {
+      message: `Failed to fetch current user: ${res.status}`,
+      status: res.status
+    };
   }
 
   const json = await res.json().catch(() => null);
-  // return .user if present, otherwise return whole object
   return json?.user ?? json ?? null;
 }
+
+

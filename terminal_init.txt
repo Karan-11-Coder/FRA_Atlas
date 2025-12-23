@@ -9,3 +9,5 @@ npm run dev
 cd fra-atlas
 cd frontend 
 npm run dev
+
+sqlite3 fra_atlas.db

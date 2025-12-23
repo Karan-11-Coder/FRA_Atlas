@@ -6,15 +6,104 @@ import useClaims from "./hooks/useClaims";
 import HeaderToolbar from "./components/HeaderToolbar";
 import MapPanel from "./components/MapPanel";
 import UploadPanel from "./components/UploadPanel";
+import UploadReviewPanel from "./components/UploadReviewPanel";
 import ClaimsPanelWrapper from "./components/ClaimsPanelWrapper";
 import NewClaimForm from "./components/NewClaimForm";
 import DiagnosticsPanel from "./components/DiagnosticsPanel";
 
-// ✅ use authFetch instead of fetch for API calls
-// also import fetchCurrentUser and removeToken for current-user + logout handling
+// ✅ auth-aware API helpers
 import { authFetch, fetchCurrentUser, removeToken } from "./libs/apiClient";
 
-/* API normalizer */
+/**
+ * Normalize a string for dedupe key (trim, collapse whitespace, lowercase)
+ * Return { key, display } where display is original trimmed value (or TitleCase if you prefer)
+ */
+// add this helper inside your App component (near other helpers)
+function normalizeClaimForFrontend(raw) {
+  if (!raw) return null;
+  const c = { ...(raw.claim || raw) }; // accept wrapped {claim:...} or raw
+  // id fallback
+  c.id = c.id ?? c.claim_id ?? c.ifr_number ?? c.ifrNo ?? null;
+  // canonical string fields
+  c.state = (c.state ?? c.state_name ?? c.stateName ?? "").toString();
+  c.district = (c.district ?? c.dist ?? "").toString();
+  c.village = (c.village ?? c.village_name ?? c.villageName ?? "").toString();
+  c.patta_holder = (c.patta_holder ?? c.pattaHolder ?? c.name ?? "").toString();
+  c.land_area = (c.land_area ?? c.area ?? null);
+  c.status = (c.status ?? c.claim_status ?? "Pending").toString();
+  // numeric coords (coerce safely)
+  const latRaw = c.lat ?? c.latitude ?? c.lat_deg ?? null;
+  const lonRaw = c.lon ?? c.longitude ?? c.lon_deg ?? null;
+  c.lat = (latRaw != null && latRaw !== "") ? Number(latRaw) : null;
+  c.lon = (lonRaw != null && lonRaw !== "") ? Number(lonRaw) : null;
+  // created_at fallback keep as-is if present
+  // keep all other fields too
+  return c;
+}
+
+
+/**
+ * Build deduped, normalized options from rows (villages or claims)
+ * `rows` - array of objects that contain the text field (like district or village)
+ * `filterState` - optional state string to restrict results
+ * `field` - name of field to extract ('district' or 'village')
+ */
+
+// --- add this helper ONCE (place above buildOptionsFromRows) ---
+function normalizeForKey(raw) {
+  if (raw == null) return { key: "", display: "" };
+  const s = String(raw).trim();
+  if (!s) return { key: "", display: "" };
+
+  // stable key: lowercase, collapse whitespace
+  const key = s.replace(/\s+/g, " ").toLowerCase();
+
+  // nice display: Title Case
+  const display = s
+    .replace(/\s+/g, " ")
+    .toLowerCase()
+    .split(" ")
+    .map(word => word.length ? (word[0].toUpperCase() + word.slice(1)) : "")
+    .join(" ");
+
+  return { key, display };
+}
+
+// --- single canonical implementation of buildOptionsFromRows ---
+function buildOptionsFromRows(rows = [], filterState = "", field = "district") {
+  const seen = new Map(); // key -> display
+  for (const r of rows || []) {
+    if (!r) continue;
+
+    // If a state filter is provided, only include rows matching that state
+    if (filterState && ((r.state || "").toLowerCase() !== filterState.toLowerCase())) {
+      continue;
+    }
+
+    const raw = (r[field] || "");
+    if (!raw) continue;
+
+    const { key, display } = normalizeForKey(raw);
+    if (!key) {
+      // helpful debug log in dev
+      if (process.env.NODE_ENV !== "production") {
+        console.warn("buildOptionsFromRows skipped empty key for raw:", raw, "row:", r);
+      }
+      continue;
+    }
+
+    if (!seen.has(key)) {
+      seen.set(key, display);
+    }
+  }
+
+  // return array of display strings (or change to objects if you want value/display)
+  return Array.from(seen.values()).sort((a, b) => a.localeCompare(b));
+}
+
+// -------------------------
+// API normalizer
+// -------------------------
 const API = (() => {
   const b = String(API_BASE || "").replace(/\/$/, "");
   if (!b) return "/api";
@@ -23,23 +112,25 @@ const API = (() => {
   return b + "/api";
 })();
 
+// fixed list of 4 states to show in the State filter
+const STATE_OPTIONS = ["Madhya Pradesh", "Odisha", "Telangana", "Tripura"];
+
 export default function App() {
   // -------------------------
-  // Legacy app state (unchanged)
+  // Legacy app state (unchanged where possible)
   // -------------------------
-  // view + selection
   const [viewMode, setViewMode] = useState("state");
   const [selectedStateFeature, setSelectedStateFeature] = useState(null);
   const [selectedDistrictFeature, setSelectedDistrictFeature] = useState(null);
   const [selectedVillage, setSelectedVillage] = useState(null);
   const [selectedStateBounds, setSelectedStateBounds] = useState(null);
 
-  // toggles
+  // layer/claim toggles (UI checkboxes for layers will be hidden in HeaderToolbar; we still keep the booleans)
   const [showStates, setShowStates] = useState(true);
   const [showDistricts, setShowDistricts] = useState(true);
+  const [showVillages, setShowVillages] = useState(true);
   const [showGranted, setShowGranted] = useState(true);
   const [showPending, setShowPending] = useState(true);
-  const [showVillages, setShowVillages] = useState(true);
 
   // map ref + defaults
   const mapRef = useRef(null);
@@ -69,37 +160,164 @@ export default function App() {
   const [diagnosticsOpen, setDiagnosticsOpen] = useState(false);
   const [selectedClaimForDiagnostics, setSelectedClaimForDiagnostics] = useState(null);
 
+  // -------------------------
+  // NEW: Cascading filters (State → District → Village)
+  // -------------------------
+  const [stateSel, setStateSel] = useState(""); // selected state (one of 4)
+  const [districtSel, setDistrictSel] = useState(""); // selected district
+  const [villageSel, setVillageSel] = useState(""); // selected village
+  const [districtOptions, setDistrictOptions] = useState([]); // string[]
+  const [villageOptions, setVillageOptions] = useState([]); // string[]
+
+  // ---------------- when State changes → load districtOptions (from villages ∪ claims) ----------------
+  useEffect(() => {
+    if (!stateSel) {
+      setDistrictOptions([]);
+      setDistrictSel("");
+      setVillageOptions([]);
+      setVillageSel("");
+      return;
+    }
+
+    // Option A: if you have an API endpoint for districts (authFetch) you can keep that.
+    // But as robust fallback we build from local villages + dbClaims.
+    (async () => {
+      try {
+        // fetch remote districts list if you rely on endpoint (optional)
+        // const res = await authFetch(`${API}/districts?state=${encodeURIComponent(stateSel)}`);
+        // const listRemote = await res.json().catch(() => []);
+        // build from server list if it returns simple strings
+        // if (Array.isArray(listRemote) && listRemote.length) { setDistrictOptions(listRemote); setDistrictSel(""); setVillageOptions([]); setVillageSel(""); return; }
+
+        // Build union from villages (preferred) and dbClaims (so new claims immediately add options)
+        const fromVillages = (villages || []).filter(v => (v.state || "").toLowerCase() === stateSel.toLowerCase());
+        const fromClaims = (dbClaims || []).filter(c => (c.state || "").toLowerCase() === stateSel.toLowerCase());
+
+        const districts = buildOptionsFromRows([...fromVillages, ...fromClaims], stateSel, "district");
+        setDistrictOptions(districts);
+        setDistrictSel(""); // reset district selection
+        setVillageOptions([]); // clear villages
+        setVillageSel("");
+      } catch (err) {
+        console.warn("Failed to build districtOptions:", err);
+        setDistrictOptions([]);
+        setDistrictSel("");
+        setVillageOptions([]);
+        setVillageSel("");
+      }
+    })();
+  }, [stateSel, villages, dbClaims]); // include villages + dbClaims so UI updates when they change
+  // -----------------------------------------------------------------------------------------------
+
+  // ---------------- when District changes → load villageOptions (from villages ∪ claims) ----------------
+  useEffect(() => {
+    if (!stateSel || !districtSel) {
+      setVillageOptions([]);
+      setVillageSel("");
+      return;
+    }
+
+    (async () => {
+      try {
+        // Prefer server call if you have one:
+        // const res = await authFetch(`${API}/villages?state=${encodeURIComponent(stateSel)}&district=${encodeURIComponent(districtSel)}`);
+        // const listRemote = await res.json().catch(() => []);
+        // if (Array.isArray(listRemote) && listRemote.length) { setVillageOptions(listRemote); setVillageSel(""); return; }
+
+        const fromVillages = (villages || []).filter(v =>
+          (v.state || "").toLowerCase() === stateSel.toLowerCase() &&
+          (v.district || "").toLowerCase() === districtSel.toLowerCase()
+        );
+        const fromClaims = (dbClaims || []).filter(c =>
+          (c.state || "").toLowerCase() === stateSel.toLowerCase() &&
+          (c.district || "").toLowerCase() === districtSel.toLowerCase()
+        );
+
+        const villagesList = buildOptionsFromRows([...fromVillages, ...fromClaims], stateSel, "village");
+        setVillageOptions(villagesList);
+        setVillageSel("");
+      } catch (err) {
+        console.warn("Failed to build villageOptions:", err);
+        setVillageOptions([]);
+        setVillageSel("");
+      }
+    })();
+  }, [stateSel, districtSel, villages, dbClaims]);
+  // -----------------------------------------------------------------------------------------------
+
+  // -------------------------
+  // Handlers
+  // -------------------------
   function handleRunDiagnostics(claim) {
     if (!claim) return;
     setSelectedClaimForDiagnostics(claim);
     setDiagnosticsOpen(true);
   }
 
-  /* Upload (kept in App for API handling and cache updates) */
   async function handleUpload() {
     if (!file) return alert("Select a file first");
     const formData = new FormData();
     formData.append("file", file);
 
+    // decide endpoint by extension
+    const name = (file.name || "").toLowerCase();
+    const isExcel = name.endsWith(".csv") || name.endsWith(".xlsx") || name.endsWith(".xls");
+    const url = isExcel ? `${API}/claims/import-excel` : `${API}/upload-fra`;
+
     try {
       setUploading(true);
-      const res = await authFetch(`${API}/upload-fra`, { method: "POST", body: formData });
-      // authFetch returns the fetch Response object; use .json() accordingly
+
+      const res = await authFetch(url, { method: "POST", body: formData });
+
+      if (!res.ok) {
+        // try to read JSON error if available
+        let errText = `${res.status} ${res.statusText}`;
+        try { const errJson = await res.json(); errText = errJson.detail || JSON.stringify(errJson); } catch {}
+        throw new Error(`Upload failed: ${errText}`);
+      }
+
       const data = await res.json();
 
-      const createdClaim = data?.claim || data?.result || null;
-      if (createdClaim) {
-        handleClaimSaved(createdClaim);
-        try { if (typeof upsertClaim === "function") upsertClaim(createdClaim); } catch (e) {}
-        if (createdClaim?.lat != null && createdClaim?.lon != null && mapRef.current) {
-          try { mapRef.current.flyTo([Number(createdClaim.lat), Number(createdClaim.lon)], 14); } catch (e) {}
+      // --- Handle Excel/CSV bulk import response ---
+      if (isExcel) {
+        // expected shape: { success: true, count: N, claims: [...], errors: [...] }
+        const count = data?.count ?? 0;
+        const claims = data?.claims ?? [];
+        const errors = data?.errors ?? [];
+
+        // upsert all imports into frontend state
+        if (Array.isArray(claims) && claims.length) {
+          for (const c of claims) {
+            try { upsertClaim?.(c); } catch {}
+          }
+          // call single callback to notify UI - you can adapt to show list instead
+          handleClaimSaved?.(claims[0]);
+          // fly to first claim with coords (if present)
+          const firstWithCoords = claims.find(c => c?.lat != null && c?.lon != null);
+          if (firstWithCoords && mapRef.current) {
+            try { mapRef.current.flyTo([Number(firstWithCoords.lat), Number(firstWithCoords.lon)], 14); } catch {}
+          }
         }
+
+        // give user feedback
+        alert(`Imported ${count} claims. ${errors?.length ? `${errors.length} rows failed.` : ""}`);
         setFile(null);
-        setUploading(false);
         return;
       }
 
-      // fallback: create from entities
+      // --- Handle single-upload (/upload-fra) response ---
+      const createdClaim = data?.claim || data?.result || null;
+      if (createdClaim) {
+        handleClaimSaved(createdClaim);
+        try { upsertClaim?.(createdClaim); } catch {}
+        if (createdClaim?.lat != null && createdClaim?.lon != null && mapRef.current) {
+          try { mapRef.current.flyTo([Number(createdClaim.lat), Number(createdClaim.lon)], 14); } catch {}
+        }
+        setFile(null);
+        return;
+      }
+
+      // --- fallback: create from entities if upload returned entities but no claim ---
       const entities = data?.entities || {};
       const claimPayload = {
         state: entities.state || "",
@@ -120,15 +338,23 @@ export default function App() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(claimPayload),
       });
-      if (!createRes.ok) throw new Error(`Create claim failed: ${createRes.status}`);
+
+      if (!createRes.ok) {
+        const txt = await createRes.text().catch(() => null);
+        throw new Error(`Create claim failed: ${createRes.status} ${txt || ""}`);
+      }
+
       const created = await createRes.json();
       const normalizedFallback = created?.claim || created;
+
       handleClaimSaved(normalizedFallback);
-      try { if (typeof upsertClaim === "function") upsertClaim(normalizedFallback); } catch (e) {}
+      try { upsertClaim?.(normalizedFallback); } catch {}
+
       if (normalizedFallback?.lat != null && normalizedFallback?.lon != null && mapRef.current) {
-        try { mapRef.current.flyTo([Number(normalizedFallback.lat), Number(normalizedFallback.lon)], 16, { duration: 0.8 }); } catch (e) {}
+        try { mapRef.current.flyTo([Number(normalizedFallback.lat), Number(normalizedFallback.lon)], 16, { duration: 0.8 }); } catch {}
       }
       setFile(null);
+
     } catch (err) {
       console.error("handleUpload error", err);
       alert("Upload/create failed: " + (err?.message || err));
@@ -137,13 +363,16 @@ export default function App() {
     }
   }
 
-  /* load claims */
   async function loadDbClaims() {
     try {
       const res = await authFetch(`${API}/claims`);
       const json = await res.json();
       const raw = Array.isArray(json) ? json : json?.claims || [];
-      const normalized = raw.map((c) => ({ ...c, lat: c.lat != null ? Number(c.lat) : null, lon: c.lon != null ? Number(c.lon) : null }));
+      const normalized = raw.map((c) => ({
+        ...c,
+        lat: c.lat != null ? Number(c.lat) : null,
+        lon: c.lon != null ? Number(c.lon) : null
+      }));
       setDbClaims(normalized);
     } catch (err) {
       console.error("Failed to load claims", err);
@@ -156,32 +385,68 @@ export default function App() {
       if (!res.ok) throw new Error(`reload claims failed: ${res.status}`);
       const json = await res.json();
       const arr = Array.isArray(json) ? json : json?.claims || [];
-      const normalized = arr.map((c) => ({ ...c, lat: c.lat != null ? Number(c.lat) : null, lon: c.lon != null ? Number(c.lon) : null }));
+      const normalized = arr.map((c) => ({
+        ...c,
+        lat: c.lat != null ? Number(c.lat) : null,
+        lon: c.lon != null ? Number(c.lon) : null
+      }));
       setDbClaims(normalized);
     } catch (e) {
       console.error("reloadDbClaims error", e);
     }
   }
-
   useEffect(() => { loadDbClaims(); }, []);
 
-  /* load villages */
+  // ✅ Listen for import completion (fra-data-changed) and reload villages + claims
+useEffect(() => {
+  function onDataChanged() {
+    reloadDbClaims();
+    // refresh villages list from backend
+    (async () => {
+      try {
+        const res = await authFetch(`${API}/villages`);
+        const json = await res.json();
+        let arr = Array.isArray(json) ? json : (Array.isArray(json.villages) ? json.villages : []);
+        const normalized = arr.map(v => ({
+          ...v,
+          lat: v.lat != null ? Number(v.lat) : null,
+          lon: v.lon != null ? Number(v.lon) : null
+        }));
+        setVillages(normalized);
+      } catch (e) {
+        console.warn("Failed to refresh villages:", e);
+      }
+    })();
+  }
+
+  window.addEventListener("fra-data-changed", onDataChanged);
+  return () => window.removeEventListener("fra-data-changed", onDataChanged);
+}, []);
+
+
   useEffect(() => {
-    async function loadVillages() {
+    async function loadVillagesAll() {
       try {
         const res = await authFetch(`${API}/villages`);
         const json = await res.json();
         let arr = [];
         if (Array.isArray(json)) arr = json;
         else if (Array.isArray(json.villages)) arr = json.villages;
-        const normalized = arr.map((v) => ({ ...v, lat: v.lat != null ? Number(v.lat) : null, lon: v.lon != null ? Number(v.lon) : null }));
+        const normalized = arr.map((v) => ({
+          ...v,
+          lat: v.lat != null ? Number(v.lat) : null,
+          lon: v.lon != null ? Number(v.lon) : null
+        }));
         setVillages(normalized);
-      } catch (err) { console.error("Failed to load villages", err); setVillages([]); }
+      } catch (err) {
+        console.error("Failed to load villages", err);
+        setVillages([]);
+      }
     }
-    loadVillages();
+    loadVillagesAll();
   }, []);
 
-  // NEW: load current user on mount and handle expiry/401
+  // current user
   useEffect(() => {
     let mounted = true;
     async function loadUser() {
@@ -190,9 +455,8 @@ export default function App() {
         if (mounted) setCurrentUser(u);
       } catch (err) {
         console.warn("Could not fetch current user:", err);
-        // handle 401 (token expired / invalid)
         if (err && (err.status === 401 || err.statusCode === 401 || err.message === "Unauthorized")) {
-          try { removeToken(); } catch (e) {}
+          try { removeToken(); } catch {}
           window.location.href = import.meta.env.VITE_LOGIN_URL || "http://localhost:3000/login";
         }
       }
@@ -201,7 +465,6 @@ export default function App() {
     return () => { mounted = false; };
   }, []);
 
-  /* pick on map */
   function handleMapClick(coords) {
     if (pickOnMap) {
       setPickCoords(coords);
@@ -210,24 +473,23 @@ export default function App() {
     }
   }
 
-  /* create/update claim in UI state */
   function handleClaimSaved(createdOrUpdated) {
     if (!createdOrUpdated) return;
     if (createdOrUpdated.lat != null) createdOrUpdated.lat = Number(createdOrUpdated.lat);
     if (createdOrUpdated.lon != null) createdOrUpdated.lon = Number(createdOrUpdated.lon);
 
     setDbClaims((prev) => {
-      const existsIndex = prev.findIndex((c) => c.id === createdOrUpdated.id);
-      if (existsIndex !== -1) {
+      const idx = prev.findIndex((c) => c.id === createdOrUpdated.id);
+      if (idx !== -1) {
         const copy = [...prev];
-        copy[existsIndex] = { ...copy[existsIndex], ...createdOrUpdated };
+        copy[idx] = { ...copy[idx], ...createdOrUpdated };
         return copy;
       } else {
         return [createdOrUpdated, ...prev];
       }
     });
 
-    try { if (typeof upsertClaim === "function") upsertClaim(createdOrUpdated); } catch (e) {}
+    try { upsertClaim?.(createdOrUpdated); } catch {}
     setEditingClaim(null);
 
     try {
@@ -244,7 +506,7 @@ export default function App() {
     setEditingClaim(claim);
     setShowForm(true);
     if (mapRef.current && claim.lat != null && claim.lon != null) {
-      try { mapRef.current.flyTo([Number(claim.lat), Number(claim.lon)], 14); } catch (e) {}
+      try { mapRef.current.flyTo([Number(claim.lat), Number(claim.lon)], 14); } catch {}
     }
   }
 
@@ -284,7 +546,9 @@ export default function App() {
     } else if (Array.isArray(claims) && claims.length === 1) {
       const c = claims[0];
       if (c.lat != null && c.lon != null && mapRef.current) {
-        try { mapRef.current.flyTo([Number(c.lat), Number(c.lon)], 16); return; } catch (e) { if (villageObj.lat != null && villageObj.lon != null && mapRef.current) mapRef.current.flyTo([villageObj.lat, villageObj.lon], 16); }
+        try { mapRef.current.flyTo([Number(c.lat), Number(c.lon)], 16); return; } catch (e) {
+          if (villageObj.lat != null && villageObj.lon != null && mapRef.current) { mapRef.current.flyTo([villageObj.lat, villageObj.lon], 16); }
+        }
       } else if (villageObj.lat != null && villageObj.lon != null && mapRef.current) {
         mapRef.current.flyTo([villageObj.lat, villageObj.lon], 16);
       }
@@ -295,7 +559,10 @@ export default function App() {
     setShowClaimsVisible(true);
 
     if ((!claims || claims.length === 0) && Array.isArray(fetched) && fetched.length > 0) {
-      try { claimsCacheRef.current = claimsCacheRef.current || {}; claimsCacheRef.current[villageName] = { claims: fetched.slice(), count: fetched.length }; } catch (e) {}
+      try {
+        claimsCacheRef.current = claimsCacheRef.current || {};
+        claimsCacheRef.current[villageName] = { claims: fetched.slice(), count: fetched.length };
+      } catch {}
     }
   }
 
@@ -318,7 +585,7 @@ export default function App() {
         entry.claims = entry.claims.map((c) => (c.id === updated.id ? { ...c, ...updated } : c));
         claimsCacheRef.current[name] = entry;
       }
-    } catch (e) {}
+    } catch {}
 
     if (claimsDrawerVillage && updated.village && claimsDrawerVillage.toLowerCase() === updated.village.toLowerCase()) {
       setShowClaimsVisible(false);
@@ -331,7 +598,6 @@ export default function App() {
     if (!village) return null;
     if (geoCache[village]) return geoCache[village];
     try {
-      // leave Nominatim call unchanged (we don't auth this)
       const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(village)}, India`);
       const data = await res.json();
       if (data && data[0]) {
@@ -339,7 +605,9 @@ export default function App() {
         setGeoCache((prev) => ({ ...prev, [village]: coords }));
         return coords;
       }
-    } catch (e) { console.error("Geocoding failed:", e); }
+    } catch (e) {
+      console.error("Geocoding failed:", e);
+    }
     return null;
   }
 
@@ -362,7 +630,11 @@ export default function App() {
   // map created callback (MapPanel calls this)
   function handleMapCreated(map) {
     mapRef.current = map;
-    try { window.__MAP__ = map; window.__APP__ = window.__APP__ || {}; window.__APP__.mapCreatedAt = new Date().toISOString(); } catch (e) {}
+    try {
+      window.__MAP__ = map;
+      window.__APP__ = window.__APP__ || {};
+      window.__APP__.mapCreatedAt = new Date().toISOString();
+    } catch {}
   }
 
   function handleZoomToClaim(claim) {
@@ -375,14 +647,15 @@ export default function App() {
       return;
     }
     if (claim?.lat != null && claim?.lon != null) {
-      try { mapRef.current.flyTo([Number(claim.lat), Number(claim.lon)], 15, { duration: 0.7 }); return; } catch (err) {}
+      try { mapRef.current.flyTo([Number(claim.lat), Number(claim.lon)], 15, { duration: 0.7 }); return; } catch {}
     }
     if (claim?.village && geoCache[claim.village]) {
-      try { const [lat, lon] = geoCache[claim.village]; mapRef.current.flyTo([lat, lon], 13, { duration: 0.7 }); return; } catch (err) {}
+      try { const [lat, lon] = geoCache[claim.village]; mapRef.current.flyTo([lat, lon], 13, { duration: 0.7 }); return; } catch {}
     }
     alert("No coordinates available for this claim or village.");
   }
 
+  // Reset view (also clears new filters)
   function handleReset() {
     if (mapRef.current) mapRef.current.setView(defaultCenter, defaultZoom);
     setResetTick((t) => t + 1);
@@ -392,6 +665,13 @@ export default function App() {
     setSelectedStateBounds(null);
     setShowClaimsVisible(false);
     setClaimsDrawerVillage(null);
+
+    // clear cascading filters
+    setStateSel("");
+    setDistrictSel("");
+    setVillageSel("");
+    setDistrictOptions([]);
+    setVillageOptions([]);
   }
 
   function handleBackToState() {
@@ -405,11 +685,14 @@ export default function App() {
     setClaimsDrawerVillage(null);
   }
 
-  /* prepare visibleVillages */
+  /* visibleVillages (legacy — still used by MapPanel’s district view) */
   const visibleVillages = useMemo(() => {
     if (viewMode !== "district" || !selectedDistrictFeature) return [];
     const sd =
-      (selectedDistrictFeature.properties?.DISTRICT || selectedDistrictFeature.properties?.district || selectedDistrictFeature.properties?.name || "")
+      (selectedDistrictFeature.properties?.DISTRICT ||
+        selectedDistrictFeature.properties?.district ||
+        selectedDistrictFeature.properties?.name ||
+        "")
         .toString()
         .trim()
         .toLowerCase();
@@ -417,34 +700,39 @@ export default function App() {
     return villages.filter((v) => ((v.district || "").toString().trim().toLowerCase()) === sd);
   }, [villages, viewMode, selectedDistrictFeature]);
 
-  /* filtered DB claims */
+  /* filtered DB claims — now ALSO filtered by the cascading dropdowns */
   const filteredDbClaims = useMemo(() => {
     return dbClaims.filter((c) => {
       if (!c) return false;
+
+      // priority: header dropdowns
+      if (stateSel && (c.state || "").toLowerCase() !== stateSel.toLowerCase()) return false;
+      if (districtSel && (c.district || "").toLowerCase() !== districtSel.toLowerCase()) return false;
+      if (villageSel && (c.village || "").toLowerCase() !== villageSel.toLowerCase()) return false;
+
+      // legacy district view filter (kept)
       if (viewMode === "district" && selectedDistrictFeature) {
         const sd = ((selectedDistrictFeature.properties?.DISTRICT || selectedDistrictFeature.properties?.name) || "").toLowerCase();
         if ((c.district || "").toLowerCase() !== sd) return false;
       }
-      if (c.status === "Granted" && !showGranted) return false;
-      if (c.status === "Pending" && !showPending) return false;
+
+      // safe, case-insensitive status checks
+      const status = (c.status || "").toString().trim().toLowerCase();
+      if (status === "granted" && !showGranted) return false;
+      if (status === "pending" && !showPending) return false;
+
       return true;
     });
-  }, [dbClaims, viewMode, selectedDistrictFeature, showGranted, showPending]);
+  }, [dbClaims, stateSel, districtSel, villageSel, viewMode, selectedDistrictFeature, showGranted, showPending]);
 
-  /* logout handler */
   function handleLogout() {
     try {
-      // clear token
       removeToken();
-
-      // clear sensitive client state (optional)
-      setDbClaims([]);           // clear loaded claims
-      setVillages([]);          // clear villages
-      setCurrentUser(null);     // clear current user state
+      setDbClaims([]);
+      setVillages([]);
+      setCurrentUser(null);
       setEditingClaim(null);
       setShowForm(false);
-
-      // redirect to Karan login (use env if present)
       const loginUrl = import.meta.env.VITE_LOGIN_URL || "http://localhost:3000/login";
       window.location.href = loginUrl;
     } catch (e) {
@@ -461,18 +749,35 @@ export default function App() {
       <HeaderToolbar
         onNewClaim={() => { setShowForm(true); setPickOnMap(false); setPickCoords(null); }}
         onReset={handleReset}
+
+        /* Old layer toggles (HeaderToolbar should hide their UI now, but props kept for compatibility) */
         showStates={showStates} setShowStates={setShowStates}
         showDistricts={showDistricts} setShowDistricts={setShowDistricts}
         showVillages={showVillages} setShowVillages={setShowVillages}
+
+        /* Granted/Pending chips (unchanged) */
         showGranted={showGranted} setShowGranted={setShowGranted}
         showPending={showPending} setShowPending={setShowPending}
+
+        /* View / breadcrumb */
         viewMode={viewMode}
         selectedStateFeature={selectedStateFeature}
         selectedDistrictFeature={selectedDistrictFeature}
         onBackToState={handleBackToState}
         onBackToDistrict={handleBackToState}
 
-        /* NEW props: currentUser + onLogout */
+        /* NEW: Cascading filters props for the toolbar */
+        stateOptions={STATE_OPTIONS}
+        selectedStateValue={stateSel}
+        onChangeState={setStateSel}
+        districtOptions={districtOptions}
+        selectedDistrictValue={districtSel}
+        onChangeDistrict={setDistrictSel}
+        villageOptions={villageOptions}
+        selectedVillageValue={villageSel}
+        onChangeVillage={setVillageSel}
+
+        /* user & logout */
         currentUser={currentUser}
         onLogout={handleLogout}
       />
@@ -485,28 +790,71 @@ export default function App() {
             resetTick={resetTick}
             onMapCreated={handleMapCreated}
             onMapClick={handleMapClick}
-            onStateSelected={(f) => { setSelectedStateFeature(f); setSelectedDistrictFeature(null); setSelectedVillage(null); setViewMode("state"); setShowClaimsVisible(false); setClaimsDrawerVillage(null); }}
-            onDistrictSelected={(f) => { setSelectedDistrictFeature(f); setViewMode("district"); setSelectedVillage(null); setShowClaimsVisible(false); setClaimsDrawerVillage(null); }}
-            onVillageClick={(v) => { setSelectedVillage(v.village); if (v.lat != null && v.lon != null && mapRef.current) mapRef.current.flyTo([v.lat, v.lon], 13); }}
+
+            onStateSelected={(f) => {
+              setSelectedStateFeature(f);
+              setSelectedDistrictFeature(null);
+              setSelectedVillage(null);
+              setViewMode("state");
+              setShowClaimsVisible(false);
+              setClaimsDrawerVillage(null);
+            }}
+            onDistrictSelected={(f) => {
+              setSelectedDistrictFeature(f);
+              setViewMode("district");
+              setSelectedVillage(null);
+              setShowClaimsVisible(false);
+              setClaimsDrawerVillage(null);
+            }}
+            onVillageClick={(v) => {
+              setSelectedVillage(v.village);
+              if (v.lat != null && v.lon != null && mapRef.current) mapRef.current.flyTo([v.lat, v.lon], 13);
+            }}
+
+            /* NEW: pass cascading selections so MapPanel can filter polygons/markers */
+            selectedState={stateSel}
+            selectedDistrict={districtSel}
+            selectedVillage={villageSel}
+
+            /* layer toggles + claim chips */
+            showStates={showStates}
+            showDistricts={showDistricts}
+            showVillages={showVillages}
+            showGranted={showGranted}
+            showPending={showPending}
+
+            /* claims drawer helpers */
+            showClaimsVisible={showClaimsVisible}
+            claimsDrawerVillage={claimsDrawerVillage}
+            claimsCacheRef={claimsCacheRef}
+
             onRunDiagnostics={handleRunDiagnostics}
             onZoomToClaim={handleZoomToClaim}
             zoomToVillageAndShowClaims={zoomToVillageAndShowClaims}
             visibleVillages={visibleVillages}
-            showStates={showStates}
-            showDistricts={showDistricts}
-            showVillages={showVillages}
-            showClaimsVisible={showClaimsVisible}
-            claimsDrawerVillage={claimsDrawerVillage}
-            claimsCacheRef={claimsCacheRef}
-            showGranted={showGranted}
-            showPending={showPending}
           />
         </div>
 
-        <UploadPanel file={file} setFile={setFile} uploading={uploading} onUpload={handleUpload} />
+        {/* UploadReviewPanel - integrated (normalizes returned claim shape) */}
+<UploadReviewPanel
+  onSaved={(rawClaim) => {
+    const claim = normalizeClaimForFrontend(rawClaim);
+    if (!claim) return;
+    try { handleClaimSaved?.(claim); } catch (e) { console.warn("handleClaimSaved failed", e); }
+    try { upsertClaim?.(claim); } catch (e) { console.warn("upsertClaim failed", e); }
+  }}
+  upsertClaim={(c) => {
+    const claim = normalizeClaimForFrontend(c);
+    if (!claim) return;
+    try { upsertClaim?.(claim); } catch (e) { console.warn("upsertClaim wrapper failed", e); }
+  }}
+  mapRef={mapRef}
+  authFetch={authFetch}
+  API={API}
+/>
 
         <ClaimsPanelWrapper
-          dbClaims={dbClaims}
+          dbClaims={filteredDbClaims}
           onRowClick={(c) => {
             if (c.lat != null && c.lon != null) {
               if (mapRef.current) {

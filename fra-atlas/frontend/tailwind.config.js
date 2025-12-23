@@ -1,19 +1,25 @@
 /** @type {import('tailwindcss').Config} */
+
+// Optional plugin loader for ESM environments — safe even if not installed
 let animatePlugin = null;
 try {
-  // try to require the optional plugin; if it's not installed we continue without failing
-  // (this prevents Tailwind from crashing when the plugin is missing)
-  // If you want the plugin features, run: npm install -D tailwindcss-animate
-  // and this will be picked up automatically.
-  animatePlugin = require("tailwindcss-animate");
+  // dynamically import without await — avoids PostCSS restrictions
+  import("tailwindcss-animate")
+    .then((mod) => {
+      animatePlugin = mod.default || mod;
+    })
+    .catch(() => {
+      console.warn(
+        "tailwindcss-animate not found. Continuing without it. To enable animations install: npm install -D tailwindcss-animate"
+      );
+    });
 } catch (e) {
-  // eslint-disable-next-line no-console
   console.warn(
     "tailwindcss-animate not found. Continuing without it. To enable animations install: npm install -D tailwindcss-animate"
   );
 }
 
-module.exports = {
+export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -22,13 +28,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        govGreen: "#0f7b40", // deep government green
-        govAccent: "#2aa26b", // accent green
-        ctaBlue: "#0f6fff", // CTA blue
-        neutralBg: "#f7fafc", // light neutral background
-        govText: "#111827", // dark text
+        govGreen: "#0f7b40",
+        govAccent: "#2aa26b",
+        ctaBlue: "#0f6fff",
+        neutralBg: "#f7fafc",
+        govText: "#111827",
       },
-      // required by v0 UI (shadcn components, animations)
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
