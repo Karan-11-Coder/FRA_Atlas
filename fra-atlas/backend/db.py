@@ -7,6 +7,7 @@ import os
 import datetime
 from pathlib import Path
 import logging
+from typing import Any, Dict, List, Optional, AsyncGenerator
 
 # ----------------------------
 # DATABASE URL resolution (deterministic)
@@ -110,33 +111,47 @@ async def insert_claim(payload: Dict[str, Any]) -> Dict[str, Any]:
     insert_sql = text(
         """
         INSERT INTO claims (
-            state, district, block, village,
-            patta_holder, address, land_area, status, date,
-            lat, lon, source, raw_ocr, created_at
-        )
-        VALUES (
-            :state, :district, :block, :village,
-            :patta_holder, :address, :land_area, :status, :date,
-            :lat, :lon, :source, :raw_ocr, :created_at
-        )
+   state, district, block, village,
+   patta_holder, address, land_area, status, date,
+   lat, lon, source, raw_ocr,
+   assigned_officer_id, assigned_date, last_status_update,
+   closed_date,
+   created_at
+)
+VALUES (
+   :state, :district, :block, :village,
+   :patta_holder, :address, :land_area, :status, :date,
+   :lat, :lon, :source, :raw_ocr,
+   :assigned_officer_id, :assigned_date, :last_status_update,
+   :closed_date,
+   datetime('now')
+)
         """
     )
     params = {
-        "state": payload.get("state"),
-        "district": payload.get("district"),
-        "block": payload.get("block"),
-        "village": payload.get("village"),
-        "patta_holder": payload.get("patta_holder"),
-        "address": payload.get("address"),
-        "land_area": payload.get("land_area"),
-        "status": payload.get("status"),
-        "date": payload.get("date"),
-        "lat": payload.get("lat"),
-        "lon": payload.get("lon"),
-        "source": payload.get("source", "manual"),
-        "raw_ocr": payload.get("raw_ocr"),
-        "created_at": payload.get("created_at", datetime.datetime.utcnow().isoformat()),
-    }
+    "state": payload.get("state"),
+    "district": payload.get("district"),
+    "block": payload.get("block"),
+    "village": payload.get("village"),
+    "patta_holder": payload.get("patta_holder"),
+    "address": payload.get("address"),
+    "land_area": payload.get("land_area"),
+    "status": payload.get("status"),
+    "date": payload.get("date"),
+    "lat": payload.get("lat"),
+    "lon": payload.get("lon"),
+    "source": payload.get("source", "manual"),
+    "raw_ocr": payload.get("raw_ocr"),
+
+    # ✅ OFFICER TRACKING (CRITICAL)
+    "assigned_officer_id": payload.get("assigned_officer_id"),
+    "assigned_date": payload.get("assigned_date"),
+    "last_status_update": payload.get("last_status_update"),
+    "closed_date": payload.get("closed_date"),
+
+    "created_at": payload.get("created_at", datetime.datetime.utcnow().isoformat()),
+}
+
 
     async with engine.begin() as conn:
         # Perform insert
@@ -284,6 +299,25 @@ async def insert_village(payload: Dict[str, Any]) -> Dict[str, Any]:
 # ----------------------------
 # FastAPI dependency
 # ----------------------------
-async def get_db() -> Generator[AsyncSession, None, None]:
+async def get_db() -> AsyncGenerator[AsyncSession, None]:
     async with SessionLocal() as session:
         yield session
+
+# ----------------------------
+# Sync DB path helper (for sqlite3-based modules)
+# ----------------------------
+from urllib.parse import urlparse
+
+def get_db_path() -> str:
+    """
+    Return absolute filesystem path to the SQLite database file.
+    Used by legacy sqlite3-based services (officer_metrics, credibility_engine).
+    """
+    url = urlparse(DATABASE_URL)
+
+    # sqlite+aiosqlite:///C:/path/to/db.sqlite
+    if url.scheme.startswith("sqlite"):
+        return str(Path(url.path.lstrip("/")).resolve())
+
+    raise RuntimeError("get_db_path() called for non-sqlite database")
+

@@ -8,6 +8,8 @@ from jose import jwt, JWTError
 from passlib.context import CryptContext
 from typing import Optional
 from starlette.concurrency import run_in_threadpool
+from fastapi.security import HTTPBearer
+security = HTTPBearer()
 
 router = APIRouter()
 
@@ -111,7 +113,12 @@ async def login(payload: LoginIn):
         "role": row["role"],
         "full_name": row["full_name"],
     }
-    token = create_access_token({"sub": row["username"], "role": row["role"]})
+    token = create_access_token({
+    "sub": row["username"],
+    "role": row["role"],
+    "officer_id": row["id"]
+})
+
     return {
         "access_token": token,
         "token_type": "bearer",
@@ -127,6 +134,9 @@ async def get_current_user(request: Request):
     try:
         payload = jwt.decode(token, JWT_SECRET, algorithms=[ALGORITHM])
         username = payload.get("sub")
+        officer_id = payload.get("officer_id")
+        role = payload.get("role")
+
         if username is None:
             raise HTTPException(status_code=401, detail="Invalid token")
     except JWTError:
@@ -135,14 +145,19 @@ async def get_current_user(request: Request):
     row = await get_user_by_username(username)
     if not row:
         raise HTTPException(status_code=401, detail="User not found")
-    return {"id": row["id"], "username": row["username"], "role": row["role"]}
+    return {
+    "id": officer_id,
+    "username": username,
+    "role": payload.get("role")
+}
 
-@router.get("/me")
+@router.get("/me", dependencies=[Depends(security)])
 async def me(request: Request):
     """
     Returns the currently authenticated officer (based on bearer token).
     """
     user = await get_current_user(request)
+
     row = await get_user_by_username(user["username"])
     if not row:
         raise HTTPException(status_code=401, detail="User not found")

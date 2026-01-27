@@ -27,14 +27,16 @@ export class HttpError extends Error {
 // -----------------------------
 // Token helpers
 // -----------------------------
+const TOKEN_KEY = "fra_atlas_token";
+
 export function getToken() {
   if (typeof window === "undefined") return null;
-  return localStorage.getItem("fra_token");
+  return localStorage.getItem(TOKEN_KEY);
 }
 
 export function removeToken() {
   if (typeof window !== "undefined") {
-    localStorage.removeItem("fra_token");
+    localStorage.removeItem(TOKEN_KEY);
   }
 }
 
@@ -68,7 +70,7 @@ export async function authFetch(urlOrPath, options = {}) {
 // Current user fetch
 // -----------------------------
 export async function fetchCurrentUser() {
-  const res = await authFetch("/api/me");
+  const res = await authFetch("/me");
 
   if (!res.ok) {
     // Don’t attach status directly to Error, just throw an object

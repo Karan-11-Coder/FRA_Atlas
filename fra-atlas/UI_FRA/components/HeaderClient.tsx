@@ -265,6 +265,13 @@ export default function HeaderClient() {
             <Link href="/login" className="hover:text-gov-saffron transition-colors">
               {t.officerLogin}
             </Link>
+            <Link
+              href="/officers"
+              className="hover:text-gov-saffron transition-colors"
+            >
+            Officer Dashboard
+            </Link>
+
             <Link href="/guidelines" className="hover:text-gov-saffron transition-colors">
               {t.guidelines}
             </Link>

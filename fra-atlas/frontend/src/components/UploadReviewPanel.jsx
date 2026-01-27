@@ -1,6 +1,8 @@
 import React, { useState, useRef } from "react";
 import * as XLSX from "xlsx";
 import Papa from "papaparse";
+import { authFetch } from "../libs/apiClient";
+
 
 /**
  * Works with your backend or locally:
@@ -11,7 +13,6 @@ export default function UploadReviewPanel({
   onSaved,
   upsertClaim,
   mapRef,
-  authFetch,
   API,
 }) {
   const [file, setFile] = useState(null);
@@ -187,7 +188,7 @@ export default function UploadReviewPanel({
     setStatus("saving");
     try {
       if (API) {
-        const res = await authFetch(`${API}/claims/import-json`, {
+        const res = await authFetch("/claims/import-json", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ rows: data.rows }),

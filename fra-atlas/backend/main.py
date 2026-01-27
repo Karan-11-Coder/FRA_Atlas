@@ -36,6 +36,13 @@ import datetime
 import pathlib
 from typing import Optional, Dict, Any
 
+ # FastAPI OpenAPI customization
+from fastapi.openapi.utils import get_openapi
+from backend.routes.auth import get_current_user
+from fastapi.security import HTTPBearer
+bearer_scheme = HTTPBearer()
+
+
 # load environment variables once
 load_dotenv()
 
@@ -61,19 +68,48 @@ from backend.routes.diagnostics import router as diagnostics_router
 from backend.routes.auth import router as auth_router
 from backend.routes.claims import router as claims_router
 from backend.routes import auth_tribal  # this module defines router = APIRouter(prefix="/auth/tribal", ...)
+from backend.routes import officers
 
 # ----------------------------------------------------------------------
 # Create single FastAPI app and configure
 # ----------------------------------------------------------------------
 app = FastAPI(title="FRA Atlas API")
 
+def custom_openapi():
+    if app.openapi_schema:
+        return app.openapi_schema
+
+    openapi_schema = get_openapi(
+        title="FRA Atlas API",
+        version="0.1.0",
+        description="FRA Atlas Backend",
+        routes=app.routes,
+    )
+
+    openapi_schema.setdefault("components", {})
+    openapi_schema["components"].setdefault("securitySchemes", {})
+
+    # 🔑 IMPORTANT: name MUST be HTTPBearer
+    openapi_schema["components"]["securitySchemes"]["HTTPBearer"] = {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+    }
+
+    # 🔑 IMPORTANT: same name here
+    openapi_schema["security"] = [{"HTTPBearer": []}]
+
+    app.openapi_schema = openapi_schema
+    return app.openapi_schema
+
 # include tribal auth router (router already has its own prefix "/auth/tribal")
 app.include_router(auth_tribal.router)
 
 # include other routers under /api
 app.include_router(diagnostics_router, prefix="/api")
-app.include_router(auth_router,        prefix="/api")
-app.include_router(claims_router,      prefix="/api")
+app.include_router(auth_router, prefix="/api")
+app.include_router(claims_router, prefix="/api")
+app.include_router(officers.router)
 
 # -----------------------------------------------------------------------------
 # CORS configuration (adjust origins if necessary)
@@ -291,61 +327,54 @@ def _row_to_dict(row) -> Dict[str, Any]:
 # -----------------------------------------------------------------------------
 # FRA Document upload → OCR → NER → insert Claim
 # -----------------------------------------------------------------------------
-@app.post("/api/upload-fra")
-async def upload_fra(file: UploadFile = File(...), db: AsyncSession = Depends(get_db)):
+@app.post("/api/upload-fra", dependencies=[Depends(bearer_scheme)])
+async def upload_fra(
+    file: UploadFile = File(...),
+    current_user=Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
     """
-    Upload a FRA PDF, run OCR+NER, and create a claim directly.
-    Returns the created claim.
+    Upload FRA document.
+    Auto-assigns claim to logged-in officer.
     """
+
     try:
-        # save uploaded file
         file_path = UPLOAD_DIR / file.filename
         with open(file_path, "wb") as f:
-            content = await file.read()
-            f.write(content)
+            f.write(await file.read())
+
+        # Considered officer
+        officer_id = current_user["id"]
 
         # OCR + NER
         text = extract_text(str(file_path))
         entities = extract_entities(text)
 
-        # clean + map
-        state    = _clean_line(entities.get("state")    or _first(entities.get("states")))
-        district = _clean_line(entities.get("district") or _first(entities.get("districts")))
-        village  = _clean_line(_first(entities.get("villages")))
-        patta    = _clean_line(_first(entities.get("patta_holders")))
-        date_    = _clean_line(_first(entities.get("dates")))
-        ifr_no   = _clean_line(entities.get("ifr_number"))
-        area     = _clean_line(entities.get("land_area") or entities.get("area"))
-        status   = _clean_line(entities.get("status"))
-        lat      = entities.get("lat")
-        lon      = entities.get("lon")
+        payload = {
+            "state": _clean_line(entities.get("state")) or "Unknown",
+            "district": _clean_line(entities.get("district")) or "Unknown",
+            "block": None,
+            "village": _clean_line(_first(entities.get("villages"))),
+            "patta_holder": _clean_line(_first(entities.get("patta_holders"))),
+            "address": None,
+            "land_area": _clean_line(entities.get("land_area")),
+            "status": "Pending",
+            "lat": entities.get("lat"),
+            "lon": entities.get("lon"),
+            "source": "ocr",
+            "raw_ocr": json.dumps(entities),
 
-        claim_payload = {
-            "state":    state or "Unknown",
-            "district": district or "Unknown",
-            "block":    None,
-            "village":  village,
-            "patta_holder": patta,
-            "address":  None,
-            "land_area": area,
-            "status":   status or "Pending",  # prefer NER; else Pending
-            "date":     date_,
-            "lat":      lat if isinstance(lat, (int, float)) else None,
-            "lon":      lon if isinstance(lon, (int, float)) else None,
-            "source":   "ocr",
-            "raw_ocr":  json.dumps({"entities": entities, "extracted_text": text}),
+            # 🔐 CRITICAL PART
+            "assigned_officer_id": officer_id,
+            "assigned_date": datetime.date.today().isoformat(),
         }
 
-        claim_payload = _normalize_names(claim_payload)
-
-        # insert
-        created = await insert_claim(claim_payload)
+        payload = _normalize_names(payload)
+        created = await insert_claim(payload)
 
         return {
-            "filename": file.filename,
-            "message": "File uploaded, OCR/NER extracted and claim created",
-            "entities": entities,
-            "extracted_text": text,
+            "message": "Claim created and assigned to officer",
+            "officer_id": officer_id,
             "claim": created,
         }
 

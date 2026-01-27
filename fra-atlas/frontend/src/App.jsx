@@ -2,7 +2,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { API_BASE } from "./config";
 import useClaims from "./hooks/useClaims";
-
 import HeaderToolbar from "./components/HeaderToolbar";
 import MapPanel from "./components/MapPanel";
 import UploadPanel from "./components/UploadPanel";
@@ -116,6 +115,24 @@ const API = (() => {
 const STATE_OPTIONS = ["Madhya Pradesh", "Odisha", "Telangana", "Tripura"];
 
 export default function App() {
+
+  // 🔑 TOKEN SYNC FROM UI_FRA → FRONTEND (ADD THIS)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+
+    if (token) {
+      localStorage.setItem("fra_atlas_token", token);
+
+      // clean URL (remove ?token=...)
+      window.history.replaceState(
+        {},
+        document.title,
+        window.location.pathname
+      );
+    }
+  }, []);
+  
   // -------------------------
   // Legacy app state (unchanged where possible)
   // -------------------------

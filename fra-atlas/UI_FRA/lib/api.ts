@@ -33,7 +33,7 @@ export async function loginRequest(username: string, password: string) {
 // Token helpers
 export function setToken(token: string): void {
   if (typeof window !== "undefined") {
-    localStorage.setItem(TOKEN_KEY, token);
+    localStorage.setItem("fra_atlas_token", token);
   }
 }
 export function getToken(): string | null {

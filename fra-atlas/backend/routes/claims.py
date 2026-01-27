@@ -9,6 +9,7 @@ from fastapi import (
     Response,
     UploadFile,
     File,
+    Request,
 )
 from fastapi.responses import StreamingResponse
 from typing import Optional, Dict, Any, Tuple, List
@@ -22,7 +23,7 @@ from sqlalchemy import text
 import asyncio
 import json
 from urllib.parse import urlencode
-from urllib.request import urlopen, Request
+from urllib.request import urlopen, Request as UrlRequest
 import io
 import pandas as pd
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -37,6 +38,9 @@ import os
 # ✅ NEW (add these)
 from sqlalchemy import text as sa_text
 from backend.db import insert_claim
+from backend.routes.auth import get_current_user
+import datetime 
+
 
 
 
@@ -95,7 +99,7 @@ async def _geocode_village_backend(state: str, district: str, village: str) -> O
 
     def _do_req_sync() -> Optional[Tuple[float, float]]:
         try:
-            req = Request(url, headers=headers)
+            req = UrlRequest(url, headers=headers)
             with urlopen(req, timeout=10) as resp:
                 data = resp.read()
             arr = json.loads(data.decode("utf-8"))
@@ -247,6 +251,48 @@ async def get_claims_count(village: str):
         logger.exception("get_claims_count failed for village=%s", village)
         raise HTTPException(status_code=500, detail=str(e))
 
+@router.get("/claims/my", tags=["claims"])
+@router.get("/api/claims/my", tags=["claims"])
+async def get_my_assigned_claims(request: Request):
+    """
+    Return claims assigned to the currently logged-in officer.
+    Officer identity is derived from JWT token.
+    """
+    # 1️⃣ Identify officer from token
+    user = await get_current_user(request)
+    officer_id = user["id"]
+
+    db_path = _get_default_db_path()
+
+    # 2️⃣ Fetch assigned claims
+    def _fetch():
+        conn = sqlite3.connect(db_path)
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+        cur.execute(
+            """
+            SELECT *
+            FROM claims
+            WHERE assigned_officer_id = ?
+            ORDER BY last_status_update DESC
+            """,
+            (officer_id,)
+        )
+        rows = cur.fetchall()
+        conn.close()
+        return [dict(r) for r in rows]
+
+    try:
+        claims = await run_in_threadpool(_fetch)
+        return {
+            "officer_id": officer_id,
+            "count": len(claims),
+            "claims": claims
+        }
+    except Exception as e:
+        logger.exception("get_my_assigned_claims failed for officer=%s", officer_id)
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 # -------------------------
 # PUT /claims/{id} endpoint
@@ -297,13 +343,23 @@ def _get_default_db_path() -> str:
 
 @router.put("/claims/{claim_id}", tags=["claims"])
 @router.put("/api/claims/{claim_id}", tags=["claims"])
-async def update_claim(claim_id: int = Path(..., ge=1), payload: ClaimUpdate = Body(...)):
+async def update_claim(
+    request: Request,
+    claim_id: int = Path(..., ge=1),
+    payload: ClaimUpdate = Body(...)
+):
     """
     Update a claim by id. Accepts only the fields defined in ClaimUpdate.
     Also ensures the (state,district,village) exists in `villages` (with coords if available).
     """
     db_path = _get_default_db_path()
     logger.info("update_claim called id=%s payload=%s", claim_id, payload.dict(exclude_unset=True))
+
+    # -------------------------
+    # STEP 3.3: identify officer
+    # -------------------------
+    user = await get_current_user(request)
+    officer_id = user["id"]
 
     # fetch existing
     try:
@@ -317,11 +373,23 @@ async def update_claim(claim_id: int = Path(..., ge=1), payload: ClaimUpdate = B
 
     # allowed columns
     updates = {k: v for k, v in payload.dict(exclude_unset=True).items() if k in {
-        "state", "district", "block", "village", "patta_holder", "address", "land_area", "status", "date", "lat", "lon"
+        "state", "district", "block", "village", "patta_holder",
+        "address", "land_area", "status", "date", "lat", "lon"
     }}
 
     if not updates:
         return existing
+
+    # -------------------------
+    # STEP 3.3: officer audit fields
+    # -------------------------
+    updates["assigned_officer_id"] = officer_id
+    updates["last_status_update"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+
+
+    # mark closed date if granted
+    if payload.status and payload.status.lower() == "granted":
+        updates["closed_date"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
 
     # perform update
     try:
@@ -355,22 +423,42 @@ async def update_claim(claim_id: int = Path(..., ge=1), payload: ClaimUpdate = B
     logger.info("update_claim succeeded id=%s", claim_id)
     return updated
 
-
 # -------------------------
 # Additional endpoints migrated from main.py
 # -------------------------
 
 @router.post("/claims", tags=["claims"])
 @router.post("/api/claims", tags=["claims"])
-async def create_claim(payload: dict = Body(...), db_session = Depends(db.get_db)):
+async def create_claim(
+    request: Request, 
+    payload: dict = Body(...),                    # ✅ added
+    db_session = Depends(db.get_db)
+):
     """
     Create a new claim. Minimal required fields: state, district, village.
     Also upserts villages with coordinates (from claim or geocoding).
     """
+
+    # ✅ identify logged-in officer
+    user = await get_current_user(request)
+    officer_id = user["id"]
+
     required = ["state", "district", "village"]
     for r in required:
         if not payload.get(r):
             raise HTTPException(status_code=400, detail=f"{r} is required")
+
+    now_iso = datetime.datetime.utcnow().isoformat()
+
+    # ✅ AUTO-LINK CLAIM TO OFFICER
+    payload["assigned_officer_id"] = officer_id
+    payload["assigned_date"] = now_iso
+    payload["last_status_update"] = now_iso
+
+    # ✅ if directly granted, also close it
+    if payload.get("status") == "Granted":
+     payload["closed_date"] = now_iso
+
 
     # insert claim
     try:
@@ -392,6 +480,7 @@ async def create_claim(payload: dict = Body(...), db_session = Depends(db.get_db
         logger.warning("upsert village after create failed: %s", e)
 
     return {"success": True, "claim": created}
+
 
 
 @router.get("/claims/{claim_id}", tags=["claims"])
@@ -503,7 +592,11 @@ def pick_column(cols, *alts):
 
 
 @router.post("/claims/import-excel", tags=["claims"])
-async def import_excel(file: UploadFile = File(...), db_session = Depends(db.get_db)):
+async def import_excel(
+    request: Request,                 # ✅ ADD THIS
+    file: UploadFile = File(...),
+    db_session = Depends(db.get_db)
+):
     """
     Accepts .xlsx or .csv where each row is one claim.
     Expected-ish columns (case-insensitive):
@@ -522,6 +615,11 @@ async def import_excel(file: UploadFile = File(...), db_session = Depends(db.get
 
     if df.shape[0] == 0:
         return {"success": True, "count": 0, "claims": []}
+    
+    # ✅ identify logged-in officer ONCE
+    user = await get_current_user(request)
+    officer_id = user["id"]
+
 
     # normalize column names to original header list (keep original case to access rows)
     cols = list(df.columns)
@@ -563,6 +661,10 @@ async def import_excel(file: UploadFile = File(...), db_session = Depends(db.get
                 "lon": float(getcell("lon")) if getcell("lon") is not None else None,
                 "source": "excel",
                 "raw_ocr": None,
+
+                "assigned_officer_id": officer_id,
+                "assigned_date": datetime.datetime.utcnow().isoformat(),
+
             }
 
             # Insert claim using existing db helper
@@ -588,11 +690,21 @@ async def import_excel(file: UploadFile = File(...), db_session = Depends(db.get
 
 
 @router.post("/claims/import-json", tags=["claims"])
-async def import_json_verbose(body: dict = Body(...), db: AsyncSession = Depends(get_db)):
+async def import_json_verbose(
+    body: dict = Body(...),
+    db: AsyncSession = Depends(get_db),
+    current_user: dict = Depends(get_current_user)
+
+):
     """
     Robust import-json: shows per-row errors and falls back to direct SQL insert if insert_claim fails.
     Returns: { success, count, errors, claims }
     """
+
+    # ✅ identify logged-in officer ONCE
+    officer_id = current_user["id"]
+    now_iso = datetime.datetime.utcnow().isoformat()
+    
     rows = body.get("rows") if isinstance(body, dict) else None
     if not rows or not isinstance(rows, list):
         raise HTTPException(status_code=400, detail="Missing 'rows' array")
@@ -610,6 +722,7 @@ async def import_json_verbose(body: dict = Body(...), db: AsyncSession = Depends
             land_area = r.get("land_area") or r.get("area") or r.get("Land Area") or None
             status = (r.get("status") or "Pending")
             date = r.get("date") or None
+
             lat = r.get("lat")
             lon = r.get("lon")
             try:
@@ -632,26 +745,52 @@ async def import_json_verbose(body: dict = Body(...), db: AsyncSession = Depends
                 "lat": lat_val,
                 "lon": lon_val,
                 "source": "import-json",
-                "raw_ocr": json.dumps({"source": "import-json", "row": r})
+                "raw_ocr": json.dumps({"source": "import-json", "row": r}),
+
+                # ✅ OFFICER ACCOUNTABILITY FIELDS (FIX)
+                "assigned_officer_id": officer_id,
+                "assigned_date": now_iso,
+                "last_status_update": now_iso,
             }
 
-            # Try project helper first (insert_claim should return the created claim dict/object)
+            if payload["status"] == "Granted":
+              payload["closed_date"] = now_iso
+
+
+            # --- Try helper insert first ---
             try:
                 created_claim = await insert_claim(payload)
                 if created_claim:
                     created.append(created_claim)
                     continue
-                # fall through to fallback if falsy
             except Exception as e_insert:
-                errors.append({"row": i, "error": f"insert_claim failed: {str(e_insert)}", "trace": traceback.format_exc()})
+                errors.append({
+                    "row": i + 1,
+                    "error": f"insert_claim failed: {str(e_insert)}",
+                    "trace": traceback.format_exc()
+                })
 
-            # Fallback direct SQL insert (using provided AsyncSession)
+            # --- Fallback direct SQL insert (WITH officer fields) ---
             try:
                 async with db.begin():
                     q = sa_text("""
-                        INSERT INTO claims (state,district,block,village,patta_holder,address,land_area,status,date,lat,lon,source,raw_ocr,created_at)
-                        VALUES (:state,:district,NULL,:village,:patta_holder,NULL,:land_area,:status,:date,:lat,:lon,:source,:raw_ocr,datetime('now'))
-                    """)
+    INSERT INTO claims (
+     state, district, block, village,
+     patta_holder, address, land_area, status, date,
+     lat, lon, source, raw_ocr,
+     assigned_officer_id, assigned_date, last_status_update,
+     closed_date,
+     created_at
+     )
+    VALUES (
+        :state, :district, NULL, :village,
+        :patta_holder, NULL, :land_area, :status, :date,
+        :lat, :lon, :source, :raw_ocr,
+        :assigned_officer_id, :assigned_date, :last_status_update,
+        :closed_date,
+        datetime('now')
+    )
+""")
                     params = {
                         "state": payload["state"],
                         "district": payload["district"],
@@ -664,50 +803,56 @@ async def import_json_verbose(body: dict = Body(...), db: AsyncSession = Depends
                         "lon": payload["lon"],
                         "source": payload["source"],
                         "raw_ocr": payload["raw_ocr"],
+                        "assigned_officer_id": officer_id,
+                        "assigned_date": now_iso,
+                        "last_status_update": now_iso,
+                        "closed_date": payload.get("closed_date"),
                     }
+
                     await db.execute(q, params)
-                    # fetch last inserted row id (SQLite specific)
+
+                    # fetch last inserted row
                     res = await db.execute(sa_text("SELECT last_insert_rowid() AS id"))
                     row = res.fetchone()
                     new_id = row[0] if row else None
+
                     if new_id:
                         res2 = await db.execute(sa_text(
-                            "SELECT id,state,district,block,village,patta_holder,address,land_area,status,date,lat,lon,source,raw_ocr,created_at FROM claims WHERE id=:id"
+                            """
+                            SELECT id,state,district,block,village,patta_holder,address,
+                                   land_area,status,date,lat,lon,source,raw_ocr,
+                                   assigned_officer_id,assigned_date,last_status_update,
+                                   created_at
+                            FROM claims WHERE id=:id
+                            """
                         ), {"id": new_id})
                         new_row = res2.fetchone()
-                        # convert sqlite row to dict
                         if new_row:
-                            # new_row may be a RowMapping or tuple depending on driver - handle both
                             try:
                                 created.append(dict(new_row))
                             except Exception:
-                                # fallback by column order
-                                created.append({
-                                    "id": new_row[0],
-                                    "state": new_row[1],
-                                    "district": new_row[2],
-                                    "block": new_row[3],
-                                    "village": new_row[4],
-                                    "patta_holder": new_row[5],
-                                    "address": new_row[6],
-                                    "land_area": new_row[7],
-                                    "status": new_row[8],
-                                    "date": new_row[9],
-                                    "lat": new_row[10],
-                                    "lon": new_row[11],
-                                    "source": new_row[12],
-                                    "raw_ocr": new_row[13],
-                                    "created_at": new_row[14] if len(new_row) > 14 else None
-                                })
-                        else:
-                            created.append({"id": new_id})
+                                created.append({"id": new_id})
+
             except Exception as e_sql:
-                errors.append({"row": i, "error": f"direct insert failed: {str(e_sql)}", "trace": traceback.format_exc()})
+                errors.append({
+                    "row": i + 1,
+                    "error": f"direct insert failed: {str(e_sql)}",
+                    "trace": traceback.format_exc()
+                })
 
         except Exception as outer:
-            errors.append({"row": i, "error": str(outer), "trace": traceback.format_exc()})
+            errors.append({
+                "row": i + 1,
+                "error": str(outer),
+                "trace": traceback.format_exc()
+            })
 
-    return {"success": True, "count": len(created), "errors": errors, "claims": created}
+    return {
+        "success": True,
+        "count": len(created),
+        "errors": errors,
+        "claims": created
+    }
 
 # -------------------------
 # Parse Excel (preview-only) endpoint (added)
@@ -824,7 +969,11 @@ def _normalize_names(payload: Dict[str, Any]) -> Dict[str, Any]:
 
 
 @router.post("/claims/commit-parsed", tags=["claims"])
-async def commit_parsed(tmp_filename: str, db: AsyncSession = Depends(get_db)):
+async def commit_parsed(
+    request: Request,            # ✅ ADD
+    tmp_filename: str,
+    db: AsyncSession = Depends(get_db)
+):
     """
     Commit a previously created temp file into the DB (runs exact same mapping as upload-fra).
     Client calls this after user reviews/edits fields and confirms. It will:
@@ -836,6 +985,10 @@ async def commit_parsed(tmp_filename: str, db: AsyncSession = Depends(get_db)):
         tmp_path = TEMP_UPLOAD_DIR / tmp_filename
         if not tmp_path.exists():
             raise HTTPException(status_code=404, detail="Temp file not found")
+        
+        # ✅ identify logged-in officer
+        user = await get_current_user(request)
+        officer_id = user["id"]
 
         # run OCR+NER again (or you could accept edited JSON from client instead)
         text = extract_text(str(tmp_path))
@@ -867,6 +1020,9 @@ async def commit_parsed(tmp_filename: str, db: AsyncSession = Depends(get_db)):
             "lon": float(lon) if isinstance(lon, (int, float, str)) and str(lon).strip() else None,
             "source": "ocr",
             "raw_ocr": json.dumps({"entities": entities, "extracted_text": text}),
+
+            "assigned_officer_id": officer_id,
+            "assigned_date": datetime.datetime.utcnow().isoformat(),
         }
 
         claim_payload = _normalize_names(claim_payload)
