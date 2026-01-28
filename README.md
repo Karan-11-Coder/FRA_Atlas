@@ -67,31 +67,40 @@ The platform provides role-based dashboards for administrators and field officer
 ## 1) Clone the repository:
 git clone https://github.com/Karan-11-Coder/FRA_Atlas.git
 
+
 cd FRA_Atlas
 
 
 ## 2) Frontend setup:
 cd fra-atlas/frontend
 
+
 npm install
 
+
 npm run dev
+
 
 Frontend: http://localhost:5173
 
 ## 3) Backend setup:
 cd ../backend
 
+
 python -m venv venv
 
 
 venv\Scripts\activate
 
+
 pip install -r requirements.txt
+
 
 uvicorn main:app --reload
 
+
 Backend: http://127.0.0.1:8000
+
 
 API Docs: http://127.0.0.1:8000/docs
 
