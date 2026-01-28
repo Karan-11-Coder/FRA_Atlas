@@ -1,3 +1,13 @@
+<p align="center">
+  <img src="logo/fra_logo.jpeg" width="220" />
+</p>
+
+<h1 align="center">FRA Atlas</h1>
+<p align="center">
+  AI-Powered Geospatial Governance Platform
+</p>
+
+---
 
 ##   About
 FRA Atlas is an AI-powered geospatial governance platform designed to digitize, verify, and monitor Forest Rights Act (FRA) claims across India. The current FRA implementation relies heavily on paper-based records, manual verification, and fragmented databases, which leads to delays, lack of transparency, and exclusion of eligible beneficiaries from welfare schemes.
