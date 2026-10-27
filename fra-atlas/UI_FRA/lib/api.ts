@@ -79,7 +79,7 @@ export const apiFetch = async <T = any>(endpoint: string, options: RequestInit =
     const data = text ? JSON.parse(text) : {};
 
     if (!response.ok) {
-      throw new ApiError(response.status, data?.message || "API request failed");
+      throw new ApiError(response.status, data?.detail || data?.message || "API request failed");
     }
 
     return data as T;
@@ -90,6 +90,34 @@ export const apiFetch = async <T = any>(endpoint: string, options: RequestInit =
     throw new ApiError(0, "Unable to reach FRA Atlas server. Check your network.");
   }
 };
+
+// Multipart upload wrapper — apiFetch always forces Content-Type: application/json,
+// which breaks FormData bodies (the browser needs to set its own boundary).
+export const apiUpload = async <T = any>(endpoint: string, form: FormData): Promise<T> => {
+  const token = getToken();
+  const response = await fetch(`${API_BASE}${endpoint}`, {
+    method: "POST",
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+    body: form,
+  });
+
+  if (response.status === 401) {
+    clearToken();
+    if (typeof window !== "undefined") {
+      window.location.href = "/login?message=Session expired - please sign in again";
+    }
+    throw new ApiError(401, "Session expired");
+  }
+
+  const text = await response.text();
+  const data = text ? JSON.parse(text) : {};
+  if (!response.ok) {
+    throw new ApiError(response.status, data?.detail || data?.message || "Upload failed");
+  }
+  return data as T;
+};
+
+export type Claim = { id: number | string } & Record<string, any>;
 
 // API endpoints
 export const api = {
@@ -107,30 +135,118 @@ export const api = {
     >("/api/villages"),
 
   // Claims data
-  getClaims: (params: { state?: string; district?: string; village?: string } = {}) => {
+  getClaims: (params: { state?: string; district?: string; village?: string; status?: string } = {}) => {
     const searchParams = new URLSearchParams();
     Object.entries(params).forEach(([key, value]) => {
       if (value) searchParams.append(key, value);
     });
     const qs = searchParams.toString();
-    return apiFetch<Array<any>>(`/api/claims${qs ? `?${qs}` : ""}`);
+    return apiFetch<Claim[]>(`/api/claims${qs ? `?${qs}` : ""}`);
   },
 
-  // Single claim details
-  getClaim: (id: string) =>
-    apiFetch<any>(`/api/claims/${id}`),
+  getClaimsCount: (village: string) =>
+    apiFetch<{ count: number }>(`/api/claims/count?village=${encodeURIComponent(village)}`),
 
-  // Claim actions (adjust endpoints to your backend naming)
-  verifyClaim: (id: string, comment?: string) =>
-    apiFetch(`/api/claims/${id}/verify`, {
+  // Single claim details
+  getClaim: (id: string | number) =>
+    apiFetch<{ claim: Claim }>(`/api/claims/${id}`),
+
+  createClaim: (payload: Partial<Claim>) =>
+    apiFetch<{ success: boolean; claim: Claim }>("/api/claims", {
       method: "POST",
-      body: JSON.stringify({ comment }),
+      body: JSON.stringify(payload),
     }),
 
-  rejectClaim: (id: string, reason: string) =>
-    apiFetch(`/api/claims/${id}/reject`, {
+  updateClaim: (id: string | number, payload: Partial<Claim>) =>
+    apiFetch<Claim>(`/api/claims/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    }),
+
+  deleteClaim: (id: string | number) =>
+    apiFetch<void>(`/api/claims/${id}`, { method: "DELETE" }),
+
+  bulkDeleteClaims: (ids: Array<string | number>) =>
+    apiFetch<{ deleted: number }>("/api/claims?confirm=true", {
+      method: "DELETE",
+      body: JSON.stringify({ ids }),
+    }),
+
+  // Document upload → OCR → NER → claim creation
+  uploadFra: (file: File) => {
+    const form = new FormData();
+    form.append("file", file);
+    return apiUpload<{ message: string; claim: Claim }>("/api/upload-fra", form);
+  },
+
+  // Preview-only parsing (doesn't write to the DB) — used for the review-before-save flow
+  parseFra: (file: File) => {
+    const form = new FormData();
+    form.append("file", file);
+    return apiUpload<{ filename: string; extracted_text: string; entities: Record<string, any> }>(
+      "/api/claims/parse-fra",
+      form
+    );
+  },
+
+  parseExcel: (file: File) => {
+    const form = new FormData();
+    form.append("file", file);
+    return apiUpload<{ filename: string; rows: Record<string, any>[]; errors: any[] }>(
+      "/api/claims/parse-excel",
+      form
+    );
+  },
+
+  commitParsed: (tmpFilename: string) =>
+    apiFetch<{ claim: Claim }>(`/api/claims/commit-parsed?tmp_filename=${encodeURIComponent(tmpFilename)}`, {
       method: "POST",
-      body: JSON.stringify({ reason }),
+    }),
+
+  deleteTempFile: (tmpFilename: string) =>
+    apiFetch<{ ok: boolean }>(`/api/claims/temp/${encodeURIComponent(tmpFilename)}`, { method: "DELETE" }),
+
+  // Direct bulk import (skips the preview step) — used for .xlsx/.csv uploads
+  importExcel: (file: File) => {
+    const form = new FormData();
+    form.append("file", file);
+    return apiUpload<{ success: boolean; count: number; claims: Claim[]; errors: any[] }>(
+      "/api/claims/import-excel",
+      form
+    );
+  },
+
+  importJson: (rows: Record<string, any>[]) =>
+    apiFetch<{ success: boolean; count: number; claims: Claim[]; errors: any[] }>("/api/claims/import-json", {
+      method: "POST",
+      body: JSON.stringify({ rows }),
+    }),
+
+  // DSS diagnostics for a claim/coordinate. Note: the scoring behind this
+  // endpoint is currently a placeholder (see backend/routes/diagnostics.py) —
+  // not real soil/water/groundwater data yet.
+  getDiagnostics: (payload: { claim_id?: number; lat?: number; lon?: number; land_area?: number }) =>
+    apiFetch<{ metrics: Record<string, any>; recommendations: Array<{ name: string; score: number; reasons: string[] }> }>(
+      "/api/diagnostics",
+      { method: "POST", body: JSON.stringify(payload) }
+    ),
+
+  // Current authenticated officer (validated server-side from the bearer token)
+  getMe: () => apiFetch<{ user: { id: string; username: string; full_name: string; role: string } }>("/api/me"),
+
+  // Claim actions — the backend only exposes a generic PUT for status changes,
+  // there's no dedicated /verify or /reject route. `comment`/`reason` aren't
+  // persisted anywhere server-side yet, so they're accepted here but dropped.
+  verifyClaim: (id: string, _comment?: string) =>
+    apiFetch(`/api/claims/${id}`, {
+      method: "PUT",
+      body: JSON.stringify({ status: "Granted" }),
+    }),
+
+  rejectClaim: (id: string, _reason: string) =>
+    apiFetch(`/api/claims/${id}`, {
+      method: "PUT",
+      body: JSON.stringify({ status: "Rejected" }),
     }),
 
   // Export
@@ -141,9 +257,6 @@ export const api = {
     });
     return `${API_BASE}/api/export/claims.csv?${searchParams.toString()}`;
   },
-
-  // Debug (development only)
-  getDebugInfo: () => apiFetch("/api/_debug_db_info"),
 };
 
 // Backwards-compat: keep default export if other parts import it

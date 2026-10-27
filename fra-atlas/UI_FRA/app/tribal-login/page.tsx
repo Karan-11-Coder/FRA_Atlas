@@ -11,7 +11,9 @@ import { Alert } from "@/components/ui/alert";
 import { Loader2, Smartphone } from "lucide-react";
 import { useLanguage } from "@/components/LanguageProvider";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || ""; // e.g. http://localhost:8000
+// Was defaulting to "" when NEXT_PUBLIC_API_BASE is unset, which silently
+// sent requests to the Next.js server itself instead of the backend.
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8000";
 
 export default function TribalLoginPage() {
   const { t, lang } = useLanguage?.() ?? { t: (s: string) => s, lang: "en" };
@@ -97,10 +99,13 @@ export default function TribalLoginPage() {
         throw new Error(msg);
       }
 
-      // Backend should return { token: "...", user: { ... } } or similar
+      // Backend returns { token: "...", role: "tribal", ... }. Store under
+      // the same localStorage key the rest of the app reads
+      // (fra_atlas_token) — this used to write to a different key ("token")
+      // that nothing else looked at.
       if (data?.token) {
         try {
-          localStorage.setItem("token", data.token);
+          localStorage.setItem("fra_atlas_token", data.token);
         } catch (e) {
           // storage failures are non-fatal to login flow
           console.warn("Unable to set token in localStorage", e);
@@ -109,8 +114,6 @@ export default function TribalLoginPage() {
 
       setInfo(data?.message || (lang === "hi" ? "सफलतापूर्वक लॉगिन किया गया।" : "Logged in successfully."));
 
-      // redirect to tribal dashboard (using full URL navigation to avoid next/router in some environments)
-      // you can change to router.push("/tribal/dashboard") if you prefer
       window.location.href = "/tribal/dashboard";
     } catch (err: any) {
       setError(err?.message || (lang === "hi" ? "OTP सत्यापन विफल। पुनः प्रयास करें।" : "OTP verification failed. Please try again."));

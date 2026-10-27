@@ -9,13 +9,14 @@ import { useLanguage } from "@/components/LanguageProvider";
 
 const translations: Record<
   string,
-  { govLabel: string; skip: string; home: string; dashboard: string; officerLogin: string; guidelines: string }
+  { govLabel: string; skip: string; home: string; dashboard: string; workspace: string; officerLogin: string; guidelines: string }
 > = {
   en: {
     govLabel: "GOVERMENT OF INDIA | MINISTRY OF TRIBAL AFFAIRS",
     skip: "SKIP TO MAIN CONTENT",
     home: "HOME",
     dashboard: "DASHBOARD",
+    workspace: "CLAIMS WORKSPACE",
     officerLogin: "OFFICER LOGIN",
     guidelines: "GUIDELINES",
   },
@@ -24,6 +25,7 @@ const translations: Record<
     skip: "मुख्य सामग्री पर जाएँ",
     home: "होम",
     dashboard: "डैशबोर्ड",
+    workspace: "दावा कार्यक्षेत्र",
     officerLogin: "अधिकारी लॉगिन",
     guidelines: "दिशानिर्देश",
   },
@@ -261,6 +263,9 @@ export default function HeaderClient() {
             </Link>
             <Link href="/dashboard" className="hover:text-gov-saffron transition-colors">
               {t.dashboard}
+            </Link>
+            <Link href="/dashboard/workspace" className="hover:text-gov-saffron transition-colors">
+              {t.workspace}
             </Link>
             <Link href="/login" className="hover:text-gov-saffron transition-colors">
               {t.officerLogin}

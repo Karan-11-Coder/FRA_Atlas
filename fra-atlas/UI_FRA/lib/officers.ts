@@ -1,31 +1,24 @@
+import { apiFetch } from "@/lib/api";
+
+// These previously used a bare `fetch()` with no Authorization header, which
+// worked only because GET /api/officers and friends had no auth requirement.
+// Now that they do (correctly — that data was fully open before), route
+// through apiFetch so the token gets attached and a 401 redirects to
+// /login like everywhere else in the app, instead of reinventing that
+// handling here.
+
 export async function fetchOfficers() {
-  const res = await fetch("http://127.0.0.1:8000/api/officers", {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch officers");
-  }
-
-  return res.json();
+  return apiFetch<any[]>("/api/officers");
 }
 
 export async function fetchOfficerDashboard(officerId: string) {
-  const res = await fetch(
-    `http://127.0.0.1:8000/api/officers/${officerId}/dashboard`,
-    { cache: "no-store" }
-  );
-  if (!res.ok) throw new Error("Failed to fetch officer dashboard");
-  return res.json();
+  return apiFetch<any>(`/api/officers/${officerId}/dashboard`);
 }
 
 export async function fetchOfficerBreakdown(id: string) {
-  const res = await fetch(`http://127.0.0.1:8000/api/officers/${id}/breakdown`);
-  return res.json();
+  return apiFetch<any>(`/api/officers/${id}/breakdown`);
 }
 
 export async function fetchOfficerTimeline(id: string) {
-  const res = await fetch(`http://127.0.0.1:8000/api/officers/${id}/timeline`);
-  return res.json();
+  return apiFetch<any>(`/api/officers/${id}/timeline`);
 }
-

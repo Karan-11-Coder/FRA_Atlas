@@ -34,23 +34,8 @@ export default function LoginPage() {
     try {
       // Call backend login
       const response = await loginRequest(formData.username, formData.password)
-      // store token returned by backend
-      // store token for UI_FRA usage
-       setToken(response.access_token)
-
-// 🔑 PASS TOKEN TO OTHER FRONTEND VIA URL
-      const token = response.access_token
-      const atlasBase =
-       process.env.NEXT_PUBLIC_FRA_ATLAS_URL || "http://localhost:5173"
-
-      const atlasUrl = `${atlasBase}?token=${token}`
-
-      if (typeof window !== "undefined") {
-        window.location.href = atlasUrl
-      } else {
-        router.push(atlasUrl)
-      }
-
+      setToken(response.access_token)
+      router.push("/dashboard/workspace")
     } catch (err: any) {
       console.error("Login error:", err)
       setError(err.message || "Login failed. Please check your credentials.")

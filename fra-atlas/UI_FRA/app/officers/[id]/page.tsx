@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { useParams } from "next/navigation"
 
+import ProtectedRoute from "@/components/protected-route"
 import { fetchOfficerDashboard, fetchOfficerBreakdown, fetchOfficerTimeline } from "@/lib/officers"
 
 import StatusPie from "@/components/charts/StatusPie"
@@ -38,11 +39,18 @@ export default function OfficerDashboardPage() {
     return () => clearInterval(timer)
   }, [officerId])
 
-  if (!dashboard) return <div className="p-6">Loading dashboard...</div>
+  if (!dashboard) {
+    return (
+      <ProtectedRoute>
+        <div className="p-6">Loading dashboard...</div>
+      </ProtectedRoute>
+    )
+  }
 
   const { metrics, credibility, alerts } = dashboard
 
   return (
+    <ProtectedRoute>
     <div className="p-6 space-y-8">
       {/* -------------------------
           Page Title
@@ -115,6 +123,7 @@ export default function OfficerDashboardPage() {
         </div>
       </div>
     </div>
+    </ProtectedRoute>
   );
 }
 

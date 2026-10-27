@@ -2,14 +2,13 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { getToken, clearToken } from "@/lib/api"
+import { getToken, clearToken, api } from "@/lib/api"
 
 interface User {
   id: string
   username: string
   name: string
   role: string
-  department: string
 }
 
 export function useAuth() {
@@ -18,19 +17,41 @@ export function useAuth() {
   const router = useRouter()
 
   useEffect(() => {
-    const token = getToken()
-    if (token) {
-      // In a real app, you'd validate the token with the server
-      // For now, we'll set a mock user
-      setUser({
-        id: "OFF001",
-        username: "officer@fra.gov.in",
-        name: "Forest Officer",
-        role: "Officer",
-        department: "Forest Rights Division",
-      })
+    let cancelled = false
+
+    async function loadUser() {
+      const token = getToken()
+      if (!token) {
+        setIsLoading(false)
+        return
+      }
+
+      try {
+        // Validate the token against the server and fetch the real
+        // identity behind it, instead of assuming any truthy token
+        // means "logged in as Forest Officer".
+        const res = await api.getMe()
+        if (!cancelled) {
+          setUser({
+            id: String(res.user.id),
+            username: res.user.username,
+            name: res.user.full_name,
+            role: res.user.role,
+          })
+        }
+      } catch {
+        // Invalid/expired token — treat as logged out.
+        clearToken()
+        if (!cancelled) setUser(null)
+      } finally {
+        if (!cancelled) setIsLoading(false)
+      }
     }
-    setIsLoading(false)
+
+    loadUser()
+    return () => {
+      cancelled = true
+    }
   }, [])
 
   const logout = () => {

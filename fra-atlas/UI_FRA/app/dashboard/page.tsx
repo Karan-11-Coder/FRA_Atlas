@@ -33,7 +33,8 @@ import {
   BarChart3,
   PieChart,
 } from "lucide-react"
-import { clearToken } from "@/lib/api"
+import { clearToken, apiFetch } from "@/lib/api"
+import ProtectedRoute from "@/components/protected-route"
 
 // <-- language hook
 import { useLanguage } from "@/components/LanguageProvider"
@@ -120,7 +121,6 @@ const DEFAULT_GRIEVANCES_LIST = [
 ]
 
 // ---- Config ----
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || ""
 const POLL_INTERVAL_MS = 8000
 
 type Claim = Record<string, any>
@@ -144,12 +144,10 @@ export default function DashboardPage() {
     setLoading(true)
     setError(null)
     try {
-      const resp = await fetch(`${API_BASE}/api/claims`, { signal })
-      if (!resp.ok) {
-        const txt = await resp.text()
-        throw new Error(`Failed to fetch claims: ${resp.status} ${txt}`)
-      }
-      const data = await resp.json()
+      // Was a raw, unauthenticated fetch() — GET /api/claims requires a
+      // bearer token now, so this always 401'd and silently fell back to
+      // the DEFAULT_* mock numbers below. apiFetch attaches the token.
+      const data = await apiFetch<any>(`/api/claims`, { signal })
       // adapt if backend returns { rows: [...] }
       const rows = Array.isArray(data) ? data : data?.rows || []
       setClaims(rows)
@@ -294,7 +292,7 @@ export default function DashboardPage() {
   }, [claims])
 
   return (
-    // ProtectedRoute removed — returning dashboard directly
+    <ProtectedRoute>
     <div
       className="min-h-screen"
       style={{
@@ -1031,5 +1029,6 @@ export default function DashboardPage() {
         </div>
       )}
     </div>
+    </ProtectedRoute>
   )
 }
