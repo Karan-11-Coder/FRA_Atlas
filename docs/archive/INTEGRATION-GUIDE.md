@@ -1,3 +1,10 @@
+> **Archived, stale.** Written when `UI_FRA` was a standalone portal meant to
+> hand off to a separate Vite app at `localhost:5173` for the actual claims
+> workspace. That merge is done — the workspace now lives in this app at
+> `/dashboard/workspace`. This guide's API section also documents
+> `POST /api/claim/{id}/verify` / `/reject` routes that were never actually
+> implemented on the backend. Kept for history, not as current documentation.
+
 # FRA Atlas Integration Guide
 
 ## Quick Start

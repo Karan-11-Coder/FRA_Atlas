@@ -18,3 +18,13 @@ temp/
 # Old backups only
 backups/
 *.bak
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Databases
+*.db
+*.sqlite
+*.sqlite3

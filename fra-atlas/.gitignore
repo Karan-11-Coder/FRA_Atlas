@@ -1,1 +1,20 @@
 node_modules
+venv/
+__pycache__/
+*.pyc
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Databases
+*.db
+*.db.bak
+*.sqlite
+*.sqlite3
+
+# Uploads (real claim documents may contain PII)
+uploads/*
+!uploads/.gitkeep
+

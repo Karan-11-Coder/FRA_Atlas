@@ -23,13 +23,12 @@ The Forest Rights Act (FRA), 2006 grants land and forest rights to tribal and fo
 Additionally, current systems do not integrate satellite-based land-use and asset mapping with FRA data, making it difficult to assess agricultural potential, water resources, forest cover, and infrastructure needs in FRA villages. As a result, policymakers and field officers lack data-driven tools to link eligible FRA beneficiaries with relevant Central Sector Schemes (CSS) such as PM-KISAN, MGNREGA, and Jal Jeevan Mission. The absence of an integrated Decision Support System (DSS) limits targeted planning, slows service delivery, and reduces the overall socio-economic impact of FRA implementation.
 ## Features
 
-- Automated Claim Digitization
+- Automated Claim Digitization (OCR + NLP)
 - Geospatial Boundary Validation
 - Interactive WebGIS Atlas
-- Rule Based Decision Support System (DSS)
+- Rule-Based Decision Support System (DSS) — see note below on current data sources
 - Officer Dashboard & Analytics
 - Search, Filter & Status Tracking
-- Tamper Resistant Digital Records
 - Export & Reporting Tools
 - Scalable & Government Ready Architecture
 
@@ -45,18 +44,22 @@ Once claims are verified and structured, they are passed to a rule-based Decisio
 ## Intelligent Processing Pipeline
 The system automates the transformation of unstructured and spatial data into actionable intelligence through a multi-stage processing pipeline. Scanned FRA claim forms and supporting documents are first processed using OCR to extract raw text, followed by NLP-based entity recognition to identify key fields such as claimant details, village names, land categories, and claim status. In parallel, uploaded sketches, shapefiles, and satellite-derived datasets are converted into standardized GeoJSON formats. These textual and spatial datasets are then validated, structured, and stored in a centralized database, enabling consistent downstream analytics, visualization, and decision-making workflows.
 ## Decision Support System
-The Decision Support System (DSS) acts as a policy intelligence layer that evaluates verified FRA claims against predefined eligibility rules and development indicators. Using rule-based logic combined with contextual geospatial data, the DSS identifies suitable Central Sector Schemes such as PM-KISAN, MGNREGA, Jal Jeevan Mission, and other convergence programs. It prioritizes interventions based on parameters such as land type, water availability, forest dependency, and infrastructure access, enabling targeted and evidence-based welfare delivery. The DSS is designed to support future integration of predictive models for early identification of development gaps and policy bottlenecks.
+The Decision Support System (DSS) is a policy intelligence layer intended to evaluate verified FRA claims against eligibility rules and development indicators, scoring suitability for Central Sector Schemes such as PM-KISAN, MGNREGA, and Jal Jeevan Mission.
+
+**Current status:** the scoring logic (`backend/utils/diagnostics_utils.py`, `backend/routes/diagnostics.py`) is a placeholder. It does not yet read real soil, groundwater, or water-distance data — those indicators are currently derived from a deterministic hash of each claim's coordinates, purely so the scoring endpoint has something to return during early development. Land type and claim category (the fields that *are* real, pulled from the claims table) already feed into the rule table.
+
+Replacing this with real data sources (SoilGrids, elevation/water-body datasets, CGWB groundwater records, IMD rainfall normals) and trained models is tracked as separate follow-up work, not yet implemented. Treat any DSS score from the current build as illustrative only, not a real eligibility assessment.
 ## Geospatial Intelligence
 FRA Atlas integrates multiple geospatial data sources to provide accurate spatial validation and asset-level visibility for FRA villages. Satellite imagery, village boundaries, forest compartments, and land-use layers are processed using GIS tools to validate claim boundaries and detect assets such as agricultural plots, water bodies, forest cover, and habitation clusters. These layers are dynamically visualized through a WebGIS interface, allowing officials to assess environmental conditions, infrastructure availability, and resource distribution alongside FRA ownership data. This spatial intelligence supports planning for sustainable livelihoods and conservation-aligned development.
 ## Dashboard & Analytics
 The platform provides role-based dashboards for administrators and field officers to monitor operational and policy-level metrics. Key indicators include claim processing status, approval timelines, geographic distribution of beneficiaries, and scheme coverage across districts and villages. Interactive charts, filters, and map-based views enable rapid identification of underserved areas and procedural delays. Built-in reporting and export features allow data to be shared across departments, supporting audits, progress tracking, and inter-ministerial coordination.
 ## Tech Stack
 
-**Client:** Next.js, Leaflet.js, Tailwind CSS, Recharts
+**Client:** `UI_FRA/` — Next.js 14 + TypeScript + Radix UI/shadcn, Leaflet.js, Tailwind CSS. This is the single UI; an earlier parallel Vite/React app (`frontend/`) has been retired and its map/upload/claims-management functionality ported in under `/dashboard/workspace`.
 
 **Server:** FastAPI, REST APIs
 
-**AI / Decision Support Systems:** Tesseract OCR, EasyOCR, OpenCV, spaCy
+**Document Processing:** pytesseract (Tesseract OCR) + pdfplumber + pdf2image for extraction, spaCy for NLP entity recognition
 
 **Database:** SQLite, SQLAlchemy
 
@@ -68,44 +71,45 @@ The platform provides role-based dashboards for administrators and field officer
 git clone https://github.com/Karan-11-Coder/FRA_Atlas.git
 
 
-cd FRA_Atlas
+cd FRA_Atlas/fra-atlas
 
-
-## 2) Frontend setup:
-cd fra-atlas/frontend
-
-
-npm install
-
-
-npm run dev
-
-
-Frontend: http://localhost:5173
-
-## 3) Backend setup:
-cd ../backend
-
+## 2) Backend setup:
+cd backend
 
 python -m venv venv
 
-
-venv\Scripts\activate
-
+venv\Scripts\activate   (macOS/Linux: source venv/bin/activate)
 
 pip install -r requirements.txt
 
+cp .env.example .env    (macOS/Linux) or copy .env.example .env (Windows), then fill in real values — JWT_SECRET especially, see below
 
-uvicorn main:app --reload
+cd ..
 
+`backend/main.py` uses absolute imports (`from backend...`), so it must be run as a module from the `fra-atlas/` directory — not from inside `backend/`:
+
+uvicorn backend.main:app --reload --port 8000
+
+(or `bash backend/scripts/run-backend.sh` from `fra-atlas/`, which does the same thing — this used to be a root-level `npm run backend` wrapping a Node script, but it never did anything Node-specific, so it's a plain shell script now and there's no root-level `package.json` anymore)
 
 Backend: http://127.0.0.1:8000
 
-
 API Docs: http://127.0.0.1:8000/docs
 
+**Generate a JWT_SECRET** rather than reusing any value that may have been committed previously:
+`python -c "import secrets; print(secrets.token_hex(32))"`
+
+## 3) Frontend setup:
+cd UI_FRA
+npm install
+npm run dev
+
+Frontend: http://localhost:3000 — log in at `/login`, land on `/dashboard` (analytics) or `/dashboard/workspace` (map + claims management: upload, OCR review, Excel import, claim CRUD, diagnostics).
+
+Run the backend and frontend in two terminals (`bash backend/scripts/run-backend.sh` in one, `npm run dev` inside `UI_FRA/` in the other) — there's no combined root-level launcher anymore.
+
 ## 4) Database:
-SQLite is used by default, no setup needed
+SQLite, no setup needed for local dev. The bundled `backend/fra_atlas.db` is no longer committed to git (see `.gitignore`) — if you're starting fresh, the backend creates the required tables automatically on first run.
 
 
 
@@ -115,7 +119,6 @@ SQLite is used by default, no setup needed
 
 - [@Imroz Kamboj](https://github.com/Imrozdotpi)
 - [@Karan Chauhan](https://github.com/Karan-11-Coder)
-- [@Ishatv Mago](https://github.com/Ishatvmago)
 - [@Palak Gupta](https://github.com/PalakGupta6006)
 - [@Mansi Punia](https://github.com/mansi-punia)
 
