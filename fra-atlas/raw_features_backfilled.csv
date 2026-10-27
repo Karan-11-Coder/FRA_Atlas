@@ -1,0 +1,1541 @@
+plot_id,state,district,lat,lon,land_area_ha,claim_type,soil_ph,soil_organic_carbon,soil_clay_pct,elevation_m,distance_to_water_km,groundwater_stress_pct,rainfall_mm_avg,is_scheduled_area,soil_ph_imputed,soil_organic_carbon_imputed,soil_clay_pct_imputed,elevation_m_imputed
+SYN-00001,Madhya Pradesh,Chhindwara,22.03435,78.92785,2.63,IFR,7.1,17.22,43.96,667.0,,58,1150,True,True,True,True,False
+SYN-00002,Madhya Pradesh,Chhindwara,22.04054,78.91853,1.25,IFR,7.4,14.4,46.0,675.0,,58,1150,True,False,False,False,False
+SYN-00003,Madhya Pradesh,Chhindwara,22.06489,78.91472,3.0,CR,7.4,14.4,45.1,660.8,,58,1150,True,False,False,False,True
+SYN-00004,Madhya Pradesh,Chhindwara,22.04481,78.94029,3.59,IFR,7.1,17.22,43.96,666.0,,58,1150,True,True,True,True,False
+SYN-00005,Madhya Pradesh,Chhindwara,22.06331,78.95167,1.8,IFR,7.1,17.22,43.96,660.8,,58,1150,True,True,True,True,True
+SYN-00006,Madhya Pradesh,Chhindwara,22.1849,78.76482,1.03,IFR,7.2,19.2,44.0,660.8,,58,1150,True,False,False,False,True
+SYN-00007,Madhya Pradesh,Chhindwara,22.07398,78.92162,0.3,IFR,7.3,13.7,48.8,660.8,,58,1150,True,False,False,False,True
+SYN-00008,Madhya Pradesh,Chhindwara,22.19137,78.7414,2.67,IFR,7.1,17.22,43.96,660.8,,58,1150,True,True,True,True,True
+SYN-00009,Madhya Pradesh,Chhindwara,22.17852,78.75352,1.04,CR,7.1,19.4,43.9,660.8,,58,1150,True,False,False,False,True
+SYN-00010,Madhya Pradesh,Chhindwara,22.21876,78.7656,3.28,IFR,7.2,18.6,44.8,660.8,,58,1150,True,False,False,False,True
+SYN-00011,Madhya Pradesh,Chhindwara,22.07241,78.94196,3.26,CR,7.1,17.22,43.96,660.8,,58,1150,True,True,True,True,True
+SYN-00012,Madhya Pradesh,Chhindwara,22.17726,78.74883,1.49,IFR,7.1,21.7,42.3,660.8,,58,1150,True,True,False,False,True
+SYN-00013,Madhya Pradesh,Chhindwara,22.20418,78.77105,3.84,IFR,7.0,21.8,43.9,660.8,,58,1150,True,False,False,False,True
+SYN-00014,Madhya Pradesh,Chhindwara,22.06871,78.95475,0.55,IFR,7.1,17.22,43.96,660.8,,58,1150,True,True,True,True,True
+SYN-00015,Madhya Pradesh,Chhindwara,22.07919,78.95979,3.42,CR,7.0,14.5,43.9,660.8,,58,1150,True,False,False,False,True
+SYN-00016,Madhya Pradesh,Chhindwara,22.18801,78.76733,3.27,CR,7.1,17.22,43.96,660.8,,58,1150,True,True,True,True,True
+SYN-00017,Madhya Pradesh,Chhindwara,22.18178,78.75218,2.24,CFR,7.1,21.3,42.8,660.8,,58,1150,True,False,False,False,True
+SYN-00018,Madhya Pradesh,Chhindwara,22.2109,78.76991,1.64,CR,6.9,24.3,42.7,660.8,,58,1150,True,False,False,False,True
+SYN-00019,Madhya Pradesh,Chhindwara,22.06589,78.92224,3.35,CR,7.2,15.6,46.6,660.8,,58,1150,True,False,False,False,True
+SYN-00020,Madhya Pradesh,Chhindwara,22.04182,78.93349,3.47,CR,7.1,17.22,43.96,660.8,,58,1150,True,True,True,True,True
+SYN-00021,Madhya Pradesh,Chhindwara,22.06997,78.95851,2.88,IFR,7.1,14.7,44.6,660.8,,58,1150,True,False,False,False,True
+SYN-00022,Madhya Pradesh,Chhindwara,22.04537,78.91473,1.07,IFR,7.4,14.0,46.8,660.8,,58,1150,True,False,False,False,True
+SYN-00023,Madhya Pradesh,Chhindwara,22.19466,78.73657,0.5,IFR,7.1,17.22,43.96,660.8,,58,1150,True,True,True,True,True
+SYN-00024,Madhya Pradesh,Chhindwara,22.18448,78.75996,0.58,IFR,7.2,20.0,44.8,660.8,,58,1150,True,False,False,False,True
+SYN-00025,Madhya Pradesh,Chhindwara,22.18072,78.74054,2.62,IFR,7.1,21.2,43.4,660.8,,58,1150,True,False,False,False,True
+SYN-00026,Madhya Pradesh,Chhindwara,22.21334,78.75614,1.61,IFR,7.2,18.0,44.6,660.8,,58,1150,True,False,False,False,True
+SYN-00027,Madhya Pradesh,Chhindwara,22.19255,78.78686,1.21,CFR,7.1,19.3,44.4,660.8,,58,1150,True,False,False,False,True
+SYN-00028,Madhya Pradesh,Chhindwara,22.06051,78.91791,2.66,CR,7.1,17.22,43.96,660.8,,58,1150,True,True,True,True,True
+SYN-00029,Madhya Pradesh,Chhindwara,22.0795,78.92125,0.85,CR,7.2,14.9,47.7,660.8,,58,1150,True,False,False,False,True
+SYN-00030,Madhya Pradesh,Chhindwara,22.07577,78.9358,0.82,IFR,7.1,17.22,43.96,660.8,,58,1150,True,True,True,True,True
+SYN-00031,Madhya Pradesh,Chhindwara,22.05378,78.94518,3.96,CR,7.1,17.22,43.96,660.8,,58,1150,True,True,True,True,True
+SYN-00032,Madhya Pradesh,Chhindwara,22.20157,78.78544,2.32,CR,7.2,22.1,45.3,660.8,,58,1150,True,False,False,False,True
+SYN-00033,Madhya Pradesh,Chhindwara,22.06974,78.91919,3.4,CFR,7.3,14.7,47.6,660.8,,58,1150,True,False,False,False,True
+SYN-00034,Madhya Pradesh,Chhindwara,22.2145,78.75137,1.07,IFR,7.2,16.4,44.6,660.8,,58,1150,True,False,False,False,True
+SYN-00035,Madhya Pradesh,Chhindwara,22.19648,78.7575,1.4,IFR,7.1,17.22,43.96,660.8,,58,1150,True,True,True,True,True
+SYN-00036,Madhya Pradesh,Chhindwara,22.22548,78.77415,1.0,CFR,7.2,15.6,44.8,660.8,,58,1150,True,False,False,False,True
+SYN-00037,Madhya Pradesh,Chhindwara,22.08001,78.92912,3.53,IFR,7.2,14.9,47.2,660.8,,58,1150,True,False,False,False,True
+SYN-00038,Madhya Pradesh,Chhindwara,22.04125,78.95418,2.69,IFR,7.2,14.6,45.4,660.8,,58,1150,True,False,False,False,True
+SYN-00039,Madhya Pradesh,Chhindwara,22.06534,78.93938,3.68,IFR,7.1,14.6,45.3,660.8,,58,1150,True,True,False,False,True
+SYN-00040,Madhya Pradesh,Chhindwara,22.08317,78.96045,1.21,IFR,7.0,18.3,44.1,660.8,,58,1150,True,False,False,False,True
+SYN-00041,Madhya Pradesh,Chhindwara,22.18593,78.74601,2.33,IFR,7.1,21.6,42.8,660.8,,58,1150,True,False,False,False,True
+SYN-00042,Madhya Pradesh,Chhindwara,22.03763,78.93924,2.42,CFR,7.3,13.6,45.1,660.8,,58,1150,True,False,False,False,True
+SYN-00043,Madhya Pradesh,Chhindwara,22.08581,78.94177,1.72,IFR,7.1,14.4,43.96,660.8,,58,1150,True,False,False,True,True
+SYN-00044,Madhya Pradesh,Chhindwara,22.03993,78.93867,3.99,IFR,7.2,17.22,43.96,660.8,,58,1150,True,False,True,True,True
+SYN-00045,Madhya Pradesh,Chhindwara,22.04731,78.96011,0.55,IFR,7.3,15.2,45.9,660.8,,58,1150,True,False,False,False,True
+SYN-00046,Madhya Pradesh,Chhindwara,22.22508,78.78316,0.62,CR,7.2,16.1,45.9,660.8,,58,1150,True,False,False,False,True
+SYN-00047,Madhya Pradesh,Chhindwara,22.0715,78.93455,3.21,IFR,7.2,14.2,46.8,660.8,,58,1150,True,False,False,False,True
+SYN-00048,Madhya Pradesh,Chhindwara,22.19666,78.76095,0.44,IFR,7.1,17.22,43.96,660.8,,58,1150,True,True,True,True,True
+SYN-00049,Madhya Pradesh,Chhindwara,22.04639,78.91646,3.99,IFR,7.5,13.5,46.5,660.8,,58,1150,True,False,False,False,True
+SYN-00050,Madhya Pradesh,Chhindwara,22.06477,78.92543,3.89,CFR,7.1,17.22,43.96,660.8,,58,1150,True,True,True,True,True
+SYN-00051,Madhya Pradesh,Chhindwara,22.03339,78.95122,0.24,CR,7.1,17.22,43.96,660.8,,58,1150,True,True,True,True,True
+SYN-00052,Madhya Pradesh,Chhindwara,22.04536,78.96189,2.79,IFR,7.2,14.2,44.1,660.8,,58,1150,True,False,False,False,True
+SYN-00053,Madhya Pradesh,Chhindwara,22.17683,78.74585,1.21,CR,7.1,21.1,43.7,660.8,,58,1150,True,True,False,False,True
+SYN-00054,Madhya Pradesh,Chhindwara,22.18457,78.74014,0.62,IFR,7.1,21.4,43.0,660.8,,58,1150,True,False,False,False,True
+SYN-00055,Madhya Pradesh,Chhindwara,22.18612,78.75854,1.92,CFR,7.2,20.7,43.96,660.8,,58,1150,True,False,False,True,True
+SYN-00056,Madhya Pradesh,Chhindwara,22.18328,78.73823,3.53,IFR,7.1,20.9,43.96,660.8,,58,1150,True,False,False,True,True
+SYN-00057,Madhya Pradesh,Chhindwara,22.19213,78.7552,2.1,IFR,7.1,17.22,43.96,660.8,,58,1150,True,True,True,True,True
+SYN-00058,Madhya Pradesh,Chhindwara,22.06936,78.96614,3.67,CFR,7.1,17.22,43.96,660.8,,58,1150,True,True,True,True,True
+SYN-00059,Madhya Pradesh,Chhindwara,22.03627,78.95232,1.33,CR,7.1,17.22,43.96,651.0,,58,1150,True,True,True,True,False
+SYN-00060,Madhya Pradesh,Chhindwara,22.04643,78.92327,2.51,IFR,7.1,17.22,43.96,662.0,,58,1150,True,True,True,True,False
+SYN-00061,Madhya Pradesh,Chhindwara,22.18057,78.74291,3.1,IFR,7.1,17.22,43.96,813.0,,58,1150,True,True,True,True,False
+SYN-00062,Madhya Pradesh,Chhindwara,22.18649,78.78286,3.16,IFR,7.1,17.22,43.96,772.0,,58,1150,True,False,True,True,False
+SYN-00063,Madhya Pradesh,Chhindwara,22.21663,78.77922,0.2,IFR,7.0,17.22,43.96,854.0,,58,1150,True,False,True,True,False
+SYN-00064,Madhya Pradesh,Chhindwara,22.03573,78.96696,0.27,CFR,7.1,17.22,43.96,670.0,,58,1150,True,True,True,True,False
+SYN-00065,Madhya Pradesh,Chhindwara,22.08533,78.96302,3.54,CFR,7.1,17.22,43.96,734.0,,58,1150,True,True,True,True,False
+SYN-00066,Madhya Pradesh,Chhindwara,22.04198,78.93922,1.37,IFR,7.1,17.22,43.96,662.0,,58,1150,True,True,True,True,False
+SYN-00067,Madhya Pradesh,Chhindwara,22.07969,78.96173,3.54,CFR,7.1,17.22,43.96,713.0,,58,1150,True,True,True,True,False
+SYN-00068,Madhya Pradesh,Chhindwara,22.05346,78.96621,0.53,IFR,7.1,17.22,43.96,684.0,,58,1150,True,True,True,True,False
+SYN-00069,Madhya Pradesh,Chhindwara,22.22303,78.7754,0.46,CFR,7.1,17.22,43.96,731.0,,58,1150,True,True,True,True,False
+SYN-00070,Madhya Pradesh,Chhindwara,22.19584,78.7847,3.11,IFR,7.1,21.4,44.5,783.0,,58,1150,True,False,False,False,False
+SYN-00071,Madhya Pradesh,Chhindwara,22.18136,78.74902,2.01,IFR,7.1,21.2,42.2,799.0,,58,1150,True,False,False,False,False
+SYN-00072,Madhya Pradesh,Chhindwara,22.06428,78.94228,1.21,CFR,7.1,17.22,43.96,687.0,,58,1150,True,True,True,True,False
+SYN-00073,Madhya Pradesh,Chhindwara,22.17609,78.76455,1.81,IFR,7.1,20.8,45.2,789.0,,58,1150,True,False,False,False,False
+SYN-00074,Madhya Pradesh,Chhindwara,22.03607,78.94042,2.25,CR,7.3,17.22,44.9,656.0,,58,1150,True,False,True,False,False
+SYN-00075,Madhya Pradesh,Chhindwara,22.0367,78.91667,0.96,IFR,7.4,14.4,45.7,671.0,,58,1150,True,False,False,False,False
+SYN-00076,Madhya Pradesh,Chhindwara,22.0548,78.96385,3.98,CR,7.1,17.22,43.96,682.0,,58,1150,True,True,True,True,False
+SYN-00077,Madhya Pradesh,Chhindwara,22.06426,78.91515,1.86,IFR,7.3,13.9,46.6,677.0,,58,1150,True,False,False,False,False
+SYN-00078,Madhya Pradesh,Chhindwara,22.05564,78.94452,0.66,IFR,7.1,17.22,43.96,682.0,,58,1150,True,True,True,True,False
+SYN-00079,Madhya Pradesh,Chhindwara,22.22347,78.74403,1.48,CR,7.2,15.7,45.5,731.0,,58,1150,True,False,False,False,False
+SYN-00080,Madhya Pradesh,Chhindwara,22.18589,78.75437,1.07,IFR,7.2,19.4,44.8,772.0,,58,1150,True,False,False,False,False
+SYN-00081,Madhya Pradesh,Chhindwara,22.19769,78.78317,0.47,CR,7.1,17.22,43.96,660.8,,58,1150,True,False,True,True,True
+SYN-00082,Madhya Pradesh,Chhindwara,22.0335,78.94654,1.07,CFR,7.3,17.22,43.96,658.0,,58,1150,True,False,True,True,False
+SYN-00083,Madhya Pradesh,Chhindwara,22.03696,78.92451,3.47,IFR,7.4,12.9,45.8,660.8,,58,1150,True,False,False,False,True
+SYN-00084,Madhya Pradesh,Chhindwara,22.18015,78.75185,1.1,CR,7.1,22.0,44.8,660.8,,58,1150,True,False,False,False,True
+SYN-00085,Madhya Pradesh,Chhindwara,22.08048,78.93295,1.01,IFR,7.1,15.6,47.2,689.0,,58,1150,True,True,False,False,False
+SYN-00086,Madhya Pradesh,Chhindwara,22.05666,78.94233,3.75,CR,7.1,17.22,43.96,660.8,,58,1150,True,True,True,True,True
+SYN-00087,Madhya Pradesh,Chhindwara,22.20603,78.78631,2.0,CFR,7.1,22.0,45.3,838.0,,58,1150,True,False,False,False,False
+SYN-00088,Madhya Pradesh,Chhindwara,22.06906,78.94295,3.27,IFR,7.1,17.22,43.96,687.0,,58,1150,True,True,True,True,False
+SYN-00089,Madhya Pradesh,Chhindwara,21.82059,79.26741,0.57,IFR,6.5,26.4,43.6,527.0,,58,1150,True,False,False,False,False
+SYN-00090,Madhya Pradesh,Chhindwara,22.61616,79.04633,1.81,IFR,7.2,13.1,41.5,623.0,,58,1150,True,False,False,False,False
+SYN-00091,Madhya Pradesh,Chhindwara,21.80255,78.83516,2.97,CR,6.6,24.2,46.4,597.0,,58,1150,True,False,False,False,False
+SYN-00092,Madhya Pradesh,Chhindwara,22.5843,78.98462,3.94,IFR,6.3,20.6,40.6,723.0,,58,1150,True,False,False,False,False
+SYN-00093,Madhya Pradesh,Chhindwara,22.06039,78.43641,1.73,IFR,7.2,15.3,47.0,745.0,,58,1150,True,False,False,False,False
+SYN-00094,Madhya Pradesh,Chhindwara,22.22137,79.0674,3.47,IFR,7.2,14.6,46.5,693.0,,58,1150,True,False,False,False,False
+SYN-00095,Madhya Pradesh,Chhindwara,21.66456,79.05041,0.92,IFR,7.1,15.5,43.6,512.0,,58,1150,True,False,False,False,False
+SYN-00096,Madhya Pradesh,Chhindwara,22.0441,78.8898,1.8,IFR,7.4,15.0,47.4,677.0,,58,1150,True,False,False,False,False
+SYN-00097,Madhya Pradesh,Chhindwara,22.36472,79.04003,1.15,CFR,7.0,17.7,41.5,914.0,,58,1150,True,False,False,False,False
+SYN-00098,Madhya Pradesh,Chhindwara,22.21999,78.65919,1.88,CFR,7.2,15.4,41.3,796.0,,58,1150,True,False,False,False,False
+SYN-00099,Madhya Pradesh,Chhindwara,22.71465,79.11821,2.29,IFR,7.3,14.8,36.6,487.0,,58,1150,True,False,False,False,False
+SYN-00100,Madhya Pradesh,Chhindwara,21.68274,78.52357,4.0,CFR,7.4,12.1,46.6,514.0,,58,1150,True,False,False,False,False
+SYN-00101,Madhya Pradesh,Chhindwara,21.70241,79.17667,3.88,CFR,6.4,18.5,43.1,535.0,,58,1150,True,False,False,False,False
+SYN-00102,Madhya Pradesh,Chhindwara,21.70553,78.72717,3.43,IFR,7.2,16.1,45.7,494.0,,58,1150,True,False,False,False,False
+SYN-00103,Madhya Pradesh,Chhindwara,22.52081,79.32117,2.05,IFR,7.2,17.5,36.6,661.0,,58,1150,True,False,False,False,False
+SYN-00104,Madhya Pradesh,Chhindwara,22.36874,78.7265,1.72,IFR,6.7,22.0,42.6,1040.0,,58,1150,True,False,False,False,False
+SYN-00105,Madhya Pradesh,Chhindwara,21.79855,79.10149,1.64,CFR,7.1,15.7,43.0,627.0,,58,1150,True,False,False,False,False
+SYN-00106,Madhya Pradesh,Chhindwara,21.51539,78.69266,1.21,CFR,7.4,13.0,48.5,478.0,,58,1150,True,False,False,False,False
+SYN-00107,Madhya Pradesh,Chhindwara,21.73286,78.79489,1.93,IFR,7.4,12.8,47.0,360.0,,58,1150,True,False,False,False,False
+SYN-00108,Madhya Pradesh,Chhindwara,21.93577,79.31417,3.84,CFR,7.1,16.5,44.3,558.0,,58,1150,True,False,False,False,False
+SYN-00109,Madhya Pradesh,Chhindwara,22.64105,79.20062,2.31,CR,7.3,13.8,37.5,544.0,,58,1150,True,False,False,False,False
+SYN-00110,Madhya Pradesh,Chhindwara,22.35539,78.50755,0.79,IFR,7.2,17.5,46.7,571.0,,58,1150,True,False,False,False,False
+SYN-00111,Madhya Pradesh,Chhindwara,21.8397,78.71113,3.88,CR,7.2,16.8,44.8,484.0,,58,1150,True,False,False,False,False
+SYN-00112,Madhya Pradesh,Chhindwara,22.15174,78.65625,2.26,CR,7.2,19.3,42.9,797.0,,58,1150,True,False,False,False,False
+SYN-00113,Madhya Pradesh,Chhindwara,22.60365,79.03708,0.42,CR,7.2,11.1,40.8,636.0,,58,1150,True,False,False,False,False
+SYN-00114,Madhya Pradesh,Chhindwara,21.50035,78.63306,2.11,CFR,7.3,12.0,43.96,515.0,,58,1150,True,False,False,True,False
+SYN-00115,Madhya Pradesh,Chhindwara,21.81619,79.26615,0.8,CFR,6.5,23.6,41.2,533.0,,58,1150,True,False,False,False,False
+SYN-00116,Madhya Pradesh,Chhindwara,22.26959,78.29339,0.5,IFR,6.5,25.9,43.4,851.0,,58,1150,True,False,False,False,False
+SYN-00117,Madhya Pradesh,Chhindwara,22.52627,78.64992,2.46,CR,7.1,17.9,45.1,512.0,,58,1150,True,False,False,False,False
+SYN-00118,Madhya Pradesh,Chhindwara,21.52305,78.46946,1.09,IFR,7.4,11.0,49.7,441.0,,58,1150,True,False,False,False,False
+SYN-00119,Madhya Pradesh,Chhindwara,22.16596,78.75473,3.58,IFR,7.2,18.3,44.4,783.0,,58,1150,True,False,False,False,False
+SYN-00120,Madhya Pradesh,Chhindwara,22.39165,79.18435,2.46,CR,6.1,44.0,38.3,910.0,,58,1150,True,False,False,False,False
+SYN-00121,Madhya Pradesh,Chhindwara,22.04614,78.47753,1.79,CR,7.1,17.1,49.2,735.0,,58,1150,True,False,False,False,False
+SYN-00122,Madhya Pradesh,Chhindwara,22.35992,78.97171,2.19,CFR,7.0,21.1,40.1,902.0,,58,1150,True,False,False,False,False
+SYN-00123,Madhya Pradesh,Chhindwara,22.36466,78.83714,0.98,CR,6.9,20.8,39.6,977.0,,58,1150,True,False,False,False,False
+SYN-00124,Madhya Pradesh,Chhindwara,22.40565,78.6273,1.11,IFR,6.6,17.8,43.2,579.0,,58,1150,True,False,False,False,False
+SYN-00125,Madhya Pradesh,Chhindwara,21.7224,78.89199,2.75,IFR,6.9,20.3,46.4,452.0,,58,1150,True,False,False,False,False
+SYN-00126,Madhya Pradesh,Chhindwara,21.97563,79.02016,1.4,CFR,7.1,15.9,45.1,630.0,,58,1150,True,True,False,False,False
+SYN-00127,Madhya Pradesh,Chhindwara,21.69832,79.11665,0.48,IFR,7.1,16.4,45.7,558.0,,58,1150,True,False,False,False,False
+SYN-00128,Madhya Pradesh,Chhindwara,22.01204,78.90903,3.99,CFR,7.3,13.7,46.6,656.0,,58,1150,True,False,False,False,False
+SYN-00129,Madhya Pradesh,Chhindwara,21.87387,79.21591,0.48,IFR,7.2,15.0,45.3,575.0,,58,1150,True,False,False,False,False
+SYN-00130,Madhya Pradesh,Chhindwara,21.89871,78.95258,1.21,CFR,7.3,12.8,44.1,608.0,,58,1150,True,False,False,False,False
+SYN-00131,Madhya Pradesh,Chhindwara,22.37647,78.76137,3.55,CFR,6.7,23.2,41.9,1071.0,,58,1150,True,False,False,False,False
+SYN-00132,Madhya Pradesh,Chhindwara,22.53615,78.84184,1.6,IFR,6.4,25.0,41.8,729.0,,58,1150,True,False,False,False,False
+SYN-00133,Madhya Pradesh,Chhindwara,21.84671,79.01311,3.37,CR,7.2,14.4,45.3,637.0,,58,1150,True,False,False,False,False
+SYN-00134,Madhya Pradesh,Chhindwara,22.30026,79.01891,2.52,CFR,7.2,16.0,42.9,764.0,,58,1150,True,False,False,False,False
+SYN-00135,Madhya Pradesh,Chhindwara,21.66226,79.18441,2.69,IFR,6.4,25.9,43.2,495.0,,58,1150,True,False,False,False,False
+SYN-00136,Madhya Pradesh,Chhindwara,22.50202,78.95793,3.3,IFR,7.1,20.3,42.2,815.0,,58,1150,True,False,False,False,False
+SYN-00137,Madhya Pradesh,Chhindwara,22.43422,78.91664,2.72,CFR,6.9,25.1,40.1,1005.0,,58,1150,True,False,False,False,False
+SYN-00138,Madhya Pradesh,Chhindwara,22.00336,78.69433,0.71,IFR,7.1,18.5,45.3,705.0,,58,1150,True,False,False,False,False
+SYN-00139,Madhya Pradesh,Chhindwara,22.62633,79.28426,0.61,CR,7.1,15.2,42.0,643.0,,58,1150,True,False,False,False,False
+SYN-00140,Madhya Pradesh,Chhindwara,22.51544,79.27592,1.23,CR,7.0,18.5,35.2,749.0,,58,1150,True,False,False,False,False
+SYN-00141,Madhya Pradesh,Chhindwara,22.0911,79.05609,2.93,IFR,7.1,14.1,45.4,660.0,,58,1150,True,False,False,False,False
+SYN-00142,Madhya Pradesh,Chhindwara,22.18112,78.78788,2.61,IFR,7.2,17.9,44.5,726.0,,58,1150,True,False,False,False,False
+SYN-00143,Madhya Pradesh,Chhindwara,21.89202,78.89722,2.06,CFR,7.2,12.9,43.0,639.0,,58,1150,True,False,False,False,False
+SYN-00144,Madhya Pradesh,Chhindwara,22.06139,79.1249,3.42,IFR,7.2,16.9,44.0,639.0,,58,1150,True,False,False,False,False
+SYN-00145,Madhya Pradesh,Chhindwara,22.66903,79.19421,1.81,IFR,7.3,10.4,39.1,530.0,,58,1150,True,False,False,False,False
+SYN-00146,Madhya Pradesh,Chhindwara,21.67822,78.76616,0.21,CFR,7.2,16.8,46.6,427.0,,58,1150,True,False,False,False,False
+SYN-00147,Madhya Pradesh,Chhindwara,22.07152,79.24812,2.62,IFR,7.4,15.1,42.3,637.0,,58,1150,True,False,False,False,False
+SYN-00148,Madhya Pradesh,Chhindwara,22.59851,79.12088,3.02,CR,7.1,12.9,36.4,651.0,,58,1150,True,False,False,False,False
+SYN-00149,Madhya Pradesh,Chhindwara,22.51444,78.57063,1.83,IFR,7.0,17.3,45.0,538.0,,58,1150,True,False,False,False,False
+SYN-00150,Madhya Pradesh,Chhindwara,21.78649,78.81102,0.49,CFR,7.1,17.7,47.2,409.0,,58,1150,True,False,False,False,False
+SYN-00151,Madhya Pradesh,Chhindwara,22.42773,78.75915,3.63,IFR,6.2,33.8,44.0,941.0,,58,1150,True,False,False,False,False
+SYN-00152,Madhya Pradesh,Chhindwara,21.9171,78.52097,3.37,CR,7.1,17.9,47.2,780.0,,58,1150,True,False,False,False,False
+SYN-00153,Madhya Pradesh,Chhindwara,21.98089,78.42394,0.76,IFR,7.3,11.9,45.4,697.0,,58,1150,True,False,False,False,False
+SYN-00154,Madhya Pradesh,Chhindwara,21.91038,78.73015,1.37,CFR,7.1,20.0,47.4,595.0,,58,1150,True,False,False,False,False
+SYN-00155,Madhya Pradesh,Chhindwara,21.54722,78.78937,3.23,CFR,7.2,15.0,47.0,379.0,,58,1150,True,False,False,False,False
+SYN-00156,Madhya Pradesh,Chhindwara,21.9896,79.21495,3.62,IFR,7.3,13.6,38.5,609.0,,58,1150,True,False,False,False,False
+SYN-00157,Madhya Pradesh,Chhindwara,22.74209,79.14177,1.15,IFR,6.3,20.6,38.4,456.0,,58,1150,True,False,False,False,False
+SYN-00158,Madhya Pradesh,Chhindwara,22.1079,78.91666,3.16,CFR,7.0,17.3,44.9,749.0,,58,1150,True,False,False,False,False
+SYN-00159,Madhya Pradesh,Chhindwara,22.1907,79.21824,1.74,CR,7.2,13.5,41.9,640.0,,58,1150,True,False,False,False,False
+SYN-00160,Madhya Pradesh,Chhindwara,22.54444,79.101,0.79,CFR,7.2,13.3,42.5,617.0,,58,1150,True,False,False,False,False
+SYN-00161,Madhya Pradesh,Chhindwara,22.12311,79.29024,3.49,CFR,7.3,14.5,41.8,640.0,,58,1150,True,False,False,False,False
+SYN-00162,Madhya Pradesh,Chhindwara,22.11961,78.56555,3.28,CFR,7.3,14.9,46.1,708.0,,58,1150,True,False,False,False,False
+SYN-00163,Madhya Pradesh,Chhindwara,22.36734,78.69999,0.29,CR,6.7,25.6,40.3,1113.0,,58,1150,True,False,False,False,False
+SYN-00164,Madhya Pradesh,Chhindwara,22.44211,79.17465,1.46,CFR,7.0,20.1,37.1,897.0,,58,1150,True,False,False,False,False
+SYN-00165,Madhya Pradesh,Chhindwara,22.70624,79.22378,3.25,CFR,6.9,14.0,39.9,560.0,,58,1150,True,False,False,False,False
+SYN-00166,Madhya Pradesh,Chhindwara,22.26326,79.30081,3.28,IFR,7.0,15.9,37.8,756.0,,58,1150,True,False,False,False,False
+SYN-00167,Madhya Pradesh,Chhindwara,22.07778,78.62866,3.19,IFR,7.2,13.7,46.4,700.0,,58,1150,True,False,False,False,False
+SYN-00168,Madhya Pradesh,Chhindwara,22.65229,78.64043,3.51,CFR,7.0,18.4,47.0,417.0,,58,1150,True,False,False,False,False
+SYN-00169,Madhya Pradesh,Chhindwara,22.59182,78.73792,1.05,CFR,7.3,14.6,45.7,409.0,,58,1150,True,False,False,False,False
+SYN-00170,Madhya Pradesh,Chhindwara,22.4757,78.79445,1.95,IFR,6.3,30.2,44.3,691.0,,58,1150,True,False,False,False,False
+SYN-00171,Madhya Pradesh,Chhindwara,21.55581,78.50906,3.22,IFR,7.2,11.6,49.6,498.0,,58,1150,True,False,False,False,False
+SYN-00172,Madhya Pradesh,Chhindwara,22.30307,79.2223,0.29,IFR,7.1,13.2,39.7,773.0,,58,1150,True,False,False,False,False
+SYN-00173,Madhya Pradesh,Chhindwara,22.10328,78.52567,1.45,CFR,7.2,15.3,45.5,731.0,,58,1150,True,False,False,False,False
+SYN-00174,Madhya Pradesh,Chhindwara,21.80947,78.78833,3.87,IFR,6.6,19.1,43.9,421.0,,58,1150,True,False,False,False,False
+SYN-00175,Madhya Pradesh,Chhindwara,22.28219,78.67684,2.64,IFR,7.1,18.5,39.0,894.0,,58,1150,True,False,False,False,False
+SYN-00176,Madhya Pradesh,Chhindwara,21.68444,79.15105,3.93,IFR,7.2,17.4,43.7,561.0,,58,1150,True,False,False,False,False
+SYN-00177,Madhya Pradesh,Chhindwara,22.24541,78.60974,3.77,IFR,7.1,18.8,41.1,886.0,,58,1150,True,False,False,False,False
+SYN-00178,Madhya Pradesh,Chhindwara,22.2415,79.32628,3.89,IFR,7.1,14.8,37.7,728.0,,58,1150,True,False,False,False,False
+SYN-00179,Madhya Pradesh,Chhindwara,21.97044,79.30208,3.86,IFR,7.3,15.2,41.8,554.0,,58,1150,True,False,False,False,False
+SYN-00180,Madhya Pradesh,Chhindwara,22.58595,78.93569,0.61,IFR,6.9,18.5,42.9,804.0,,58,1150,True,False,False,False,False
+SYN-00181,Madhya Pradesh,Chhindwara,22.40563,78.53066,2.97,IFR,7.3,11.9,48.0,548.0,,58,1150,True,False,False,False,False
+SYN-00182,Madhya Pradesh,Chhindwara,22.38814,78.59877,2.5,IFR,7.2,14.0,45.0,660.8,,58,1150,True,False,False,False,True
+SYN-00183,Madhya Pradesh,Chhindwara,22.53952,79.18321,1.66,CR,7.1,16.5,39.8,663.0,,58,1150,True,False,False,False,False
+SYN-00184,Madhya Pradesh,Chhindwara,21.51856,78.90535,1.17,CR,7.5,11.8,46.6,327.0,,58,1150,True,False,False,False,False
+SYN-00185,Madhya Pradesh,Chhindwara,22.3574,78.86686,0.21,CFR,7.0,23.0,42.0,992.0,,58,1150,True,False,False,False,False
+SYN-00186,Madhya Pradesh,Chhindwara,22.3385,78.32899,2.25,CR,6.3,24.4,48.1,597.0,,58,1150,True,False,False,False,False
+SYN-00187,Madhya Pradesh,Chhindwara,22.04915,78.81752,3.02,CR,7.2,14.8,45.1,690.0,,58,1150,True,False,False,False,False
+SYN-00188,Madhya Pradesh,Chhindwara,22.66843,78.66906,1.58,IFR,7.2,14.9,43.2,378.0,,58,1150,True,False,False,False,False
+SYN-00189,Madhya Pradesh,Chhindwara,21.66988,78.78219,2.72,IFR,7.4,11.5,44.8,372.0,,58,1150,True,False,False,False,False
+SYN-00190,Madhya Pradesh,Chhindwara,22.16843,78.45329,1.39,CFR,7.2,16.0,41.1,767.0,,58,1150,True,False,False,False,False
+SYN-00191,Madhya Pradesh,Chhindwara,22.29574,79.00337,2.94,IFR,7.1,16.7,44.0,758.0,,58,1150,True,True,False,False,False
+SYN-00192,Madhya Pradesh,Chhindwara,22.51033,79.31553,1.38,IFR,7.2,17.5,35.8,674.0,,58,1150,True,False,False,False,False
+SYN-00193,Madhya Pradesh,Chhindwara,22.57941,78.78815,1.73,IFR,7.1,18.4,43.3,451.0,,58,1150,True,False,False,False,False
+SYN-00194,Madhya Pradesh,Chhindwara,21.89879,78.93613,0.68,IFR,7.3,14.4,45.5,622.0,,58,1150,True,False,False,False,False
+SYN-00195,Madhya Pradesh,Chhindwara,22.07251,78.5725,3.77,CR,7.2,15.5,45.1,673.0,,58,1150,True,False,False,False,False
+SYN-00196,Madhya Pradesh,Chhindwara,22.23346,79.11937,3.63,CR,7.3,17.1,41.5,723.0,,58,1150,True,False,False,False,False
+SYN-00197,Madhya Pradesh,Chhindwara,21.91784,79.02394,1.34,IFR,7.3,14.7,47.5,599.0,,58,1150,True,False,False,False,False
+SYN-00198,Madhya Pradesh,Chhindwara,21.90245,78.82228,0.2,IFR,7.1,16.7,45.8,674.0,,58,1150,True,False,False,False,False
+SYN-00199,Madhya Pradesh,Chhindwara,21.94275,78.81445,1.83,CR,7.1,18.2,48.2,712.0,,58,1150,True,False,False,False,False
+SYN-00200,Madhya Pradesh,Chhindwara,21.84113,78.54864,2.69,IFR,7.1,14.1,43.96,659.0,,58,1150,True,False,False,True,False
+SYN-00201,Madhya Pradesh,Chhindwara,22.16151,78.89359,1.88,IFR,7.1,17.5,46.0,725.0,,58,1150,True,False,False,False,False
+SYN-00202,Madhya Pradesh,Chhindwara,22.21362,78.72037,2.0,CFR,7.2,16.6,43.0,749.0,,58,1150,True,False,False,False,False
+SYN-00203,Madhya Pradesh,Chhindwara,22.1067,78.52773,3.22,IFR,7.2,15.7,45.5,719.0,,58,1150,True,False,False,False,False
+SYN-00204,Madhya Pradesh,Chhindwara,22.06896,79.07456,0.52,IFR,7.3,16.4,44.2,641.0,,58,1150,True,False,False,False,False
+SYN-00205,Madhya Pradesh,Chhindwara,21.79198,78.71802,2.61,IFR,6.5,20.2,46.4,457.0,,58,1150,True,False,False,False,False
+SYN-00206,Madhya Pradesh,Chhindwara,21.96194,79.01903,3.31,CFR,7.3,14.5,45.0,618.0,,58,1150,True,False,False,False,False
+SYN-00207,Madhya Pradesh,Chhindwara,21.92779,78.8909,2.76,IFR,7.2,13.5,44.8,641.0,,58,1150,True,False,False,False,False
+SYN-00208,Madhya Pradesh,Chhindwara,22.07649,78.65703,0.96,IFR,7.3,16.3,46.5,734.0,,58,1150,True,False,False,False,False
+SYN-00209,Madhya Pradesh,Chhindwara,21.77472,78.60462,1.13,IFR,7.2,14.2,48.4,660.8,,58,1150,True,False,False,False,True
+SYN-00210,Madhya Pradesh,Chhindwara,21.88965,79.08551,3.43,IFR,7.1,15.9,46.7,650.0,,58,1150,True,False,False,False,False
+SYN-00211,Madhya Pradesh,Chhindwara,22.7486,79.11056,1.77,CR,7.2,14.0,38.3,438.0,,58,1150,True,False,False,False,False
+SYN-00212,Madhya Pradesh,Chhindwara,21.722,79.04942,0.94,CR,7.1,18.3,44.0,527.0,,58,1150,True,False,False,False,False
+SYN-00213,Madhya Pradesh,Chhindwara,21.83686,79.1056,2.08,IFR,7.1,13.9,43.6,629.0,,58,1150,True,False,False,False,False
+SYN-00214,Madhya Pradesh,Chhindwara,22.49082,78.93278,2.69,IFR,6.6,20.9,40.3,868.0,,58,1150,True,False,False,False,False
+SYN-00215,Madhya Pradesh,Chhindwara,21.86356,79.21464,3.05,CFR,7.2,15.9,44.4,575.0,,58,1150,True,False,False,False,False
+SYN-00216,Madhya Pradesh,Chhindwara,21.8717,78.66754,0.61,IFR,7.2,15.3,44.3,520.0,,58,1150,True,False,False,False,False
+SYN-00217,Madhya Pradesh,Chhindwara,21.63417,79.07013,0.87,CFR,7.2,16.0,43.5,555.0,,58,1150,True,False,False,False,False
+SYN-00218,Madhya Pradesh,Chhindwara,22.48079,78.98878,2.17,IFR,7.0,14.7,41.1,783.0,,58,1150,True,False,False,False,False
+SYN-00219,Madhya Pradesh,Chhindwara,22.11025,78.57878,1.15,CFR,7.2,14.8,46.7,703.0,,58,1150,True,False,False,False,False
+SYN-00220,Madhya Pradesh,Chhindwara,22.62807,78.54183,1.93,CFR,7.2,14.4,45.5,418.0,,58,1150,True,False,False,False,False
+SYN-00221,Madhya Pradesh,Shivpuri,25.44739,77.64464,2.74,CFR,7.1,11.4,30.0,479.0,,65,850,True,False,False,False,False
+SYN-00222,Madhya Pradesh,Shivpuri,25.43416,77.66007,2.46,CFR,7.22,9.78,28.41,464.0,,65,850,True,True,True,True,False
+SYN-00223,Madhya Pradesh,Shivpuri,25.41106,77.65339,3.59,CR,7.3,8.4,29.8,468.0,,65,850,True,False,False,False,False
+SYN-00224,Madhya Pradesh,Shivpuri,25.1776,77.5764,2.93,IFR,7.1,10.1,32.0,463.0,,65,850,True,False,False,False,False
+SYN-00225,Madhya Pradesh,Shivpuri,25.20574,77.6057,3.36,IFR,7.2,9.5,29.1,447.0,,65,850,True,False,False,False,False
+SYN-00226,Madhya Pradesh,Shivpuri,25.44489,77.64354,3.61,CR,7.1,11.1,30.1,479.0,,65,850,True,False,False,False,False
+SYN-00227,Madhya Pradesh,Shivpuri,25.18906,77.59478,2.0,IFR,7.1,8.8,28.5,452.0,,65,850,True,False,False,False,False
+SYN-00228,Madhya Pradesh,Shivpuri,25.18949,77.59654,1.14,CR,7.1,8.4,28.8,451.0,,65,850,True,False,False,False,False
+SYN-00229,Madhya Pradesh,Shivpuri,25.45417,77.63422,3.11,IFR,7.1,8.3,28.5,474.0,,65,850,True,False,False,False,False
+SYN-00230,Madhya Pradesh,Shivpuri,25.41729,77.62738,2.58,IFR,7.1,8.5,28.2,475.0,,65,850,True,False,False,False,False
+SYN-00231,Madhya Pradesh,Shivpuri,25.41239,77.62705,0.49,IFR,7.2,9.5,29.0,482.0,,65,850,True,False,False,False,False
+SYN-00232,Madhya Pradesh,Shivpuri,25.42506,77.66023,1.23,IFR,7.22,9.78,28.41,461.0,,65,850,True,True,True,True,False
+SYN-00233,Madhya Pradesh,Shivpuri,25.18873,77.5755,2.25,IFR,7.1,11.4,30.9,465.0,,65,850,True,False,False,False,False
+SYN-00234,Madhya Pradesh,Shivpuri,25.21096,77.58752,1.08,CR,7.1,10.3,28.2,448.0,,65,850,True,False,False,False,False
+SYN-00235,Madhya Pradesh,Shivpuri,25.45289,77.66554,2.88,IFR,7.3,8.9,26.7,470.0,,65,850,True,False,False,False,False
+SYN-00236,Madhya Pradesh,Shivpuri,25.42596,77.65241,1.75,IFR,7.22,9.78,28.41,464.0,,65,850,True,True,True,True,False
+SYN-00237,Madhya Pradesh,Shivpuri,25.45205,77.66764,1.78,IFR,7.3,8.5,27.6,471.0,,65,850,True,False,False,False,False
+SYN-00238,Madhya Pradesh,Shivpuri,25.40622,77.6658,1.8,CFR,7.2,8.2,30.9,460.0,,65,850,True,False,False,False,False
+SYN-00239,Madhya Pradesh,Shivpuri,25.19671,77.58831,2.42,CR,7.1,11.3,30.5,462.0,,65,850,True,False,False,False,False
+SYN-00240,Madhya Pradesh,Shivpuri,25.21079,77.6139,3.46,CFR,7.1,9.9,29.5,438.0,,65,850,True,False,False,False,False
+SYN-00241,Madhya Pradesh,Shivpuri,25.19664,77.59529,1.65,IFR,7.1,10.3,29.8,458.0,,65,850,True,False,False,False,False
+SYN-00242,Madhya Pradesh,Shivpuri,25.21266,77.5956,1.54,CFR,7.1,9.8,28.5,443.0,,65,850,True,False,False,False,False
+SYN-00243,Madhya Pradesh,Shivpuri,25.40793,77.67494,3.44,CFR,7.3,8.2,29.6,452.0,,65,850,True,False,False,False,False
+SYN-00244,Madhya Pradesh,Shivpuri,25.45698,77.6593,1.79,CR,7.2,8.0,28.3,468.0,,65,850,True,False,False,False,False
+SYN-00245,Madhya Pradesh,Shivpuri,25.20412,77.60421,2.28,CR,7.2,9.5,29.0,448.0,,65,850,True,False,False,False,False
+SYN-00246,Madhya Pradesh,Shivpuri,25.42841,77.65818,1.04,IFR,7.22,9.78,28.41,468.0,,65,850,True,True,True,True,False
+SYN-00247,Madhya Pradesh,Shivpuri,25.1828,77.59461,1.86,IFR,7.1,10.3,28.7,445.0,,65,850,True,False,False,False,False
+SYN-00248,Madhya Pradesh,Shivpuri,25.22533,77.58838,1.48,CR,7.1,8.9,29.0,446.0,,65,850,True,False,False,False,False
+SYN-00249,Madhya Pradesh,Shivpuri,25.191,77.59919,1.74,IFR,7.2,8.3,28.6,451.0,,65,850,True,False,False,False,False
+SYN-00250,Madhya Pradesh,Shivpuri,25.42081,77.66046,1.98,IFR,7.22,9.78,28.41,464.0,,65,850,True,True,True,True,False
+SYN-00251,Madhya Pradesh,Shivpuri,25.20878,77.58462,2.56,IFR,7.1,9.8,27.9,452.0,,65,850,True,False,False,False,False
+SYN-00252,Madhya Pradesh,Shivpuri,25.42756,77.63998,1.7,CR,7.2,9.0,28.2,470.0,,65,850,True,False,False,False,False
+SYN-00253,Madhya Pradesh,Shivpuri,25.17926,77.60472,0.3,CR,7.1,10.4,29.2,441.0,,65,850,True,False,False,False,False
+SYN-00254,Madhya Pradesh,Shivpuri,25.43851,77.6523,0.72,IFR,7.3,9.2,28.6,465.0,,65,850,True,False,False,False,False
+SYN-00255,Madhya Pradesh,Shivpuri,25.17593,77.591,0.39,IFR,7.0,10.6,28.3,451.0,,65,850,True,False,False,False,False
+SYN-00256,Madhya Pradesh,Shivpuri,25.20677,77.60404,1.0,IFR,7.1,9.1,29.8,440.0,,65,850,True,False,False,False,False
+SYN-00257,Madhya Pradesh,Shivpuri,25.41742,77.63007,3.09,IFR,7.1,8.8,28.0,472.0,,65,850,True,False,False,False,False
+SYN-00258,Madhya Pradesh,Shivpuri,25.19666,77.60071,3.06,CFR,7.2,8.4,29.1,454.0,,65,850,True,False,False,False,False
+SYN-00259,Madhya Pradesh,Shivpuri,25.40456,77.65702,1.16,IFR,7.3,9.78,29.7,459.0,,65,850,True,False,True,False,False
+SYN-00260,Madhya Pradesh,Shivpuri,25.44133,77.63978,0.27,IFR,7.1,9.8,31.2,476.0,,65,850,True,False,False,False,False
+SYN-00261,Madhya Pradesh,Shivpuri,25.43282,77.62803,4.0,IFR,7.2,9.2,28.0,480.0,,65,850,True,False,False,False,False
+SYN-00262,Madhya Pradesh,Shivpuri,25.42792,77.62934,2.67,CFR,7.2,9.0,27.8,475.0,,65,850,True,False,False,False,False
+SYN-00263,Madhya Pradesh,Shivpuri,25.42991,77.6617,2.68,CFR,7.22,9.78,28.41,468.0,,65,850,True,True,True,True,False
+SYN-00264,Madhya Pradesh,Shivpuri,25.19544,77.58905,3.81,IFR,7.1,10.6,30.4,463.0,,65,850,True,False,False,False,False
+SYN-00265,Madhya Pradesh,Shivpuri,25.18616,77.59277,0.28,IFR,7.1,9.6,28.3,450.0,,65,850,True,False,False,False,False
+SYN-00266,Madhya Pradesh,Shivpuri,25.18329,77.59537,0.68,CR,7.0,10.2,28.8,445.0,,65,850,True,False,False,False,False
+SYN-00267,Madhya Pradesh,Shivpuri,25.44966,77.63792,2.34,IFR,7.1,8.3,28.6,478.0,,65,850,True,False,False,False,False
+SYN-00268,Madhya Pradesh,Shivpuri,25.19135,77.60554,2.86,CFR,7.2,8.9,29.1,447.0,,65,850,True,False,False,False,False
+SYN-00269,Madhya Pradesh,Shivpuri,25.21731,77.57827,0.84,CR,7.0,10.0,28.8,451.0,,65,850,True,False,False,False,False
+SYN-00270,Madhya Pradesh,Shivpuri,25.21822,77.59432,3.04,IFR,7.0,9.7,29.4,442.0,,65,850,True,False,False,False,False
+SYN-00271,Madhya Pradesh,Shivpuri,25.21972,77.58711,3.31,CFR,7.0,10.0,28.7,444.0,,65,850,True,False,False,False,False
+SYN-00272,Madhya Pradesh,Shivpuri,25.19164,77.5928,0.61,IFR,7.1,10.6,29.3,454.0,,65,850,True,False,False,False,False
+SYN-00273,Madhya Pradesh,Shivpuri,25.19759,77.58038,1.39,CR,7.1,11.3,29.8,461.0,,65,850,True,False,False,False,False
+SYN-00274,Madhya Pradesh,Shivpuri,25.45596,77.6359,3.84,IFR,7.1,8.2,28.8,478.0,,65,850,True,False,False,False,False
+SYN-00275,Madhya Pradesh,Shivpuri,25.18561,77.60488,2.92,IFR,7.2,8.9,29.2,445.0,,65,850,True,False,False,False,False
+SYN-00276,Madhya Pradesh,Shivpuri,25.42018,77.64854,2.82,CR,7.4,8.6,29.9,474.0,,65,850,True,False,False,False,False
+SYN-00277,Madhya Pradesh,Shivpuri,25.19385,77.59884,0.59,CFR,7.2,8.4,29.8,454.0,,65,850,True,False,False,False,False
+SYN-00278,Madhya Pradesh,Shivpuri,25.42975,77.625,3.43,CR,7.1,9.4,29.1,480.0,,65,850,True,False,False,False,False
+SYN-00279,Madhya Pradesh,Shivpuri,25.21996,77.61021,0.66,CFR,7.22,9.78,28.41,449.0,,65,850,True,True,True,True,False
+SYN-00280,Madhya Pradesh,Shivpuri,25.17838,77.61216,3.17,IFR,7.0,10.3,30.2,438.0,,65,850,True,False,False,False,False
+SYN-00281,Madhya Pradesh,Shivpuri,25.44201,77.64514,1.83,IFR,7.2,10.3,28.8,474.0,,65,850,True,False,False,False,False
+SYN-00282,Madhya Pradesh,Shivpuri,25.40704,77.6652,2.12,IFR,7.2,9.2,29.8,459.0,,65,850,True,False,False,False,False
+SYN-00283,Madhya Pradesh,Shivpuri,25.19128,77.60041,3.43,CFR,7.2,8.3,29.4,446.0,,65,850,True,False,False,False,False
+SYN-00284,Madhya Pradesh,Shivpuri,25.449,77.66903,0.6,CFR,7.3,10.0,29.3,472.0,,65,850,True,False,False,False,False
+SYN-00285,Madhya Pradesh,Shivpuri,25.22452,77.59685,2.62,CFR,7.1,9.1,29.9,447.0,,65,850,True,False,False,False,False
+SYN-00286,Madhya Pradesh,Shivpuri,25.22011,77.56494,2.89,IFR,7.1,9.7,29.1,457.0,,65,850,True,False,False,False,False
+SYN-00287,Madhya Pradesh,Shivpuri,25.41568,77.65996,2.99,CFR,7.22,9.78,28.41,470.0,,65,850,True,True,True,True,False
+SYN-00288,Madhya Pradesh,Shivpuri,25.22686,77.60333,1.23,CFR,7.1,10.2,29.6,441.0,,65,850,True,False,False,False,False
+SYN-00289,Madhya Pradesh,Shivpuri,25.22583,77.60406,2.25,IFR,7.1,10.2,29.6,441.0,,65,850,True,False,False,False,False
+SYN-00290,Madhya Pradesh,Shivpuri,25.42696,77.66048,1.86,CR,7.22,9.78,28.41,466.0,,65,850,True,True,True,True,False
+SYN-00291,Madhya Pradesh,Shivpuri,25.40548,77.66599,1.22,CFR,7.2,8.2,30.9,460.0,,65,850,True,False,False,False,False
+SYN-00292,Madhya Pradesh,Shivpuri,25.19236,77.58626,3.36,IFR,7.1,9.7,29.8,456.0,,65,850,True,False,False,False,False
+SYN-00293,Madhya Pradesh,Shivpuri,25.43168,77.65356,3.55,IFR,7.3,8.5,29.6,472.0,,65,850,True,False,False,False,False
+SYN-00294,Madhya Pradesh,Shivpuri,25.41218,77.62726,1.97,CR,7.2,9.5,29.0,480.0,,65,850,True,False,False,False,False
+SYN-00295,Madhya Pradesh,Shivpuri,25.20646,77.576,1.64,IFR,7.1,11.2,30.3,452.0,,65,850,True,False,False,False,False
+SYN-00296,Madhya Pradesh,Shivpuri,25.41554,77.65745,3.43,IFR,7.22,9.78,28.41,473.0,,65,850,True,True,True,True,False
+SYN-00297,Madhya Pradesh,Shivpuri,25.18679,77.56351,1.01,CFR,7.3,10.5,31.7,487.0,,65,850,True,False,False,False,False
+SYN-00298,Madhya Pradesh,Shivpuri,25.22167,77.59959,1.49,CFR,7.1,9.0,29.8,445.0,,65,850,True,False,False,False,False
+SYN-00299,Madhya Pradesh,Shivpuri,25.40699,77.67404,2.86,IFR,7.3,8.2,29.6,452.0,,65,850,True,False,False,False,False
+SYN-00300,Madhya Pradesh,Shivpuri,25.2075,77.58591,0.24,CFR,7.1,9.6,28.1,455.0,,65,850,True,False,False,False,False
+SYN-00301,Madhya Pradesh,Shivpuri,25.19767,77.57931,0.53,CR,7.1,11.3,29.8,461.0,,65,850,True,False,False,False,False
+SYN-00302,Madhya Pradesh,Shivpuri,25.21908,77.56876,2.06,CFR,7.1,9.6,29.0,454.0,,65,850,True,False,False,False,False
+SYN-00303,Madhya Pradesh,Shivpuri,25.20388,77.59404,2.82,CR,7.1,9.1,29.7,455.0,,65,850,True,False,False,False,False
+SYN-00304,Madhya Pradesh,Shivpuri,25.17418,77.60782,2.07,CFR,7.1,10.6,28.8,446.0,,65,850,True,False,False,False,False
+SYN-00305,Madhya Pradesh,Shivpuri,25.18782,77.59356,0.55,IFR,7.1,9.1,28.41,454.0,,65,850,True,False,False,True,False
+SYN-00306,Madhya Pradesh,Shivpuri,25.45217,77.66324,2.83,IFR,7.3,8.8,27.4,468.0,,65,850,True,False,False,False,False
+SYN-00307,Madhya Pradesh,Shivpuri,25.21489,77.57543,2.41,IFR,7.0,10.3,29.1,451.0,,65,850,True,False,False,False,False
+SYN-00308,Madhya Pradesh,Shivpuri,25.18483,77.57327,2.22,IFR,7.1,9.9,31.8,478.0,,65,850,True,False,False,False,False
+SYN-00309,Madhya Pradesh,Shivpuri,25.65188,77.377,3.03,IFR,7.1,8.0,28.8,426.0,,65,850,True,False,False,False,False
+SYN-00310,Madhya Pradesh,Shivpuri,25.57111,78.12957,2.87,IFR,7.4,8.1,27.9,265.0,,65,850,True,False,False,False,False
+SYN-00311,Madhya Pradesh,Shivpuri,24.87124,78.16035,1.16,IFR,7.4,8.8,26.9,336.0,,65,850,True,False,False,False,False
+SYN-00312,Madhya Pradesh,Shivpuri,24.97722,77.54334,0.93,IFR,7.2,8.9,27.8,450.0,,65,850,True,False,False,False,False
+SYN-00313,Madhya Pradesh,Shivpuri,25.18833,78.33657,2.24,CFR,7.4,9.5,29.0,314.0,,65,850,True,False,False,False,False
+SYN-00314,Madhya Pradesh,Shivpuri,25.05222,77.61708,0.9,IFR,7.1,10.0,28.5,426.0,,65,850,True,False,False,False,False
+SYN-00315,Madhya Pradesh,Shivpuri,25.37757,77.54479,2.04,CR,7.2,10.0,30.3,472.0,,65,850,True,False,False,False,False
+SYN-00316,Madhya Pradesh,Shivpuri,25.01304,77.40889,3.91,IFR,7.3,10.5,30.2,442.0,,65,850,True,False,False,False,False
+SYN-00317,Madhya Pradesh,Shivpuri,25.1542,78.42066,1.28,IFR,7.4,9.7,27.4,295.0,,65,850,True,False,False,False,False
+SYN-00318,Madhya Pradesh,Shivpuri,24.91657,77.694,0.94,IFR,7.2,9.2,29.3,473.0,,65,850,True,False,False,False,False
+SYN-00319,Madhya Pradesh,Shivpuri,25.07905,78.11018,0.88,IFR,7.4,9.2,25.5,364.0,,65,850,True,False,False,False,False
+SYN-00320,Madhya Pradesh,Shivpuri,25.56414,77.99685,2.23,IFR,7.5,7.7,28.3,277.0,,65,850,True,False,False,False,False
+SYN-00321,Madhya Pradesh,Shivpuri,25.74934,77.59073,3.9,CR,7.3,8.3,28.9,397.0,,65,850,True,False,False,False,False
+SYN-00322,Madhya Pradesh,Shivpuri,25.12103,77.5866,2.85,IFR,7.2,10.7,28.4,453.0,,65,850,True,False,False,False,False
+SYN-00323,Madhya Pradesh,Shivpuri,25.11855,78.10269,3.5,IFR,7.3,9.5,23.3,385.0,,65,850,True,False,False,False,False
+SYN-00324,Madhya Pradesh,Shivpuri,25.52539,77.56687,3.52,CR,7.1,9.4,29.3,452.0,,65,850,True,False,False,False,False
+SYN-00325,Madhya Pradesh,Shivpuri,25.56461,77.55296,1.98,IFR,7.2,8.1,29.4,435.0,,65,850,True,False,False,False,False
+SYN-00326,Madhya Pradesh,Shivpuri,25.50485,77.69858,0.9,IFR,7.1,10.1,28.0,415.0,,65,850,True,False,False,False,False
+SYN-00327,Madhya Pradesh,Shivpuri,25.18972,78.3854,3.78,IFR,7.4,10.3,25.7,307.0,,65,850,True,False,False,False,False
+SYN-00328,Madhya Pradesh,Shivpuri,25.53523,77.9004,3.32,IFR,7.2,11.2,25.8,305.0,,65,850,True,False,False,False,False
+SYN-00329,Madhya Pradesh,Shivpuri,25.33701,77.93727,0.48,CR,7.2,11.3,27.1,393.0,,65,850,True,False,False,False,False
+SYN-00330,Madhya Pradesh,Shivpuri,25.53694,78.0329,0.4,IFR,7.4,8.1,29.8,270.0,,65,850,True,False,False,False,False
+SYN-00331,Madhya Pradesh,Shivpuri,25.25527,77.79478,2.34,IFR,7.1,8.3,29.9,388.0,,65,850,True,False,False,False,False
+SYN-00332,Madhya Pradesh,Shivpuri,25.41907,78.02621,3.98,IFR,7.4,8.7,27.1,312.0,,65,850,True,False,False,False,False
+SYN-00333,Madhya Pradesh,Shivpuri,25.62056,77.86729,3.1,CR,7.2,11.3,27.1,276.0,,65,850,True,False,False,False,False
+SYN-00334,Madhya Pradesh,Shivpuri,25.54308,78.30131,3.2,IFR,7.6,9.78,25.1,255.0,,65,850,True,False,True,False,False
+SYN-00335,Madhya Pradesh,Shivpuri,25.50064,78.226,2.19,IFR,7.22,10.3,26.6,257.0,,65,850,True,True,False,False,False
+SYN-00336,Madhya Pradesh,Shivpuri,25.13755,78.37941,1.88,CFR,7.4,9.8,27.2,293.0,,65,850,True,False,False,False,False
+SYN-00337,Madhya Pradesh,Shivpuri,25.07003,78.01718,3.96,IFR,7.2,8.6,30.2,470.0,,65,850,True,False,False,False,False
+SYN-00338,Madhya Pradesh,Shivpuri,25.09039,77.65958,2.56,CR,7.1,9.2,28.2,439.0,,65,850,True,False,False,False,False
+SYN-00339,Madhya Pradesh,Shivpuri,25.80982,77.54694,3.01,CFR,7.2,7.5,27.9,394.0,,65,850,True,False,False,False,False
+SYN-00340,Madhya Pradesh,Shivpuri,25.88171,77.41377,0.99,IFR,7.1,9.8,23.8,367.0,,65,850,True,False,False,False,False
+SYN-00341,Madhya Pradesh,Shivpuri,25.469,77.81904,2.71,IFR,7.1,10.7,28.9,427.0,,65,850,True,False,False,False,False
+SYN-00342,Madhya Pradesh,Shivpuri,25.08703,78.19594,0.86,IFR,7.5,9.5,27.5,337.0,,65,850,True,False,False,False,False
+SYN-00343,Madhya Pradesh,Shivpuri,25.68762,78.13962,0.21,IFR,7.5,8.2,28.41,215.0,,65,850,True,False,False,True,False
+SYN-00344,Madhya Pradesh,Shivpuri,25.13489,77.87987,2.46,IFR,7.2,8.1,29.4,423.0,,65,850,True,False,False,False,False
+SYN-00345,Madhya Pradesh,Shivpuri,25.69829,77.79867,1.08,CR,7.2,9.6,28.2,412.0,,65,850,True,False,False,False,False
+SYN-00346,Madhya Pradesh,Shivpuri,25.47167,78.16009,2.87,IFR,7.5,9.1,27.6,274.0,,65,850,True,False,False,False,False
+SYN-00347,Madhya Pradesh,Shivpuri,25.22651,77.66479,2.81,CFR,7.3,8.8,31.8,434.0,,65,850,True,False,False,False,False
+SYN-00348,Madhya Pradesh,Shivpuri,25.32375,77.8765,3.19,CR,7.1,8.7,30.0,384.0,,65,850,True,False,False,False,False
+SYN-00349,Madhya Pradesh,Shivpuri,25.50005,77.33466,2.71,CFR,7.1,10.9,28.7,425.0,,65,850,True,False,False,False,False
+SYN-00350,Madhya Pradesh,Shivpuri,25.16121,77.97149,1.82,IFR,7.3,8.7,28.2,427.0,,65,850,True,False,False,False,False
+SYN-00351,Madhya Pradesh,Shivpuri,24.95188,77.63276,2.66,CFR,7.1,10.1,29.4,448.0,,65,850,True,False,False,False,False
+SYN-00352,Madhya Pradesh,Shivpuri,25.31463,78.04939,3.34,IFR,7.4,8.0,23.9,341.0,,65,850,True,False,False,False,False
+SYN-00353,Madhya Pradesh,Shivpuri,25.18335,78.32148,0.83,IFR,7.3,9.2,29.6,321.0,,65,850,True,False,False,False,False
+SYN-00354,Madhya Pradesh,Shivpuri,25.4679,77.92113,3.05,CR,7.1,13.6,29.9,428.0,,65,850,True,False,False,False,False
+SYN-00355,Madhya Pradesh,Shivpuri,25.2469,78.04902,1.3,IFR,7.3,11.9,25.6,380.0,,65,850,True,False,False,False,False
+SYN-00356,Madhya Pradesh,Shivpuri,25.15393,77.88192,2.82,CR,7.3,8.5,30.7,430.0,,65,850,True,False,False,False,False
+SYN-00357,Madhya Pradesh,Shivpuri,25.30018,77.74819,3.78,IFR,7.2,12.0,28.9,473.0,,65,850,True,False,False,False,False
+SYN-00358,Madhya Pradesh,Shivpuri,24.95885,78.16688,2.08,IFR,7.4,8.4,24.5,352.0,,65,850,True,False,False,False,False
+SYN-00359,Madhya Pradesh,Shivpuri,25.77069,77.81486,0.35,IFR,7.3,9.6,29.8,386.0,,65,850,True,False,False,False,False
+SYN-00360,Madhya Pradesh,Shivpuri,25.79511,77.63829,1.42,IFR,7.3,10.1,28.8,386.0,,65,850,True,False,False,False,False
+SYN-00361,Madhya Pradesh,Shivpuri,25.72953,77.61462,0.55,CFR,7.2,9.5,28.3,417.0,,65,850,True,False,False,False,False
+SYN-00362,Madhya Pradesh,Shivpuri,25.62382,77.59265,3.38,CR,7.2,8.8,28.2,432.0,,65,850,True,False,False,False,False
+SYN-00363,Madhya Pradesh,Shivpuri,25.17299,77.46716,3.81,CFR,7.2,8.5,28.3,430.0,,65,850,True,False,False,False,False
+SYN-00364,Madhya Pradesh,Shivpuri,25.34782,78.01214,2.75,IFR,7.4,10.0,25.4,327.0,,65,850,True,False,False,False,False
+SYN-00365,Madhya Pradesh,Shivpuri,25.64,77.64092,0.35,CFR,7.2,9.4,28.9,434.0,,65,850,True,False,False,False,False
+SYN-00366,Madhya Pradesh,Shivpuri,24.97582,77.55467,1.99,CR,7.2,8.0,27.5,458.0,,65,850,True,False,False,False,False
+SYN-00367,Madhya Pradesh,Shivpuri,25.5594,77.82993,3.68,IFR,7.2,11.8,27.2,357.0,,65,850,True,False,False,False,False
+SYN-00368,Madhya Pradesh,Shivpuri,25.77946,77.61024,2.42,CR,7.3,9.3,28.0,398.0,,65,850,True,False,False,False,False
+SYN-00369,Madhya Pradesh,Shivpuri,25.17291,77.43088,2.07,IFR,7.3,8.6,28.0,429.0,,65,850,True,False,False,False,False
+SYN-00370,Madhya Pradesh,Shivpuri,25.38364,77.16292,1.52,IFR,7.1,13.7,24.1,306.0,,65,850,True,False,False,False,False
+SYN-00371,Madhya Pradesh,Shivpuri,25.21362,78.24577,2.75,CFR,7.3,11.2,25.8,345.0,,65,850,True,False,False,False,False
+SYN-00372,Madhya Pradesh,Shivpuri,25.07964,77.41769,1.45,CR,7.2,8.5,27.6,395.0,,65,850,True,False,False,False,False
+SYN-00373,Madhya Pradesh,Shivpuri,25.44153,77.63689,1.3,CFR,7.1,9.1,29.2,484.0,,65,850,True,False,False,False,False
+SYN-00374,Madhya Pradesh,Shivpuri,25.5072,78.12952,3.29,CR,7.5,9.7,26.8,265.0,,65,850,True,False,False,False,False
+SYN-00375,Madhya Pradesh,Shivpuri,25.43696,77.99489,1.93,IFR,7.3,8.4,24.5,320.0,,65,850,True,False,False,False,False
+SYN-00376,Madhya Pradesh,Shivpuri,25.54623,77.89882,1.43,CFR,7.0,14.6,28.2,369.0,,65,850,True,False,False,False,False
+SYN-00377,Madhya Pradesh,Shivpuri,24.86648,78.02182,1.74,IFR,7.3,12.4,27.2,401.0,,65,850,True,False,False,False,False
+SYN-00378,Madhya Pradesh,Shivpuri,25.65927,77.40997,3.95,CR,7.1,9.8,28.9,425.0,,65,850,True,False,False,False,False
+SYN-00379,Madhya Pradesh,Shivpuri,25.2146,78.35391,2.26,IFR,7.4,8.4,28.3,305.0,,65,850,True,False,False,False,False
+SYN-00380,Madhya Pradesh,Shivpuri,25.40858,77.14567,0.91,IFR,7.2,12.1,29.8,500.0,,65,850,True,False,False,False,False
+SYN-00381,Madhya Pradesh,Shivpuri,25.32552,77.55984,3.07,CR,7.1,9.0,27.1,473.0,,65,850,True,False,False,False,False
+SYN-00382,Madhya Pradesh,Shivpuri,25.85274,77.4844,3.09,IFR,7.2,8.7,28.8,417.0,,65,850,True,False,False,False,False
+SYN-00383,Madhya Pradesh,Shivpuri,25.2935,77.65728,2.29,CFR,7.3,8.4,32.3,454.0,,65,850,True,False,False,False,False
+SYN-00384,Madhya Pradesh,Shivpuri,25.28287,77.89602,1.86,CR,7.2,13.7,29.5,410.0,,65,850,True,False,False,False,False
+SYN-00385,Madhya Pradesh,Shivpuri,24.95504,77.51467,0.66,CFR,7.1,8.3,26.9,456.0,,65,850,True,False,False,False,False
+SYN-00386,Madhya Pradesh,Shivpuri,25.4763,77.99961,2.51,IFR,7.4,7.9,26.2,306.0,,65,850,True,False,False,False,False
+SYN-00387,Madhya Pradesh,Shivpuri,25.16855,77.77933,0.8,CR,7.4,9.1,31.8,440.0,,65,850,True,False,False,False,False
+SYN-00388,Madhya Pradesh,Shivpuri,25.14804,78.12475,2.3,IFR,7.3,10.0,24.0,376.0,,65,850,True,False,False,False,False
+SYN-00389,Madhya Pradesh,Shivpuri,25.3728,77.18677,3.97,CFR,7.4,9.6,24.9,280.0,,65,850,True,False,False,False,False
+SYN-00390,Madhya Pradesh,Shivpuri,24.97482,77.63914,1.95,IFR,7.1,9.3,29.1,448.0,,65,850,True,False,False,False,False
+SYN-00391,Madhya Pradesh,Shivpuri,25.08391,77.78755,3.36,IFR,7.1,10.1,28.1,451.0,,65,850,True,False,False,False,False
+SYN-00392,Madhya Pradesh,Shivpuri,25.55727,77.82562,2.92,IFR,7.2,11.3,27.5,350.0,,65,850,True,False,False,False,False
+SYN-00393,Madhya Pradesh,Shivpuri,25.26437,77.52776,1.24,CFR,7.2,9.8,29.9,468.0,,65,850,True,False,False,False,False
+SYN-00394,Madhya Pradesh,Shivpuri,25.30669,78.09254,3.92,IFR,7.4,11.5,27.3,315.0,,65,850,True,False,False,False,False
+SYN-00395,Madhya Pradesh,Shivpuri,24.91934,77.68151,2.29,IFR,7.1,8.4,30.3,468.0,,65,850,True,False,False,False,False
+SYN-00396,Madhya Pradesh,Shivpuri,25.29919,77.46791,3.7,IFR,7.1,8.8,27.9,443.0,,65,850,True,False,False,False,False
+SYN-00397,Madhya Pradesh,Shivpuri,25.52711,77.60094,3.54,CFR,7.1,8.3,27.8,449.0,,65,850,True,False,False,False,False
+SYN-00398,Madhya Pradesh,Shivpuri,25.27298,77.43363,1.25,CFR,7.3,8.8,28.6,428.0,,65,850,True,False,False,False,False
+SYN-00399,Madhya Pradesh,Shivpuri,25.22631,78.0162,1.78,CFR,7.4,10.0,26.2,381.0,,65,850,True,False,False,False,False
+SYN-00400,Madhya Pradesh,Shivpuri,24.94961,77.64796,2.13,CFR,7.1,9.8,28.5,452.0,,65,850,True,False,False,False,False
+SYN-00401,Madhya Pradesh,Shivpuri,25.26803,77.64645,1.27,IFR,7.3,9.5,28.7,452.0,,65,850,True,False,False,False,False
+SYN-00402,Madhya Pradesh,Shivpuri,25.07468,78.09802,2.43,CFR,7.5,8.7,25.7,365.0,,65,850,True,False,False,False,False
+SYN-00403,Madhya Pradesh,Shivpuri,24.91774,78.14653,2.06,IFR,7.3,11.3,24.4,341.0,,65,850,True,False,False,False,False
+SYN-00404,Madhya Pradesh,Shivpuri,25.40871,77.9341,2.25,IFR,7.4,33.4,23.8,341.0,,65,850,True,False,False,False,False
+SYN-00405,Madhya Pradesh,Shivpuri,24.99482,77.95189,2.3,IFR,7.1,9.5,31.2,475.0,,65,850,True,False,False,False,False
+SYN-00406,Madhya Pradesh,Shivpuri,24.91663,78.11746,1.93,IFR,7.4,8.4,23.8,358.0,,65,850,True,False,False,False,False
+SYN-00407,Madhya Pradesh,Shivpuri,25.51393,78.39723,0.92,CR,7.4,8.6,26.1,271.0,,65,850,True,False,False,False,False
+SYN-00408,Madhya Pradesh,Shivpuri,25.44452,77.68762,2.37,IFR,7.3,8.5,27.1,457.0,,65,850,True,False,False,False,False
+SYN-00409,Madhya Pradesh,Shivpuri,25.57142,77.85582,3.15,IFR,7.1,15.6,28.4,374.0,,65,850,True,False,False,False,False
+SYN-00410,Madhya Pradesh,Shivpuri,25.53019,78.29641,3.03,CR,7.5,8.8,26.3,260.0,,65,850,True,False,False,False,False
+SYN-00411,Madhya Pradesh,Shivpuri,25.34204,77.6524,3.28,IFR,7.3,9.7,30.8,436.0,,65,850,True,False,False,False,False
+SYN-00412,Madhya Pradesh,Shivpuri,25.69593,77.93142,2.72,CFR,7.5,7.2,28.2,264.0,,65,850,True,False,False,False,False
+SYN-00413,Madhya Pradesh,Shivpuri,25.21559,77.87323,3.93,IFR,7.4,11.5,30.8,415.0,,65,850,True,False,False,False,False
+SYN-00414,Madhya Pradesh,Shivpuri,25.33428,77.12009,0.34,IFR,7.2,12.9,28.6,460.0,,65,850,True,False,False,False,False
+SYN-00415,Madhya Pradesh,Shivpuri,25.532,77.43008,2.44,CFR,7.1,8.6,29.1,447.0,,65,850,True,False,False,False,False
+SYN-00416,Madhya Pradesh,Shivpuri,25.25077,77.8771,3.52,IFR,7.2,8.6,29.3,390.0,,65,850,True,False,False,False,False
+SYN-00417,Madhya Pradesh,Shivpuri,24.87952,78.088,2.2,IFR,7.0,14.2,24.6,407.0,,65,850,True,False,False,False,False
+SYN-00418,Madhya Pradesh,Shivpuri,25.45308,78.33572,2.95,IFR,7.4,9.5,27.5,282.0,,65,850,True,False,False,False,False
+SYN-00419,Madhya Pradesh,Shivpuri,25.48913,77.28616,2.69,IFR,7.2,9.78,28.41,394.0,,65,850,True,False,True,True,False
+SYN-00420,Madhya Pradesh,Shivpuri,25.87038,77.7421,1.98,CFR,7.4,8.5,28.8,317.0,,65,850,True,False,False,False,False
+SYN-00421,Madhya Pradesh,Shivpuri,25.71175,77.66807,1.49,CR,7.3,9.8,26.3,403.0,,65,850,True,False,False,False,False
+SYN-00422,Madhya Pradesh,Shivpuri,25.22852,77.9,2.67,CFR,7.1,13.9,28.6,446.0,,65,850,True,False,False,False,False
+SYN-00423,Madhya Pradesh,Shivpuri,25.25394,78.34866,3.44,CFR,7.4,9.9,28.5,310.0,,65,850,True,False,False,False,False
+SYN-00424,Madhya Pradesh,Shivpuri,25.569,78.13976,1.64,IFR,7.5,9.1,27.3,261.0,,65,850,True,False,False,False,False
+SYN-00425,Madhya Pradesh,Shivpuri,25.19154,77.49935,2.93,CFR,7.3,8.8,29.2,464.0,,65,850,True,False,False,False,False
+SYN-00426,Madhya Pradesh,Shivpuri,25.25302,77.82451,3.52,IFR,7.3,7.5,28.7,402.0,,65,850,True,False,False,False,False
+SYN-00427,Madhya Pradesh,Shivpuri,25.75564,77.37899,0.46,CR,7.2,11.0,25.0,378.0,,65,850,True,False,False,False,False
+SYN-00428,Madhya Pradesh,Shivpuri,25.48664,78.41633,3.7,CFR,7.6,9.3,25.9,264.0,,65,850,True,False,False,False,False
+SYN-00429,Madhya Pradesh,Shivpuri,25.54431,77.46379,3.04,IFR,7.1,9.5,30.7,461.0,,65,850,True,False,False,False,False
+SYN-00430,Madhya Pradesh,Shivpuri,24.97456,77.97619,0.57,CR,7.2,9.7,32.6,484.0,,65,850,True,False,False,False,False
+SYN-00431,Madhya Pradesh,Shivpuri,24.92675,78.04419,3.52,IFR,7.2,8.0,30.6,441.0,,65,850,True,False,False,False,False
+SYN-00432,Madhya Pradesh,Shivpuri,25.53073,77.82591,2.84,CFR,7.1,16.6,28.6,414.0,,65,850,True,False,False,False,False
+SYN-00433,Madhya Pradesh,Shivpuri,24.97331,77.49036,0.37,CFR,7.2,8.8,29.3,450.0,,65,850,True,False,False,False,False
+SYN-00434,Madhya Pradesh,Shivpuri,25.8633,77.4618,1.31,IFR,7.2,9.4,24.3,405.0,,65,850,True,False,False,False,False
+SYN-00435,Madhya Pradesh,Shivpuri,25.66332,77.50966,0.75,IFR,7.2,7.9,29.1,421.0,,65,850,True,False,False,False,False
+SYN-00436,Madhya Pradesh,Shivpuri,25.38394,78.15964,2.35,CFR,7.5,9.2,27.3,295.0,,65,850,True,False,False,False,False
+SYN-00437,Madhya Pradesh,Shivpuri,25.63358,77.79802,0.85,IFR,7.1,14.7,28.5,369.0,,65,850,True,False,False,False,False
+SYN-00438,Madhya Pradesh,Shivpuri,25.55066,77.77874,3.51,CR,7.2,9.0,28.3,400.0,,65,850,True,False,False,False,False
+SYN-00439,Madhya Pradesh,Shivpuri,25.50321,78.28817,1.12,CFR,7.4,10.0,26.4,268.0,,65,850,True,False,False,False,False
+SYN-00440,Madhya Pradesh,Shivpuri,25.58407,77.27539,0.74,IFR,7.1,11.3,26.5,377.0,,65,850,True,False,False,False,False
+SYN-00441,Odisha,Kandhamal,20.48194,84.20536,1.17,IFR,5.8,30.0,32.0,519.0,,32,1450,True,False,False,False,False
+SYN-00442,Odisha,Kandhamal,20.13952,84.23583,0.24,CFR,5.9,42.7,31.5,683.0,,32,1450,True,False,False,False,False
+SYN-00443,Odisha,Kandhamal,20.13597,84.26363,3.62,CR,6.1,37.6,30.0,686.0,,32,1450,True,False,False,False,False
+SYN-00444,Odisha,Kandhamal,20.11564,84.23592,0.8,IFR,6.1,29.5,31.8,696.0,,32,1450,True,False,False,False,False
+SYN-00445,Odisha,Kandhamal,20.15181,84.23348,1.51,CR,5.8,29.5,28.7,753.0,,32,1450,True,False,False,False,False
+SYN-00446,Odisha,Kandhamal,20.12793,84.23822,2.63,IFR,6.1,31.92,30.6,684.0,,32,1450,True,False,True,True,False
+SYN-00447,Odisha,Kandhamal,20.13016,84.24561,1.15,CFR,5.6,35.0,29.0,713.0,,32,1450,True,False,False,False,False
+SYN-00448,Odisha,Kandhamal,20.48711,84.24627,0.96,IFR,5.99,25.8,31.7,490.0,,32,1450,True,True,False,False,False
+SYN-00449,Odisha,Kandhamal,20.49014,84.20582,2.04,IFR,6.3,25.1,30.6,653.46,,32,1450,True,False,False,True,True
+SYN-00450,Odisha,Kandhamal,20.1502,84.25295,2.37,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00451,Odisha,Kandhamal,20.48142,84.23086,3.97,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00452,Odisha,Kandhamal,20.45839,84.24421,3.92,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00453,Odisha,Kandhamal,20.12726,84.25072,1.24,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00454,Odisha,Kandhamal,20.10795,84.27217,2.81,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00455,Odisha,Kandhamal,20.15077,84.27325,0.39,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00456,Odisha,Kandhamal,20.10588,84.25011,2.09,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00457,Odisha,Kandhamal,20.46385,84.20741,1.29,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00458,Odisha,Kandhamal,20.44452,84.25326,2.51,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00459,Odisha,Kandhamal,20.14573,84.23043,2.62,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00460,Odisha,Kandhamal,20.15254,84.24851,2.78,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00461,Odisha,Kandhamal,20.48398,84.22833,2.7,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00462,Odisha,Kandhamal,20.49192,84.20403,2.59,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00463,Odisha,Kandhamal,20.48809,84.23264,2.66,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00464,Odisha,Kandhamal,20.109,84.23856,1.88,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00465,Odisha,Kandhamal,20.10958,84.23588,2.98,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00466,Odisha,Kandhamal,20.10639,84.26818,1.32,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00467,Odisha,Kandhamal,20.13522,84.22389,0.87,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00468,Odisha,Kandhamal,20.4818,84.21873,2.25,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00469,Odisha,Kandhamal,20.4762,84.21599,2.22,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00470,Odisha,Kandhamal,20.11311,84.25908,3.36,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00471,Odisha,Kandhamal,20.10665,84.25141,3.33,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00472,Odisha,Kandhamal,20.46408,84.22839,3.26,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00473,Odisha,Kandhamal,20.15598,84.2367,1.49,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00474,Odisha,Kandhamal,20.46228,84.20665,3.86,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00475,Odisha,Kandhamal,20.48258,84.23693,3.87,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00476,Odisha,Kandhamal,20.1102,84.24202,2.95,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00477,Odisha,Kandhamal,20.14693,84.23245,3.88,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00478,Odisha,Kandhamal,20.15596,84.24884,1.59,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00479,Odisha,Kandhamal,20.48682,84.20641,0.25,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00480,Odisha,Kandhamal,20.105,84.23389,1.93,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00481,Odisha,Kandhamal,20.49083,84.22004,2.75,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00482,Odisha,Kandhamal,20.13083,84.27641,3.33,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00483,Odisha,Kandhamal,20.11668,84.26368,0.61,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00484,Odisha,Kandhamal,20.45845,84.24956,0.3,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00485,Odisha,Kandhamal,20.48975,84.22092,2.33,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00486,Odisha,Kandhamal,20.48616,84.2266,1.04,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00487,Odisha,Kandhamal,20.14314,84.27131,3.33,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00488,Odisha,Kandhamal,20.12131,84.23309,1.35,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00489,Odisha,Kandhamal,20.12284,84.26605,0.73,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00490,Odisha,Kandhamal,20.14626,84.26226,1.36,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00491,Odisha,Kandhamal,20.46625,84.25674,0.57,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00492,Odisha,Kandhamal,20.47246,84.22035,0.72,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00493,Odisha,Kandhamal,20.46071,84.21896,2.75,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00494,Odisha,Kandhamal,20.13554,84.24601,3.79,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00495,Odisha,Kandhamal,20.12198,84.22529,3.02,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00496,Odisha,Kandhamal,20.1362,84.24649,1.78,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00497,Odisha,Kandhamal,20.44705,84.23743,2.06,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00498,Odisha,Kandhamal,20.13071,84.26349,3.82,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00499,Odisha,Kandhamal,20.49445,84.21071,1.61,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00500,Odisha,Kandhamal,20.10488,84.22663,3.81,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00501,Odisha,Kandhamal,20.12256,84.27427,0.58,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00502,Odisha,Kandhamal,20.47568,84.23967,2.27,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00503,Odisha,Kandhamal,20.12309,84.26421,1.56,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00504,Odisha,Kandhamal,20.47159,84.22449,0.92,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00505,Odisha,Kandhamal,20.11648,84.22913,3.42,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00506,Odisha,Kandhamal,20.46995,84.2239,2.72,CR,5.99,31.92,29.3,531.0,,32,1450,True,True,True,False,False
+SYN-00507,Odisha,Kandhamal,20.45714,84.21706,2.47,IFR,6.3,26.8,28.8,511.0,,32,1450,True,False,False,False,False
+SYN-00508,Odisha,Kandhamal,20.11459,84.25604,3.19,IFR,5.9,34.6,31.6,765.0,,32,1450,True,False,False,False,False
+SYN-00509,Odisha,Kandhamal,20.11381,84.23033,0.68,CR,6.1,28.6,33.9,684.0,,32,1450,True,False,False,False,False
+SYN-00510,Odisha,Kandhamal,20.46741,84.25153,0.46,CFR,6.4,27.6,29.6,506.0,,32,1450,True,False,False,False,False
+SYN-00511,Odisha,Kandhamal,20.15685,84.26677,0.99,IFR,5.9,32.3,29.3,675.0,,32,1450,True,False,False,False,False
+SYN-00512,Odisha,Kandhamal,20.13906,84.26132,3.5,IFR,5.9,36.6,29.1,735.0,,32,1450,True,False,False,False,False
+SYN-00513,Odisha,Kandhamal,20.15113,84.26897,0.76,CFR,5.7,29.0,30.4,908.0,,32,1450,True,False,False,False,False
+SYN-00514,Odisha,Kandhamal,20.48586,84.23047,0.21,CFR,5.99,31.92,30.6,468.0,,32,1450,True,True,True,True,False
+SYN-00515,Odisha,Kandhamal,20.4962,84.24577,0.75,IFR,6.3,34.9,28.2,544.0,,32,1450,True,False,False,False,False
+SYN-00516,Odisha,Kandhamal,20.48568,84.20442,1.15,IFR,5.8,28.9,31.7,547.0,,32,1450,True,False,False,False,False
+SYN-00517,Odisha,Kandhamal,20.12824,84.27608,2.71,IFR,5.7,36.2,31.4,786.0,,32,1450,True,False,False,False,False
+SYN-00518,Odisha,Kandhamal,20.47605,84.20766,0.26,CFR,6.0,27.2,28.6,500.0,,32,1450,True,False,False,False,False
+SYN-00519,Odisha,Kandhamal,20.1245,84.26171,1.1,IFR,5.9,35.4,30.1,700.0,,32,1450,True,False,False,False,False
+SYN-00520,Odisha,Kandhamal,20.13139,84.26453,0.86,IFR,6.1,36.8,29.0,666.0,,32,1450,True,False,False,False,False
+SYN-00521,Odisha,Kandhamal,20.44977,84.22012,3.02,IFR,6.1,28.7,29.4,587.0,,32,1450,True,False,False,False,False
+SYN-00522,Odisha,Kandhamal,20.4673,84.23973,3.03,IFR,6.5,24.4,31.6,495.0,,32,1450,True,False,False,False,False
+SYN-00523,Odisha,Kandhamal,20.10993,84.26777,3.16,IFR,6.0,30.6,30.5,701.0,,32,1450,True,False,False,False,False
+SYN-00524,Odisha,Kandhamal,20.48446,84.20997,0.61,IFR,5.8,38.5,32.0,593.0,,32,1450,True,False,False,False,False
+SYN-00525,Odisha,Kandhamal,20.4879,84.23098,3.79,IFR,6.4,20.7,33.0,461.0,,32,1450,True,False,False,False,False
+SYN-00526,Odisha,Kandhamal,20.11189,84.24042,3.18,CFR,6.0,29.8,30.9,715.0,,32,1450,True,False,False,False,False
+SYN-00527,Odisha,Kandhamal,20.46169,84.25381,2.18,IFR,6.2,23.9,33.7,507.0,,32,1450,True,False,False,False,False
+SYN-00528,Odisha,Kandhamal,20.14868,84.23653,3.86,IFR,5.7,31.9,29.5,839.0,,32,1450,True,False,False,False,False
+SYN-00529,Odisha,Kandhamal,20.1901,84.18901,2.02,IFR,6.2,27.6,32.5,670.0,,32,1450,True,False,False,False,False
+SYN-00530,Odisha,Kandhamal,19.91161,83.63273,2.81,IFR,6.0,34.7,32.2,747.0,,32,1450,True,False,False,False,False
+SYN-00531,Odisha,Kandhamal,20.1359,84.07819,3.66,IFR,5.8,28.4,31.5,628.0,,32,1450,True,False,False,False,False
+SYN-00532,Odisha,Kandhamal,20.25106,84.28237,0.51,CR,5.9,36.7,28.0,692.0,,32,1450,True,False,False,False,False
+SYN-00533,Odisha,Kandhamal,20.20444,84.41536,0.45,IFR,5.8,36.8,28.1,663.0,,32,1450,True,False,False,False,False
+SYN-00534,Odisha,Kandhamal,20.3027,84.12542,2.61,IFR,6.2,35.6,34.6,724.0,,32,1450,True,False,False,False,False
+SYN-00535,Odisha,Kandhamal,20.03935,84.33291,1.44,CFR,5.6,46.1,27.3,975.0,,32,1450,True,False,False,False,False
+SYN-00536,Odisha,Kandhamal,20.13081,84.1933,2.22,IFR,6.1,36.5,31.8,738.0,,32,1450,True,False,False,False,False
+SYN-00537,Odisha,Kandhamal,19.89684,84.1804,2.5,IFR,5.8,31.92,30.6,653.46,,32,1450,True,False,True,True,True
+SYN-00538,Odisha,Kandhamal,20.34072,84.37407,2.87,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00539,Odisha,Kandhamal,19.80067,84.02448,2.67,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00540,Odisha,Kandhamal,19.92257,84.15803,2.94,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00541,Odisha,Kandhamal,20.39598,84.27989,1.92,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00542,Odisha,Kandhamal,19.98765,83.63883,1.49,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00543,Odisha,Kandhamal,19.9299,84.10892,1.78,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00544,Odisha,Kandhamal,19.87192,84.00509,1.82,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00545,Odisha,Kandhamal,20.00293,83.81279,1.62,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00546,Odisha,Kandhamal,19.85036,84.16754,3.71,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00547,Odisha,Kandhamal,20.22024,83.8534,3.36,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00548,Odisha,Kandhamal,20.42845,83.83734,0.57,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00549,Odisha,Kandhamal,20.14954,84.03977,3.28,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00550,Odisha,Kandhamal,19.91803,84.04031,2.43,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00551,Odisha,Kandhamal,19.96783,83.73089,1.45,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00552,Odisha,Kandhamal,20.30622,84.45879,1.54,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00553,Odisha,Kandhamal,20.17421,84.00957,3.05,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00554,Odisha,Kandhamal,20.38846,84.45892,2.94,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00555,Odisha,Kandhamal,20.21192,83.9332,2.48,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00556,Odisha,Kandhamal,19.88567,84.33012,2.4,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00557,Odisha,Kandhamal,20.46413,83.92591,2.7,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00558,Odisha,Kandhamal,20.1331,84.05162,0.61,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00559,Odisha,Kandhamal,20.10353,83.85951,1.6,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00560,Odisha,Kandhamal,20.25232,83.99474,2.38,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00561,Odisha,Kandhamal,19.93984,84.05858,3.41,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00562,Odisha,Kandhamal,19.94928,83.82263,3.31,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00563,Odisha,Kandhamal,20.16932,84.39982,2.64,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00564,Odisha,Kandhamal,19.90821,84.2694,3.73,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00565,Odisha,Kandhamal,20.46622,84.13298,1.22,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00566,Odisha,Kandhamal,20.34415,84.28749,2.87,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00567,Odisha,Kandhamal,20.22018,84.34295,1.49,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00568,Odisha,Kandhamal,20.22679,84.28321,3.51,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00569,Odisha,Kandhamal,20.51609,84.17229,1.72,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00570,Odisha,Kandhamal,19.74162,83.8384,2.61,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00571,Odisha,Kandhamal,20.03238,84.2495,3.04,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00572,Odisha,Kandhamal,20.60519,84.34165,1.8,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00573,Odisha,Kandhamal,20.39782,84.4484,1.61,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00574,Odisha,Kandhamal,19.93657,83.72238,3.15,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00575,Odisha,Kandhamal,20.16162,84.21865,0.52,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00576,Odisha,Kandhamal,19.76604,83.83847,0.8,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00577,Odisha,Kandhamal,20.43841,83.88269,2.76,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00578,Odisha,Kandhamal,20.29392,84.28269,2.72,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00579,Odisha,Kandhamal,20.25661,84.25257,1.88,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00580,Odisha,Kandhamal,19.84839,83.70593,3.07,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00581,Odisha,Kandhamal,19.82408,84.10503,1.83,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00582,Odisha,Kandhamal,19.80433,83.81147,2.78,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00583,Odisha,Kandhamal,19.92757,84.2653,2.74,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00584,Odisha,Kandhamal,19.87864,84.36395,1.7,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00585,Odisha,Kandhamal,19.89772,84.374,0.23,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00586,Odisha,Kandhamal,20.37346,83.80997,1.0,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00587,Odisha,Kandhamal,20.06831,83.87405,1.17,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00588,Odisha,Kandhamal,20.10952,83.77595,0.23,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00589,Odisha,Kandhamal,19.84383,84.13639,0.87,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00590,Odisha,Kandhamal,20.16786,84.22695,2.87,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00591,Odisha,Kandhamal,19.63053,84.19216,3.37,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00592,Odisha,Kandhamal,20.37707,83.94708,0.47,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00593,Odisha,Kandhamal,19.79555,84.01706,0.36,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00594,Odisha,Kandhamal,20.59106,84.20084,3.7,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00595,Odisha,Kandhamal,20.38353,84.08001,2.39,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00596,Odisha,Kandhamal,19.69207,84.11581,2.9,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00597,Odisha,Kandhamal,20.18163,84.57526,0.64,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00598,Odisha,Kandhamal,19.69807,83.70652,1.43,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00599,Odisha,Kandhamal,20.08688,83.67345,2.55,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00600,Odisha,Kandhamal,19.78066,83.77684,3.7,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00601,Odisha,Kandhamal,20.45949,84.29981,3.41,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00602,Odisha,Kandhamal,20.4219,84.11561,2.44,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00603,Odisha,Kandhamal,19.66898,84.05833,1.7,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00604,Odisha,Kandhamal,19.93494,83.64958,1.49,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00605,Odisha,Kandhamal,19.86441,83.76679,0.84,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00606,Odisha,Kandhamal,20.41794,83.75312,0.63,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00607,Odisha,Kandhamal,20.34946,84.20933,3.64,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00608,Odisha,Kandhamal,20.02681,83.83089,2.96,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00609,Odisha,Kandhamal,20.57666,84.04441,3.3,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00610,Odisha,Kandhamal,19.92077,84.26374,0.76,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00611,Odisha,Kandhamal,20.26172,83.81805,2.49,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00612,Odisha,Kandhamal,19.72156,83.73524,2.69,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00613,Odisha,Kandhamal,20.41118,83.66329,3.14,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00614,Odisha,Kandhamal,20.03852,84.15702,3.07,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00615,Odisha,Kandhamal,20.10025,84.09538,1.91,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00616,Odisha,Kandhamal,20.31726,84.08259,2.35,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00617,Odisha,Kandhamal,19.84945,83.73445,2.57,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00618,Odisha,Kandhamal,20.55198,84.31958,2.58,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00619,Odisha,Kandhamal,20.07322,83.58549,0.46,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00620,Odisha,Kandhamal,19.64093,84.11167,1.35,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00621,Odisha,Kandhamal,20.13917,84.09365,0.41,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00622,Odisha,Kandhamal,19.73985,84.12098,1.38,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00623,Odisha,Kandhamal,20.15585,83.85414,0.42,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00624,Odisha,Kandhamal,19.80222,83.62299,0.49,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00625,Odisha,Kandhamal,19.6737,84.13238,3.45,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00626,Odisha,Kandhamal,20.47962,84.05298,2.13,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00627,Odisha,Kandhamal,20.14788,83.99086,2.31,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00628,Odisha,Kandhamal,19.63642,83.99453,3.6,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00629,Odisha,Kandhamal,20.47763,84.00062,3.28,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00630,Odisha,Kandhamal,20.01618,84.28526,1.42,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00631,Odisha,Kandhamal,20.40901,84.38691,0.77,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00632,Odisha,Kandhamal,20.43149,84.33511,0.59,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00633,Odisha,Kandhamal,20.54803,83.91345,1.51,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00634,Odisha,Kandhamal,20.31468,84.24102,2.12,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00635,Odisha,Kandhamal,20.3054,84.08454,1.14,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00636,Odisha,Kandhamal,19.77199,83.87558,1.87,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00637,Odisha,Kandhamal,20.16539,84.08231,0.8,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00638,Odisha,Kandhamal,20.32782,83.82168,1.27,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00639,Odisha,Kandhamal,20.16887,84.09015,1.49,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00640,Odisha,Kandhamal,19.8495,84.39445,3.2,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00641,Odisha,Kandhamal,19.8811,83.87383,0.45,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00642,Odisha,Kandhamal,20.43174,83.95356,2.78,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00643,Odisha,Kandhamal,19.68488,83.721,2.95,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00644,Odisha,Kandhamal,20.02327,84.30409,3.64,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00645,Odisha,Kandhamal,19.81555,83.75183,1.47,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00646,Odisha,Kandhamal,19.89639,84.04591,0.74,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00647,Odisha,Kandhamal,20.39297,84.38618,3.88,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00648,Odisha,Kandhamal,20.24295,83.84409,1.69,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00649,Odisha,Kandhamal,19.93164,84.22989,3.76,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00650,Odisha,Kandhamal,19.73245,83.82539,1.63,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00651,Odisha,Kandhamal,20.27448,84.49069,3.29,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00652,Odisha,Kandhamal,20.12809,83.96224,3.35,CR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00653,Odisha,Kandhamal,20.45392,84.2286,2.8,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00654,Odisha,Kandhamal,20.03905,83.8439,2.65,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00655,Odisha,Kandhamal,19.99429,83.65896,1.57,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00656,Odisha,Kandhamal,20.10327,84.31923,0.88,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00657,Odisha,Kandhamal,19.90927,84.42279,3.8,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00658,Odisha,Kandhamal,20.47635,84.26813,1.06,IFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00659,Odisha,Kandhamal,20.20306,84.49414,0.49,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00660,Odisha,Kandhamal,20.19733,84.55201,0.58,CFR,5.99,31.92,30.6,653.46,,32,1450,True,True,True,True,True
+SYN-00661,Odisha,Koraput,18.80397,82.71677,3.37,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00662,Odisha,Koraput,18.86792,82.6028,0.34,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00663,Odisha,Koraput,18.83799,82.59213,3.11,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00664,Odisha,Koraput,18.78578,82.72337,1.63,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00665,Odisha,Koraput,18.83018,82.71316,3.36,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00666,Odisha,Koraput,18.80889,82.74995,3.27,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00667,Odisha,Koraput,18.84937,82.60209,1.86,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00668,Odisha,Koraput,18.83361,82.75495,2.77,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00669,Odisha,Koraput,18.82333,82.74373,1.89,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00670,Odisha,Koraput,18.82056,82.741,3.04,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00671,Odisha,Koraput,18.88242,82.58281,2.23,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00672,Odisha,Koraput,18.85356,82.58182,3.27,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00673,Odisha,Koraput,18.84965,82.57242,3.37,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00674,Odisha,Koraput,18.85816,82.59635,3.8,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00675,Odisha,Koraput,18.87413,82.57029,1.95,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00676,Odisha,Koraput,18.80302,82.72535,1.65,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00677,Odisha,Koraput,18.82303,82.70388,3.87,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00678,Odisha,Koraput,18.84894,82.56359,3.24,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00679,Odisha,Koraput,18.80351,82.748,1.15,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00680,Odisha,Koraput,18.86273,82.60395,3.52,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00681,Odisha,Koraput,18.8469,82.59737,0.59,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00682,Odisha,Koraput,18.85788,82.59257,3.43,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00683,Odisha,Koraput,18.84214,82.5919,3.1,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00684,Odisha,Koraput,18.84294,82.60103,3.64,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00685,Odisha,Koraput,18.81129,82.74831,1.86,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00686,Odisha,Koraput,18.83404,82.73908,1.04,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00687,Odisha,Koraput,18.80527,82.7485,1.53,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00688,Odisha,Koraput,18.78667,82.71116,0.4,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00689,Odisha,Koraput,18.81031,82.72315,1.1,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00690,Odisha,Koraput,18.8686,82.55385,1.62,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00691,Odisha,Koraput,18.83364,82.58159,3.74,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00692,Odisha,Koraput,18.86193,82.56848,2.67,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00693,Odisha,Koraput,18.87653,82.60213,0.72,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00694,Odisha,Koraput,18.83257,82.73132,3.35,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00695,Odisha,Koraput,18.79336,82.73143,0.73,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00696,Odisha,Koraput,18.84744,82.57443,1.9,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00697,Odisha,Koraput,18.8848,82.57779,0.5,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00698,Odisha,Koraput,18.83647,82.7152,3.37,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00699,Odisha,Koraput,18.8183,82.74934,2.96,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00700,Odisha,Koraput,18.78805,82.72348,0.62,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00701,Odisha,Koraput,18.83603,82.55351,1.34,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00702,Odisha,Koraput,18.78747,82.74865,1.8,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00703,Odisha,Koraput,18.86356,82.59933,1.94,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00704,Odisha,Koraput,18.83132,82.75263,3.64,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00705,Odisha,Koraput,18.79442,82.74988,0.26,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00706,Odisha,Koraput,18.84764,82.6029,1.12,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00707,Odisha,Koraput,18.88156,82.58343,1.83,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00708,Odisha,Koraput,18.79269,82.74892,1.11,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00709,Odisha,Koraput,18.83492,82.7347,2.72,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00710,Odisha,Koraput,18.88316,82.56916,3.9,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00711,Odisha,Koraput,18.8136,82.74887,2.2,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00712,Odisha,Koraput,18.85373,82.59295,3.96,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00713,Odisha,Koraput,18.81004,82.75561,1.68,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00714,Odisha,Koraput,18.78828,82.71554,2.62,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00715,Odisha,Koraput,18.80139,82.74453,1.16,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00716,Odisha,Koraput,18.88532,82.57062,3.2,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00717,Odisha,Koraput,18.87531,82.57733,2.99,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00718,Odisha,Koraput,18.80221,82.75382,3.13,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00719,Odisha,Koraput,18.84303,82.58464,1.46,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00720,Odisha,Koraput,18.83763,82.58641,2.27,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00721,Odisha,Koraput,18.82151,82.70743,0.87,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00722,Odisha,Koraput,18.80352,82.74533,1.97,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00723,Odisha,Koraput,18.82294,82.7201,2.6,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00724,Odisha,Koraput,18.78794,82.75392,0.44,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00725,Odisha,Koraput,18.85244,82.56757,1.94,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00726,Odisha,Koraput,18.78771,82.72627,0.37,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00727,Odisha,Koraput,18.83858,82.55784,0.36,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00728,Odisha,Koraput,18.81523,82.74536,2.16,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00729,Odisha,Koraput,18.83367,82.57535,2.26,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00730,Odisha,Koraput,18.82214,82.73321,3.06,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00731,Odisha,Koraput,18.81389,82.71216,1.56,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00732,Odisha,Koraput,18.84215,82.56752,3.49,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00733,Odisha,Koraput,18.85963,82.55642,0.67,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00734,Odisha,Koraput,18.8479,82.56919,3.58,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00735,Odisha,Koraput,18.8025,82.75399,3.6,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00736,Odisha,Koraput,18.86507,82.56356,3.9,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00737,Odisha,Koraput,18.79032,82.70337,2.09,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00738,Odisha,Koraput,18.85094,82.58649,2.17,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00739,Odisha,Koraput,18.85677,82.57625,2.96,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00740,Odisha,Koraput,18.79922,82.73557,2.49,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00741,Odisha,Koraput,18.80887,82.71259,2.27,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00742,Odisha,Koraput,18.88531,82.56874,0.5,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00743,Odisha,Koraput,18.88526,82.59523,1.36,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00744,Odisha,Koraput,18.85331,82.59709,1.82,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00745,Odisha,Koraput,18.85271,82.60333,1.54,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00746,Odisha,Koraput,18.81498,82.73246,3.51,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00747,Odisha,Koraput,18.83446,82.72793,3.99,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00748,Odisha,Koraput,18.80668,82.71873,3.92,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00749,Odisha,Koraput,19.05807,83.01076,0.49,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00750,Odisha,Koraput,18.87198,82.75342,1.58,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00751,Odisha,Koraput,18.89737,82.41132,2.78,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00752,Odisha,Koraput,19.0281,83.04055,0.74,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00753,Odisha,Koraput,18.63887,82.72674,3.17,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00754,Odisha,Koraput,19.15974,82.76314,0.46,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00755,Odisha,Koraput,18.78207,83.00927,1.59,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00756,Odisha,Koraput,18.8963,83.11198,2.36,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00757,Odisha,Koraput,18.88568,82.56156,2.78,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00758,Odisha,Koraput,18.63768,82.99033,1.61,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00759,Odisha,Koraput,18.74901,82.43354,2.38,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00760,Odisha,Koraput,18.81903,82.77935,1.71,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00761,Odisha,Koraput,18.68396,82.85439,1.15,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00762,Odisha,Koraput,19.01133,82.60959,3.0,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00763,Odisha,Koraput,18.73878,82.87215,1.67,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00764,Odisha,Koraput,18.69353,82.50422,1.19,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00765,Odisha,Koraput,18.7212,82.36457,1.9,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00766,Odisha,Koraput,18.67632,82.72265,1.29,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00767,Odisha,Koraput,18.55677,83.01599,2.07,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00768,Odisha,Koraput,19.04926,82.48876,3.44,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00769,Odisha,Koraput,19.08836,82.24253,3.61,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00770,Odisha,Koraput,18.91589,82.95111,0.53,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00771,Odisha,Koraput,18.79831,82.30243,3.41,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00772,Odisha,Koraput,18.42198,82.62809,1.52,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00773,Odisha,Koraput,18.67028,82.94115,2.26,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00774,Odisha,Koraput,18.83074,82.35188,3.44,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00775,Odisha,Koraput,18.94355,82.60654,3.72,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00776,Odisha,Koraput,18.99126,82.36313,3.22,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00777,Odisha,Koraput,19.11121,82.2248,0.66,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00778,Odisha,Koraput,18.50008,82.69791,0.73,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00779,Odisha,Koraput,18.83552,82.93932,0.3,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00780,Odisha,Koraput,18.82553,82.90236,1.6,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00781,Odisha,Koraput,19.08468,82.55214,2.3,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00782,Odisha,Koraput,19.05283,82.91041,0.53,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00783,Odisha,Koraput,18.53526,83.02825,4.0,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00784,Odisha,Koraput,18.74916,83.01156,2.2,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00785,Odisha,Koraput,18.37528,82.64563,3.33,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00786,Odisha,Koraput,18.42329,82.59972,3.9,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00787,Odisha,Koraput,18.93222,82.93453,1.91,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00788,Odisha,Koraput,18.72793,82.82737,1.51,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00789,Odisha,Koraput,19.05431,82.27105,3.16,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00790,Odisha,Koraput,18.92347,82.74766,0.89,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00791,Odisha,Koraput,19.07904,82.64216,1.84,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00792,Odisha,Koraput,18.98143,82.6976,0.41,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00793,Odisha,Koraput,18.78816,83.10794,0.78,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00794,Odisha,Koraput,19.06239,83.12017,1.43,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00795,Odisha,Koraput,19.06172,82.57732,1.51,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00796,Odisha,Koraput,19.0692,82.22568,3.6,CFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00797,Odisha,Koraput,18.53552,83.08856,1.15,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00798,Odisha,Koraput,19.05582,82.553,2.29,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00799,Odisha,Koraput,18.82645,83.16749,1.35,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00800,Odisha,Koraput,18.94959,82.55573,2.11,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00801,Odisha,Koraput,18.40347,82.9309,3.78,IFR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00802,Odisha,Koraput,18.51886,82.55598,2.7,CR,6.05,27.48,27.0,772.27,,30,1400,True,True,True,True,True
+SYN-00803,Odisha,Koraput,18.56153,82.8059,2.5,CFR,6.05,27.48,27.0,974.0,,30,1400,True,True,True,True,False
+SYN-00804,Odisha,Koraput,18.52712,83.02568,2.34,CFR,6.0,29.5,27.8,924.0,,30,1400,True,False,False,False,False
+SYN-00805,Odisha,Koraput,19.09721,82.44499,0.31,IFR,6.0,21.4,26.4,598.0,,30,1400,True,False,False,False,False
+SYN-00806,Odisha,Koraput,19.20223,82.21612,2.64,CR,6.5,17.3,30.1,576.0,,30,1400,True,False,False,False,False
+SYN-00807,Odisha,Koraput,19.1053,82.25822,2.67,CFR,6.5,20.9,30.8,557.0,,30,1400,True,False,False,False,False
+SYN-00808,Odisha,Koraput,18.95023,82.4215,1.78,CR,6.3,20.1,25.7,554.0,,30,1400,True,False,False,False,False
+SYN-00809,Odisha,Koraput,19.00043,83.19113,2.09,CR,5.6,40.8,26.0,956.0,,30,1400,True,False,False,False,False
+SYN-00810,Odisha,Koraput,18.72774,82.98869,1.3,CFR,5.7,32.4,29.9,1178.0,,30,1400,True,False,False,False,False
+SYN-00811,Odisha,Koraput,18.50646,82.8573,2.04,CFR,6.1,30.6,25.9,904.0,,30,1400,True,False,False,False,False
+SYN-00812,Odisha,Koraput,18.69018,82.6403,2.8,IFR,6.1,21.6,28.8,886.0,,30,1400,True,False,False,False,False
+SYN-00813,Odisha,Koraput,19.11938,82.93204,0.48,IFR,6.1,25.8,25.0,820.0,,30,1400,True,False,False,False,False
+SYN-00814,Odisha,Koraput,18.75396,82.21329,1.87,IFR,6.5,24.7,25.8,589.0,,30,1400,True,False,False,False,False
+SYN-00815,Odisha,Koraput,19.17573,82.45946,0.98,CR,6.3,20.2,29.3,561.0,,30,1400,True,False,False,False,False
+SYN-00816,Odisha,Koraput,19.18968,82.58025,1.39,CR,6.2,20.0,27.4,570.0,,30,1400,True,False,False,False,False
+SYN-00817,Odisha,Koraput,18.97161,83.11887,2.99,CFR,5.9,28.8,25.8,1029.0,,30,1400,True,False,False,False,False
+SYN-00818,Odisha,Koraput,18.69666,83.06142,3.91,IFR,5.5,34.9,25.9,1117.0,,30,1400,True,False,False,False,False
+SYN-00819,Odisha,Koraput,18.59618,82.97261,1.61,CR,5.6,33.0,26.2,1288.0,,30,1400,True,False,False,False,False
+SYN-00820,Odisha,Koraput,18.77282,82.17371,1.41,IFR,6.2,29.7,26.9,595.0,,30,1400,True,False,False,False,False
+SYN-00821,Odisha,Koraput,18.66778,82.37915,1.22,IFR,6.1,19.5,27.0,561.0,,30,1400,True,False,False,False,False
+SYN-00822,Odisha,Koraput,18.80462,82.85798,0.57,IFR,5.7,31.4,26.8,1018.0,,30,1400,True,False,False,False,False
+SYN-00823,Odisha,Koraput,18.58167,82.73485,1.66,CR,6.1,26.6,25.4,935.0,,30,1400,True,False,False,False,False
+SYN-00824,Odisha,Koraput,18.36162,82.70061,1.14,CFR,5.6,34.0,31.2,959.0,,30,1400,True,False,False,False,False
+SYN-00825,Odisha,Koraput,18.92737,82.35852,0.81,IFR,6.2,29.6,27.0,583.0,,30,1400,True,False,False,False,False
+SYN-00826,Odisha,Koraput,18.88868,82.2649,2.4,IFR,6.3,24.9,25.3,534.0,,30,1400,True,False,False,False,False
+SYN-00827,Odisha,Koraput,19.17211,82.30089,3.1,IFR,6.6,36.5,30.6,552.0,,30,1400,True,False,False,False,False
+SYN-00828,Odisha,Koraput,18.89328,82.45386,2.16,IFR,6.3,20.6,25.6,556.0,,30,1400,True,False,False,False,False
+SYN-00829,Odisha,Koraput,18.60984,82.42244,1.37,IFR,5.7,27.3,28.0,859.0,,30,1400,True,False,False,False,False
+SYN-00830,Odisha,Koraput,18.54334,82.61652,3.79,IFR,6.1,18.2,27.8,880.0,,30,1400,True,False,False,False,False
+SYN-00831,Odisha,Koraput,18.4718,83.01955,3.87,IFR,6.1,29.8,28.6,659.0,,30,1400,True,False,False,False,False
+SYN-00832,Odisha,Koraput,18.94251,82.9611,1.54,IFR,6.1,32.2,26.8,936.0,,30,1400,True,False,False,False,False
+SYN-00833,Odisha,Koraput,19.05621,83.01444,2.08,CFR,6.1,27.0,28.4,905.0,,30,1400,True,False,False,False,False
+SYN-00834,Odisha,Koraput,18.96965,82.59887,2.69,IFR,6.4,19.1,28.8,607.0,,30,1400,True,False,False,False,False
+SYN-00835,Odisha,Koraput,18.9921,83.11797,2.24,CFR,6.1,24.6,25.7,901.0,,30,1400,True,False,False,False,False
+SYN-00836,Odisha,Koraput,18.7689,82.27945,1.84,CFR,6.4,20.4,26.5,602.0,,30,1400,True,False,False,False,False
+SYN-00837,Odisha,Koraput,18.96129,82.6747,2.96,CFR,5.8,27.4,27.5,646.0,,30,1400,True,False,False,False,False
+SYN-00838,Odisha,Koraput,18.38882,82.92466,1.59,IFR,5.8,31.2,28.7,722.0,,30,1400,True,False,False,False,False
+SYN-00839,Odisha,Koraput,18.92534,82.63695,2.37,IFR,6.2,33.1,26.4,1013.0,,30,1400,True,False,False,False,False
+SYN-00840,Odisha,Koraput,18.62206,82.87346,2.3,IFR,6.0,24.8,26.4,872.0,,30,1400,True,False,False,False,False
+SYN-00841,Odisha,Koraput,18.79184,82.20153,2.12,CFR,6.0,26.9,25.8,595.0,,30,1400,True,False,False,False,False
+SYN-00842,Odisha,Koraput,18.84617,82.88733,1.26,CFR,5.7,32.0,26.3,883.0,,30,1400,True,False,False,False,False
+SYN-00843,Odisha,Koraput,18.92926,83.1253,2.79,IFR,5.9,34.9,26.8,555.0,,30,1400,True,False,False,False,False
+SYN-00844,Odisha,Koraput,18.89711,83.21694,3.91,IFR,6.2,24.4,25.6,287.0,,30,1400,True,False,False,False,False
+SYN-00845,Odisha,Koraput,18.7561,82.4906,3.22,IFR,5.8,27.3,26.8,681.0,,30,1400,True,False,False,False,False
+SYN-00846,Odisha,Koraput,18.98677,82.76701,3.77,CFR,5.9,24.9,27.0,797.0,,30,1400,True,False,False,False,False
+SYN-00847,Odisha,Koraput,18.3501,82.74755,0.96,IFR,5.6,32.7,30.9,961.0,,30,1400,True,False,False,False,False
+SYN-00848,Odisha,Koraput,18.83247,82.7538,2.1,IFR,6.2,25.9,24.7,772.0,,30,1400,True,False,False,False,False
+SYN-00849,Odisha,Koraput,19.10002,82.265,0.72,IFR,6.5,19.5,30.0,546.0,,30,1400,True,False,False,False,False
+SYN-00850,Odisha,Koraput,18.60339,82.84528,2.0,IFR,6.1,26.6,24.4,964.0,,30,1400,True,False,False,False,False
+SYN-00851,Odisha,Koraput,19.00169,82.99761,2.5,IFR,6.1,27.2,28.2,797.0,,30,1400,True,False,False,False,False
+SYN-00852,Odisha,Koraput,18.8672,82.76314,1.45,CR,6.1,25.3,25.7,770.0,,30,1400,True,False,False,False,False
+SYN-00853,Odisha,Koraput,18.65353,82.75575,0.82,CFR,6.1,26.9,26.3,866.0,,30,1400,True,False,False,False,False
+SYN-00854,Odisha,Koraput,18.85465,82.80297,3.01,IFR,5.9,35.4,26.2,928.0,,30,1400,True,False,False,False,False
+SYN-00855,Odisha,Koraput,18.54775,82.45845,1.48,CFR,6.2,31.8,27.1,931.0,,30,1400,True,False,False,False,False
+SYN-00856,Odisha,Koraput,18.44078,82.76938,2.22,CR,6.1,35.5,26.7,1187.0,,30,1400,True,False,False,False,False
+SYN-00857,Odisha,Koraput,18.77479,83.16398,1.34,CFR,5.7,44.6,27.2,843.0,,30,1400,True,False,False,False,False
+SYN-00858,Odisha,Koraput,18.87294,82.60906,1.6,CR,6.2,19.8,26.9,643.0,,30,1400,True,False,False,False,False
+SYN-00859,Odisha,Koraput,18.91982,83.19917,3.92,CR,5.9,32.7,25.9,415.0,,30,1400,True,False,False,False,False
+SYN-00860,Odisha,Koraput,18.69157,82.66723,3.23,CR,6.2,24.1,25.7,882.0,,30,1400,True,False,False,False,False
+SYN-00861,Odisha,Koraput,18.54713,82.89906,2.81,IFR,6.1,34.5,25.7,947.0,,30,1400,True,False,False,False,False
+SYN-00862,Odisha,Koraput,18.97957,83.07573,2.0,CFR,6.2,28.3,26.1,914.0,,30,1400,True,False,False,False,False
+SYN-00863,Odisha,Koraput,18.94673,82.24832,3.18,CFR,5.8,26.7,24.5,536.0,,30,1400,True,False,False,False,False
+SYN-00864,Odisha,Koraput,18.40131,83.02228,2.4,CR,6.1,29.2,29.0,541.0,,30,1400,True,False,False,False,False
+SYN-00865,Odisha,Koraput,18.95962,83.13064,2.42,IFR,6.0,28.2,27.5,945.0,,30,1400,True,False,False,False,False
+SYN-00866,Odisha,Koraput,19.01041,83.26817,2.59,CR,6.0,29.9,28.2,595.0,,30,1400,True,False,False,False,False
+SYN-00867,Odisha,Koraput,18.81515,83.03668,3.4,IFR,5.8,31.6,27.9,664.0,,30,1400,True,False,False,False,False
+SYN-00868,Odisha,Koraput,18.6934,82.19198,2.79,IFR,6.4,20.6,26.1,619.0,,30,1400,True,False,False,False,False
+SYN-00869,Odisha,Koraput,18.73792,82.56836,3.8,IFR,6.0,23.2,27.9,865.0,,30,1400,True,False,False,False,False
+SYN-00870,Odisha,Koraput,18.60567,82.84329,0.27,IFR,6.0,31.2,25.0,916.0,,30,1400,True,False,False,False,False
+SYN-00871,Odisha,Koraput,18.96164,82.85263,0.78,CR,5.6,27.9,27.4,886.0,,30,1400,True,False,False,False,False
+SYN-00872,Odisha,Koraput,18.74716,82.39321,1.76,CFR,6.4,19.2,26.9,594.0,,30,1400,True,False,False,False,False
+SYN-00873,Odisha,Koraput,18.71001,82.41468,3.7,CFR,6.3,17.8,27.2,598.0,,30,1400,True,False,False,False,False
+SYN-00874,Odisha,Koraput,18.38753,82.59875,3.0,IFR,6.05,27.48,27.0,849.0,,30,1400,True,True,True,True,False
+SYN-00875,Odisha,Koraput,19.09668,83.32766,0.72,IFR,5.8,32.3,26.3,851.0,,30,1400,True,False,False,False,False
+SYN-00876,Odisha,Koraput,18.65748,83.07436,1.44,CR,5.6,31.9,25.4,800.0,,30,1400,True,False,False,False,False
+SYN-00877,Odisha,Koraput,18.65436,82.5174,2.2,IFR,6.2,28.4,26.0,912.0,,30,1400,True,False,False,False,False
+SYN-00878,Odisha,Koraput,18.509,83.04727,0.86,CFR,5.7,32.9,27.2,711.0,,30,1400,True,False,False,False,False
+SYN-00879,Odisha,Koraput,19.14125,82.75706,1.5,IFR,5.9,27.0,26.0,664.0,,30,1400,True,False,False,False,False
+SYN-00880,Odisha,Koraput,19.0434,82.32797,3.13,CR,6.4,19.3,25.2,551.0,,30,1400,True,False,False,False,False
+SYN-00881,Telangana,Adilabad,19.69452,78.50672,2.64,CR,7.1,11.7,36.9,250.0,,45,1100,True,False,False,False,False
+SYN-00882,Telangana,Adilabad,19.11977,78.36477,2.52,IFR,7.0,12.5,40.2,358.0,,45,1100,True,False,False,False,False
+SYN-00883,Telangana,Adilabad,19.09067,78.35287,1.14,CR,7.04,15.64,38.34,337.0,,45,1100,True,True,True,True,False
+SYN-00884,Telangana,Adilabad,19.66292,78.51875,1.05,CFR,7.04,15.64,38.34,260.0,,45,1100,True,True,True,True,False
+SYN-00885,Telangana,Adilabad,19.11294,78.3361,1.33,IFR,7.1,14.1,37.2,339.0,,45,1100,True,False,False,False,False
+SYN-00886,Telangana,Adilabad,19.10495,78.34964,0.99,CR,7.04,15.64,38.34,349.0,,45,1100,True,True,True,True,False
+SYN-00887,Telangana,Adilabad,19.68255,78.53251,1.4,IFR,7.04,15.64,38.34,245.0,,45,1100,True,True,True,True,False
+SYN-00888,Telangana,Adilabad,19.65113,78.55335,3.75,CFR,7.2,11.6,34.9,260.0,,45,1100,True,False,False,False,False
+SYN-00889,Telangana,Adilabad,19.65558,78.52171,1.24,IFR,7.04,15.64,38.34,262.0,,45,1100,True,True,True,True,False
+SYN-00890,Telangana,Adilabad,19.69435,78.50308,2.77,IFR,7.2,11.8,37.1,255.0,,45,1100,True,False,False,False,False
+SYN-00891,Telangana,Adilabad,19.11885,78.36227,3.92,CFR,7.0,13.7,40.3,352.0,,45,1100,True,False,False,False,False
+SYN-00892,Telangana,Adilabad,19.65408,78.55609,3.83,CFR,7.1,11.7,34.3,257.0,,45,1100,True,False,False,False,False
+SYN-00893,Telangana,Adilabad,19.09957,78.32623,1.3,IFR,7.04,15.64,38.34,327.0,,45,1100,True,True,True,True,False
+SYN-00894,Telangana,Adilabad,19.68143,78.50802,2.91,IFR,7.04,15.64,38.34,252.0,,45,1100,True,True,True,True,False
+SYN-00895,Telangana,Adilabad,19.69145,78.53107,1.88,IFR,7.1,13.9,38.1,238.0,,45,1100,True,False,False,False,False
+SYN-00896,Telangana,Adilabad,19.09776,78.36339,2.02,IFR,7.1,16.1,39.0,349.0,,45,1100,True,False,False,False,False
+SYN-00897,Telangana,Adilabad,19.67029,78.53741,2.25,CFR,7.04,15.64,38.34,262.0,,45,1100,True,True,True,True,False
+SYN-00898,Telangana,Adilabad,19.07704,78.35366,2.85,IFR,7.2,12.8,39.0,335.0,,45,1100,True,False,False,False,False
+SYN-00899,Telangana,Adilabad,19.10877,78.33006,2.54,CR,7.1,13.8,39.4,336.0,,45,1100,True,False,False,False,False
+SYN-00900,Telangana,Adilabad,19.08709,78.34001,1.12,CR,7.04,15.64,38.34,332.0,,45,1100,True,True,True,True,False
+SYN-00901,Telangana,Adilabad,19.11084,78.36271,2.22,CR,7.1,12.0,39.5,351.0,,45,1100,True,False,False,False,False
+SYN-00902,Telangana,Adilabad,19.09745,78.33562,0.4,IFR,7.1,13.3,40.2,331.0,,45,1100,True,False,False,False,False
+SYN-00903,Telangana,Adilabad,19.65035,78.54459,2.93,IFR,7.1,11.6,39.8,269.0,,45,1100,True,False,False,False,False
+SYN-00904,Telangana,Adilabad,19.65139,78.51188,3.13,IFR,7.2,13.5,38.5,262.0,,45,1100,True,False,False,False,False
+SYN-00905,Telangana,Adilabad,19.08996,78.32952,2.29,CFR,7.1,13.9,38.3,327.0,,45,1100,True,False,False,False,False
+SYN-00906,Telangana,Adilabad,19.12509,78.33421,1.75,CFR,7.0,14.4,38.0,348.0,,45,1100,True,False,False,False,False
+SYN-00907,Telangana,Adilabad,19.09802,78.36903,3.54,IFR,7.1,12.4,39.4,346.0,,45,1100,True,False,False,False,False
+SYN-00908,Telangana,Adilabad,19.65151,78.54005,0.96,CFR,7.1,27.5,40.5,267.0,,45,1100,True,False,False,False,False
+SYN-00909,Telangana,Adilabad,19.65461,78.54925,1.42,CR,7.1,33.9,35.5,259.0,,45,1100,True,False,False,False,False
+SYN-00910,Telangana,Adilabad,19.64793,78.5164,3.65,IFR,7.2,14.7,37.5,265.0,,45,1100,True,False,False,False,False
+SYN-00911,Telangana,Adilabad,19.0944,78.32564,2.38,IFR,7.04,15.64,38.34,330.0,,45,1100,True,True,True,True,False
+SYN-00912,Telangana,Adilabad,19.08705,78.3765,2.95,CFR,7.2,12.0,37.9,340.0,,45,1100,True,False,False,False,False
+SYN-00913,Telangana,Adilabad,19.69441,78.54915,3.67,IFR,7.1,11.9,37.5,250.0,,45,1100,True,False,False,False,False
+SYN-00914,Telangana,Adilabad,19.64812,78.5085,3.55,IFR,7.2,13.6,38.6,269.0,,45,1100,True,False,False,False,False
+SYN-00915,Telangana,Adilabad,19.64956,78.50633,3.69,CFR,7.2,11.6,37.7,273.0,,45,1100,True,False,False,False,False
+SYN-00916,Telangana,Adilabad,19.65006,78.54748,1.71,IFR,7.1,11.8,36.4,261.0,,45,1100,True,False,False,False,False
+SYN-00917,Telangana,Adilabad,19.11006,78.37363,3.76,CFR,7.0,12.3,39.1,348.0,,45,1100,True,False,False,False,False
+SYN-00918,Telangana,Adilabad,19.67445,78.51698,3.72,CFR,7.1,11.7,38.2,263.0,,45,1100,True,False,False,False,False
+SYN-00919,Telangana,Adilabad,19.64418,78.50648,0.24,CR,7.2,13.6,39.2,278.0,,45,1100,True,False,False,False,False
+SYN-00920,Telangana,Adilabad,19.1167,78.32797,0.61,CFR,7.1,14.7,38.2,339.0,,45,1100,True,False,False,False,False
+SYN-00921,Telangana,Adilabad,19.07962,78.37388,1.28,CFR,7.1,11.9,42.6,333.0,,45,1100,True,False,False,False,False
+SYN-00922,Telangana,Adilabad,19.65207,78.53399,2.26,IFR,7.1,12.5,39.3,274.0,,45,1100,True,False,False,False,False
+SYN-00923,Telangana,Adilabad,19.09979,78.34367,3.77,CFR,7.04,15.64,38.34,337.0,,45,1100,True,True,True,True,False
+SYN-00924,Telangana,Adilabad,19.08233,78.33459,1.98,IFR,7.2,15.0,39.8,319.0,,45,1100,True,False,False,False,False
+SYN-00925,Telangana,Adilabad,19.65785,78.52708,0.63,IFR,7.04,15.64,38.34,265.0,,45,1100,True,True,True,True,False
+SYN-00926,Telangana,Adilabad,19.64487,78.53644,1.94,IFR,7.0,33.9,39.2,291.0,,45,1100,True,False,False,False,False
+SYN-00927,Telangana,Adilabad,19.67795,78.52994,0.91,CR,7.04,15.64,38.34,248.0,,45,1100,True,True,True,True,False
+SYN-00928,Telangana,Adilabad,19.07629,78.33811,3.2,CR,7.2,14.2,39.0,323.0,,45,1100,True,False,False,False,False
+SYN-00929,Telangana,Adilabad,19.66564,78.5377,3.08,IFR,7.04,15.64,38.34,263.0,,45,1100,True,True,True,True,False
+SYN-00930,Telangana,Adilabad,19.67706,78.54632,3.45,CFR,7.04,15.64,38.34,250.0,,45,1100,True,True,True,True,False
+SYN-00931,Telangana,Adilabad,19.69643,78.54522,3.34,IFR,7.1,12.5,36.6,243.0,,45,1100,True,False,False,False,False
+SYN-00932,Telangana,Adilabad,19.0989,78.3652,0.53,CR,7.0,12.4,39.5,348.0,,45,1100,True,False,False,False,False
+SYN-00933,Telangana,Adilabad,19.12228,78.35013,0.9,IFR,7.0,15.7,39.3,380.0,,45,1100,True,False,False,False,False
+SYN-00934,Telangana,Adilabad,19.0876,78.32441,1.43,IFR,7.04,15.64,38.34,327.0,,45,1100,True,True,True,True,False
+SYN-00935,Telangana,Adilabad,19.64458,78.54678,1.19,IFR,7.1,34.6,39.0,268.0,,45,1100,True,False,False,False,False
+SYN-00936,Telangana,Adilabad,19.07616,78.37654,3.06,CFR,7.1,11.7,41.1,335.0,,45,1100,True,False,False,False,False
+SYN-00937,Telangana,Adilabad,19.11441,78.37698,1.35,CR,7.0,12.2,39.3,348.0,,45,1100,True,False,False,False,False
+SYN-00938,Telangana,Adilabad,19.64841,78.53847,0.24,CR,7.1,11.9,40.1,273.0,,45,1100,True,False,False,False,False
+SYN-00939,Telangana,Adilabad,19.10182,78.36573,2.83,IFR,7.1,12.8,38.6,346.0,,45,1100,True,False,False,False,False
+SYN-00940,Telangana,Adilabad,19.68426,78.55418,0.65,IFR,7.1,11.7,38.2,248.0,,45,1100,True,False,False,False,False
+SYN-00941,Telangana,Adilabad,19.09216,78.36832,1.74,IFR,7.1,13.1,40.0,344.0,,45,1100,True,False,False,False,False
+SYN-00942,Telangana,Adilabad,19.65251,78.535,3.6,CR,7.1,12.8,40.4,273.0,,45,1100,True,False,False,False,False
+SYN-00943,Telangana,Adilabad,19.12235,78.32452,1.38,IFR,7.1,12.9,39.0,354.0,,45,1100,True,False,False,False,False
+SYN-00944,Telangana,Adilabad,19.12417,78.35343,3.68,IFR,7.0,17.0,40.4,381.0,,45,1100,True,False,False,False,False
+SYN-00945,Telangana,Adilabad,19.68818,78.54676,2.54,IFR,7.1,12.6,38.2,243.0,,45,1100,True,False,False,False,False
+SYN-00946,Telangana,Adilabad,19.10227,78.33248,0.71,IFR,7.1,13.5,39.9,333.0,,45,1100,True,False,False,False,False
+SYN-00947,Telangana,Adilabad,19.64787,78.51556,3.04,CR,7.2,14.7,37.5,270.0,,45,1100,True,False,False,False,False
+SYN-00948,Telangana,Adilabad,19.64408,78.52881,1.78,IFR,7.1,33.7,36.8,271.0,,45,1100,True,False,False,False,False
+SYN-00949,Telangana,Adilabad,19.12257,78.33388,1.99,IFR,7.1,15.0,37.7,341.0,,45,1100,True,False,False,False,False
+SYN-00950,Telangana,Adilabad,19.6614,78.51258,2.72,IFR,7.1,11.3,37.9,254.0,,45,1100,True,False,False,False,False
+SYN-00951,Telangana,Adilabad,19.07622,78.33098,1.14,CFR,7.2,15.0,38.6,315.0,,45,1100,True,False,False,False,False
+SYN-00952,Telangana,Adilabad,19.68482,78.54871,3.52,IFR,7.1,12.9,39.2,243.0,,45,1100,True,False,False,False,False
+SYN-00953,Telangana,Adilabad,19.12487,78.34317,1.9,CR,7.0,14.6,38.4,356.0,,45,1100,True,False,False,False,False
+SYN-00954,Telangana,Adilabad,19.10464,78.34117,0.5,CR,7.04,15.64,38.34,343.0,,45,1100,True,True,True,True,False
+SYN-00955,Telangana,Adilabad,19.08037,78.33151,0.43,IFR,7.1,14.4,38.8,318.0,,45,1100,True,False,False,False,False
+SYN-00956,Telangana,Adilabad,19.11576,78.37488,2.12,CR,7.0,15.64,40.1,351.0,,45,1100,True,False,True,False,False
+SYN-00957,Telangana,Adilabad,19.08241,78.37531,0.77,IFR,7.2,11.5,42.3,338.0,,45,1100,True,False,False,False,False
+SYN-00958,Telangana,Adilabad,19.08505,78.3548,2.18,IFR,7.1,11.6,37.1,328.0,,45,1100,True,False,False,False,False
+SYN-00959,Telangana,Adilabad,19.66343,78.54264,0.98,CR,7.04,15.64,38.34,262.0,,45,1100,True,True,True,True,False
+SYN-00960,Telangana,Adilabad,19.07988,78.36236,0.55,IFR,7.1,11.8,40.5,335.0,,45,1100,True,False,False,False,False
+SYN-00961,Telangana,Adilabad,19.11894,78.36462,3.27,IFR,7.0,12.5,40.2,358.0,,45,1100,True,False,False,False,False
+SYN-00962,Telangana,Adilabad,19.65283,78.52018,2.15,IFR,7.04,15.64,38.34,262.0,,45,1100,True,True,True,True,False
+SYN-00963,Telangana,Adilabad,19.67754,78.50862,0.42,IFR,7.1,12.9,38.6,252.0,,45,1100,True,False,False,False,False
+SYN-00964,Telangana,Adilabad,19.08059,78.36325,3.27,CR,7.1,12.2,40.3,339.0,,45,1100,True,False,False,False,False
+SYN-00965,Telangana,Adilabad,19.66173,78.52025,1.7,CFR,7.04,15.64,38.34,261.0,,45,1100,True,True,True,True,False
+SYN-00966,Telangana,Adilabad,19.68737,78.53918,3.03,CR,7.2,12.1,39.2,247.0,,45,1100,True,False,False,False,False
+SYN-00967,Telangana,Adilabad,19.09712,78.33732,0.37,IFR,7.04,15.64,38.34,331.0,,45,1100,True,True,True,True,False
+SYN-00968,Telangana,Adilabad,19.68043,78.52193,0.44,CFR,7.04,15.64,38.34,252.0,,45,1100,True,True,True,True,False
+SYN-00969,Telangana,Adilabad,19.22413,77.86795,3.75,IFR,7.3,12.3,41.5,388.0,,45,1100,True,False,False,False,False
+SYN-00970,Telangana,Adilabad,19.77076,78.6797,3.75,IFR,7.2,12.7,41.9,219.0,,45,1100,True,False,False,False,False
+SYN-00971,Telangana,Adilabad,19.14664,78.5404,1.75,CFR,6.8,19.9,37.6,365.0,,45,1100,True,False,False,False,False
+SYN-00972,Telangana,Adilabad,19.24023,78.26163,3.11,CFR,7.1,15.6,38.4,380.0,,45,1100,True,False,False,False,False
+SYN-00973,Telangana,Adilabad,19.00588,77.80568,2.65,IFR,7.1,11.2,41.8,379.0,,45,1100,True,False,False,False,False
+SYN-00974,Telangana,Adilabad,19.10531,77.99348,3.97,IFR,7.3,13.2,42.4,361.0,,45,1100,True,False,False,False,False
+SYN-00975,Telangana,Adilabad,18.88237,79.73116,3.5,CFR,7.0,14.8,34.6,161.0,,45,1100,True,False,False,False,False
+SYN-00976,Telangana,Adilabad,19.21563,79.3242,1.63,CR,7.0,24.6,38.6,365.0,,45,1100,True,False,False,False,False
+SYN-00977,Telangana,Adilabad,19.43252,79.21133,2.71,IFR,7.04,15.64,38.34,221.0,,45,1100,True,True,True,True,False
+SYN-00978,Telangana,Adilabad,19.36695,78.66919,2.68,IFR,7.1,15.4,38.2,369.0,,45,1100,True,False,False,False,False
+SYN-00979,Telangana,Adilabad,19.34972,79.81468,0.88,IFR,6.5,17.0,35.7,183.0,,45,1100,True,False,False,False,False
+SYN-00980,Telangana,Adilabad,19.05058,79.22678,2.21,CR,6.2,29.1,39.2,525.0,,45,1100,True,False,False,False,False
+SYN-00981,Telangana,Adilabad,19.16828,77.97394,1.05,IFR,7.2,13.0,42.3,368.0,,45,1100,True,False,False,False,False
+SYN-00982,Telangana,Adilabad,19.28911,78.98065,0.29,IFR,7.1,14.5,39.5,517.0,,45,1100,True,False,False,False,False
+SYN-00983,Telangana,Adilabad,19.27602,79.148,2.76,IFR,7.0,21.4,39.1,401.0,,45,1100,True,False,False,False,False
+SYN-00984,Telangana,Adilabad,18.93912,77.97631,2.22,CFR,7.1,13.5,39.7,365.0,,45,1100,True,False,False,False,False
+SYN-00985,Telangana,Adilabad,19.26446,79.50252,1.14,IFR,7.0,13.7,36.7,187.0,,45,1100,True,False,False,False,False
+SYN-00986,Telangana,Adilabad,19.01066,79.74657,1.25,CFR,6.2,21.1,37.1,172.0,,45,1100,True,False,False,False,False
+SYN-00987,Telangana,Adilabad,19.16165,79.18522,2.96,IFR,6.9,22.5,40.6,498.0,,45,1100,True,False,False,False,False
+SYN-00988,Telangana,Adilabad,19.15416,78.5843,3.28,IFR,7.0,15.8,37.6,287.0,,45,1100,True,False,False,False,False
+SYN-00989,Telangana,Adilabad,19.37944,79.61834,3.11,CFR,6.9,13.4,38.34,195.0,,45,1100,True,False,False,True,False
+SYN-00990,Telangana,Adilabad,19.19426,79.55422,0.26,IFR,7.2,15.64,37.5,196.0,,45,1100,True,False,True,False,False
+SYN-00991,Telangana,Adilabad,18.96445,79.43946,0.58,IFR,6.8,15.7,37.5,176.0,,45,1100,True,False,False,False,False
+SYN-00992,Telangana,Adilabad,19.16114,77.89643,2.47,CR,7.2,16.6,43.2,359.0,,45,1100,True,False,False,False,False
+SYN-00993,Telangana,Adilabad,19.17062,78.42419,0.38,CR,7.0,21.7,41.2,399.0,,45,1100,True,False,False,False,False
+SYN-00994,Telangana,Adilabad,19.32099,79.02848,1.73,IFR,7.1,18.5,38.6,506.0,,45,1100,True,False,False,False,False
+SYN-00995,Telangana,Adilabad,19.58015,78.47055,1.03,CFR,7.1,13.6,39.1,329.0,,45,1100,True,False,False,False,False
+SYN-00996,Telangana,Adilabad,18.79132,79.55236,0.41,IFR,6.9,13.9,34.9,131.0,,45,1100,True,False,False,False,False
+SYN-00997,Telangana,Adilabad,19.36442,78.99552,1.3,CFR,7.0,16.0,40.7,582.0,,45,1100,True,False,False,False,False
+SYN-00998,Telangana,Adilabad,19.32453,79.6617,2.98,IFR,6.9,12.7,34.0,167.0,,45,1100,True,False,False,False,False
+SYN-00999,Telangana,Adilabad,19.40819,79.31512,2.47,CR,7.2,13.2,37.3,212.0,,45,1100,True,False,False,False,False
+SYN-01000,Telangana,Adilabad,18.82274,79.49544,1.42,IFR,7.0,13.3,39.8,138.0,,45,1100,True,False,False,False,False
+SYN-01001,Telangana,Adilabad,19.00959,79.70889,0.74,CR,7.0,16.0,34.8,168.0,,45,1100,True,False,False,False,False
+SYN-01002,Telangana,Adilabad,19.38903,79.21389,1.04,IFR,7.1,25.4,39.5,421.0,,45,1100,True,False,False,False,False
+SYN-01003,Telangana,Adilabad,19.44599,78.6552,0.43,CFR,7.0,12.6,39.5,440.0,,45,1100,True,False,False,False,False
+SYN-01004,Telangana,Adilabad,19.17915,79.27163,3.54,CFR,7.1,12.4,37.8,295.0,,45,1100,True,False,False,False,False
+SYN-01005,Telangana,Adilabad,19.76729,78.63927,2.58,IFR,7.2,13.3,39.6,223.0,,45,1100,True,False,False,False,False
+SYN-01006,Telangana,Adilabad,19.10045,78.58746,2.08,CFR,7.1,13.7,37.4,327.0,,45,1100,True,False,False,False,False
+SYN-01007,Telangana,Adilabad,19.06728,79.52199,3.78,CR,7.1,23.3,38.5,227.0,,45,1100,True,False,False,False,False
+SYN-01008,Telangana,Adilabad,19.05438,78.26689,3.19,IFR,7.2,12.7,39.5,343.0,,45,1100,True,False,False,False,False
+SYN-01009,Telangana,Adilabad,19.58224,78.47303,1.78,IFR,7.1,11.9,39.1,329.0,,45,1100,True,False,False,False,False
+SYN-01010,Telangana,Adilabad,19.28111,78.66451,1.63,CFR,6.6,15.2,38.8,280.0,,45,1100,True,False,False,False,False
+SYN-01011,Telangana,Adilabad,19.14487,78.90708,2.0,CFR,6.6,14.5,34.3,222.0,,45,1100,True,False,False,False,False
+SYN-01012,Telangana,Adilabad,19.64597,78.65611,1.34,CR,7.0,14.5,39.4,274.0,,45,1100,True,False,False,False,False
+SYN-01013,Telangana,Adilabad,19.3849,78.92435,3.26,CFR,7.1,17.7,38.5,527.0,,45,1100,True,False,False,False,False
+SYN-01014,Telangana,Adilabad,19.25617,78.57838,2.34,CFR,7.1,13.7,35.1,235.0,,45,1100,True,False,False,False,False
+SYN-01015,Telangana,Adilabad,18.98223,79.27243,2.32,IFR,7.0,17.5,38.34,223.0,,45,1100,True,False,False,True,False
+SYN-01016,Telangana,Adilabad,19.23384,78.84559,1.12,IFR,6.5,15.1,38.1,286.0,,45,1100,True,False,False,False,False
+SYN-01017,Telangana,Adilabad,19.26894,79.89221,2.66,CFR,6.6,18.9,36.0,154.0,,45,1100,True,False,False,False,False
+SYN-01018,Telangana,Adilabad,19.10832,78.98436,3.42,IFR,7.1,14.5,32.1,193.0,,45,1100,True,False,False,False,False
+SYN-01019,Telangana,Adilabad,19.00284,79.61961,2.95,IFR,7.1,14.1,37.3,202.0,,45,1100,True,False,False,False,False
+SYN-01020,Telangana,Adilabad,18.79547,79.60456,1.22,CR,6.9,14.7,35.7,152.0,,45,1100,True,False,False,False,False
+SYN-01021,Telangana,Adilabad,19.31663,79.20679,2.49,CFR,6.9,23.9,37.6,303.0,,45,1100,True,False,False,False,False
+SYN-01022,Telangana,Adilabad,19.26834,79.27471,0.92,CFR,7.04,15.64,38.34,232.0,,45,1100,True,True,True,True,False
+SYN-01023,Telangana,Adilabad,18.95984,79.53799,2.95,CR,7.0,16.4,37.5,207.0,,45,1100,True,False,False,False,False
+SYN-01024,Telangana,Adilabad,19.55829,79.34247,2.02,CFR,7.0,14.7,40.3,264.0,,45,1100,True,False,False,False,False
+SYN-01025,Telangana,Adilabad,19.78766,78.37211,1.47,CFR,7.0,13.4,38.8,266.0,,45,1100,True,False,False,False,False
+SYN-01026,Telangana,Adilabad,19.24973,79.65052,0.26,CFR,6.9,12.8,32.3,162.0,,45,1100,True,False,False,False,False
+SYN-01027,Telangana,Adilabad,19.05643,78.24527,3.86,IFR,7.04,15.64,38.34,335.0,,45,1100,True,True,True,True,False
+SYN-01028,Telangana,Adilabad,19.4526,78.91626,4.0,IFR,7.0,15.9,37.3,476.0,,45,1100,True,False,False,False,False
+SYN-01029,Telangana,Adilabad,19.376,79.62344,1.12,CR,7.0,13.7,35.7,196.0,,45,1100,True,False,False,False,False
+SYN-01030,Telangana,Adilabad,19.03244,79.07852,0.98,CFR,7.04,15.64,38.34,163.0,,45,1100,True,True,True,True,False
+SYN-01031,Telangana,Adilabad,19.27776,79.27962,2.3,CFR,7.04,15.64,38.34,236.0,,45,1100,True,True,True,True,False
+SYN-01032,Telangana,Adilabad,19.0248,78.50723,1.65,IFR,7.1,12.8,38.4,318.0,,45,1100,True,False,False,False,False
+SYN-01033,Telangana,Adilabad,19.0253,78.4825,1.57,IFR,7.1,33.1,37.6,300.0,,45,1100,True,False,False,False,False
+SYN-01034,Telangana,Adilabad,18.9162,79.20652,2.15,IFR,7.1,14.5,30.9,177.0,,45,1100,True,False,False,False,False
+SYN-01035,Telangana,Adilabad,19.18208,79.55832,0.57,CFR,7.2,19.4,35.5,198.0,,45,1100,True,False,False,False,False
+SYN-01036,Telangana,Adilabad,19.80174,78.41698,1.98,CFR,7.1,13.8,38.6,230.0,,45,1100,True,False,False,False,False
+SYN-01037,Telangana,Adilabad,19.59201,78.6588,3.67,IFR,6.9,20.1,40.9,427.0,,45,1100,True,False,False,False,False
+SYN-01038,Telangana,Adilabad,19.10699,79.5716,1.77,CR,7.0,16.2,36.1,191.0,,45,1100,True,False,False,False,False
+SYN-01039,Telangana,Adilabad,19.52988,79.34386,1.04,IFR,7.2,13.1,39.1,243.0,,45,1100,True,False,False,False,False
+SYN-01040,Telangana,Adilabad,19.27036,79.17734,1.19,CFR,7.2,20.6,40.5,361.0,,45,1100,True,False,False,False,False
+SYN-01041,Telangana,Adilabad,19.12588,79.84817,2.4,IFR,6.9,12.3,38.2,131.0,,45,1100,True,False,False,False,False
+SYN-01042,Telangana,Adilabad,19.37205,79.22016,0.78,IFR,7.1,27.2,38.2,243.0,,45,1100,True,False,False,False,False
+SYN-01043,Telangana,Adilabad,19.26426,78.41294,1.64,CFR,7.0,16.8,42.1,448.0,,45,1100,True,False,False,False,False
+SYN-01044,Telangana,Adilabad,18.95797,79.21311,2.1,CR,7.0,12.8,32.5,182.0,,45,1100,True,False,False,False,False
+SYN-01045,Telangana,Adilabad,19.77701,78.69402,2.8,IFR,7.2,14.9,40.4,208.0,,45,1100,True,False,False,False,False
+SYN-01046,Telangana,Adilabad,19.40572,78.58577,3.32,CFR,7.1,13.0,40.7,370.0,,45,1100,True,False,False,False,False
+SYN-01047,Telangana,Adilabad,19.44896,79.04866,2.64,IFR,7.2,13.5,38.1,279.0,,45,1100,True,False,False,False,False
+SYN-01048,Telangana,Adilabad,19.19318,78.93667,0.84,CFR,6.9,14.9,35.0,233.0,,45,1100,True,False,False,False,False
+SYN-01049,Telangana,Adilabad,18.86989,79.69326,0.84,CR,6.9,16.5,34.8,146.0,,45,1100,True,False,False,False,False
+SYN-01050,Telangana,Adilabad,18.90634,79.6745,2.06,CFR,6.3,19.6,34.6,168.0,,45,1100,True,False,False,False,False
+SYN-01051,Telangana,Adilabad,19.094,77.94043,2.26,CR,7.2,11.2,42.7,365.0,,45,1100,True,False,False,False,False
+SYN-01052,Telangana,Adilabad,19.24118,77.88984,0.42,IFR,7.4,10.5,41.8,408.0,,45,1100,True,False,False,False,False
+SYN-01053,Telangana,Adilabad,19.21857,78.04824,3.42,CFR,7.2,13.5,41.9,400.0,,45,1100,True,False,False,False,False
+SYN-01054,Telangana,Adilabad,19.2128,78.71385,2.74,CFR,7.1,18.2,38.9,271.0,,45,1100,True,False,False,False,False
+SYN-01055,Telangana,Adilabad,19.58453,78.94542,1.77,CFR,7.0,15.5,40.0,470.0,,45,1100,True,False,False,False,False
+SYN-01056,Telangana,Adilabad,19.33851,79.44033,1.08,CR,7.1,13.4,40.0,193.0,,45,1100,True,False,False,False,False
+SYN-01057,Telangana,Adilabad,18.96292,79.38876,0.23,IFR,6.8,24.4,38.0,269.0,,45,1100,True,False,False,False,False
+SYN-01058,Telangana,Adilabad,19.06869,79.70687,1.62,CR,7.1,14.8,36.7,148.0,,45,1100,True,False,False,False,False
+SYN-01059,Telangana,Adilabad,19.30438,77.98901,2.73,CR,7.1,18.3,38.3,478.0,,45,1100,True,False,False,False,False
+SYN-01060,Telangana,Adilabad,19.32527,78.77268,2.04,IFR,7.0,16.8,41.4,369.0,,45,1100,True,False,False,False,False
+SYN-01061,Telangana,Adilabad,19.21851,78.92398,0.23,CR,7.0,15.2,38.7,275.0,,45,1100,True,False,False,False,False
+SYN-01062,Telangana,Adilabad,18.84895,79.28487,0.25,IFR,7.0,13.7,35.5,153.0,,45,1100,True,False,False,False,False
+SYN-01063,Telangana,Adilabad,18.88727,79.42539,1.24,CFR,7.0,14.4,39.0,140.0,,45,1100,True,False,False,False,False
+SYN-01064,Telangana,Adilabad,18.94434,79.94626,0.27,CFR,7.1,14.8,37.0,109.0,,45,1100,True,False,False,False,False
+SYN-01065,Telangana,Adilabad,19.14645,79.5186,2.76,CFR,6.9,15.6,38.0,231.0,,45,1100,True,False,False,False,False
+SYN-01066,Telangana,Adilabad,19.41602,79.14366,3.66,IFR,7.0,22.7,39.9,426.0,,45,1100,True,False,False,False,False
+SYN-01067,Telangana,Adilabad,19.23164,78.01803,0.57,IFR,7.2,11.0,40.7,400.0,,45,1100,True,False,False,False,False
+SYN-01068,Telangana,Adilabad,18.99554,78.03535,0.93,IFR,7.2,11.6,40.3,365.0,,45,1100,True,False,False,False,False
+SYN-01069,Telangana,Adilabad,18.93732,79.31835,3.3,IFR,6.8,20.1,38.4,260.0,,45,1100,True,False,False,False,False
+SYN-01070,Telangana,Adilabad,19.4516,78.91553,1.71,IFR,7.0,15.9,37.3,468.0,,45,1100,True,False,False,False,False
+SYN-01071,Telangana,Adilabad,19.20023,79.31581,1.74,CR,6.8,20.8,41.7,414.0,,45,1100,True,False,False,False,False
+SYN-01072,Telangana,Adilabad,19.31454,79.75488,3.96,IFR,7.0,14.2,33.1,154.0,,45,1100,True,False,False,False,False
+SYN-01073,Telangana,Adilabad,19.03247,79.1316,2.8,CFR,6.9,15.4,31.5,191.0,,45,1100,True,False,False,False,False
+SYN-01074,Telangana,Adilabad,19.29748,79.50226,2.68,CFR,6.9,13.4,38.4,204.0,,45,1100,True,False,False,False,False
+SYN-01075,Telangana,Adilabad,19.18905,78.55524,3.09,IFR,7.0,23.2,38.6,449.0,,45,1100,True,False,False,False,False
+SYN-01076,Telangana,Adilabad,19.53221,79.78092,1.64,CR,7.0,12.6,35.8,157.0,,45,1100,True,False,False,False,False
+SYN-01077,Telangana,Adilabad,19.24697,79.1907,0.41,IFR,6.8,16.4,40.0,414.0,,45,1100,True,False,False,False,False
+SYN-01078,Telangana,Adilabad,19.00957,79.92942,0.85,IFR,7.1,20.9,36.0,115.0,,45,1100,True,False,False,False,False
+SYN-01079,Telangana,Adilabad,19.51811,78.56033,1.85,CFR,7.2,12.0,40.0,416.0,,45,1100,True,False,False,False,False
+SYN-01080,Telangana,Adilabad,19.08911,79.19705,2.35,CFR,6.1,32.1,40.3,560.0,,45,1100,True,False,False,False,False
+SYN-01081,Telangana,Adilabad,19.5875,78.35642,0.56,IFR,7.0,21.2,40.1,409.0,,45,1100,True,False,False,False,False
+SYN-01082,Telangana,Adilabad,19.10644,78.58786,0.36,IFR,7.0,13.0,38.5,324.0,,45,1100,True,False,False,False,False
+SYN-01083,Telangana,Adilabad,19.17733,78.01369,3.5,CFR,7.2,32.1,41.3,371.0,,45,1100,True,False,False,False,False
+SYN-01084,Telangana,Adilabad,19.71399,78.77404,2.01,IFR,7.0,14.8,37.2,220.0,,45,1100,True,False,False,False,False
+SYN-01085,Telangana,Adilabad,19.27345,79.2918,0.48,CFR,7.1,13.8,37.4,269.0,,45,1100,True,False,False,False,False
+SYN-01086,Telangana,Adilabad,19.77612,78.69683,3.62,CR,7.1,13.2,40.0,206.0,,45,1100,True,False,False,False,False
+SYN-01087,Telangana,Adilabad,18.81188,79.63447,0.33,CFR,7.1,15.8,39.0,225.0,,45,1100,True,False,False,False,False
+SYN-01088,Telangana,Adilabad,19.27891,79.78285,1.4,CFR,7.0,13.0,34.4,139.0,,45,1100,True,False,False,False,False
+SYN-01089,Telangana,Adilabad,19.22406,79.02343,2.43,CFR,7.0,18.0,38.4,555.0,,45,1100,True,False,False,False,False
+SYN-01090,Telangana,Adilabad,19.58036,79.71345,2.91,IFR,7.1,11.7,35.5,159.0,,45,1100,True,False,False,False,False
+SYN-01091,Telangana,Adilabad,19.27941,79.73966,0.49,IFR,7.0,16.1,34.9,139.0,,45,1100,True,False,False,False,False
+SYN-01092,Telangana,Adilabad,19.33085,79.68768,1.11,CFR,7.0,12.7,32.7,155.0,,45,1100,True,False,False,False,False
+SYN-01093,Telangana,Adilabad,19.3238,79.69835,1.68,CFR,7.1,12.1,32.9,161.0,,45,1100,True,False,False,False,False
+SYN-01094,Telangana,Adilabad,19.44598,79.28811,1.46,CFR,7.2,16.3,37.3,220.0,,45,1100,True,False,False,False,False
+SYN-01095,Telangana,Adilabad,19.57959,78.72148,0.73,CFR,7.0,17.6,40.4,391.0,,45,1100,True,False,False,False,False
+SYN-01096,Telangana,Adilabad,19.50202,78.83038,2.95,IFR,7.1,17.2,40.2,469.0,,45,1100,True,False,False,False,False
+SYN-01097,Telangana,Adilabad,19.30713,79.8342,3.9,IFR,7.0,15.5,34.8,176.0,,45,1100,True,False,False,False,False
+SYN-01098,Telangana,Adilabad,19.29513,78.80233,1.86,CFR,7.0,13.5,41.3,384.0,,45,1100,True,False,False,False,False
+SYN-01099,Telangana,Adilabad,19.09186,78.47251,1.49,CFR,7.2,11.9,38.4,341.0,,45,1100,True,False,False,False,False
+SYN-01100,Telangana,Adilabad,19.30881,78.37827,3.83,IFR,7.1,12.3,40.3,433.0,,45,1100,True,False,False,False,False
+SYN-01101,Telangana,Warangal,17.97478,79.57569,3.14,IFR,7.0,16.2,33.0,267.0,,55,950,True,False,False,False,False
+SYN-01102,Telangana,Warangal,17.97699,79.59394,1.24,CFR,6.75,22.76,30.26,265.0,,55,950,True,True,True,True,False
+SYN-01103,Telangana,Warangal,18.00107,79.59337,2.06,IFR,6.75,22.76,30.26,270.0,,55,950,True,True,True,True,False
+SYN-01104,Telangana,Warangal,18.00432,79.58262,3.78,IFR,6.75,22.76,30.26,256.0,,55,950,True,True,True,True,False
+SYN-01105,Telangana,Warangal,17.98325,79.59647,2.78,CR,6.75,22.76,30.26,271.0,,55,950,True,True,True,True,False
+SYN-01106,Telangana,Warangal,17.9917,79.58262,0.53,CR,6.75,22.76,30.26,259.0,,55,950,True,True,True,True,False
+SYN-01107,Telangana,Warangal,17.95916,79.604,3.23,CR,6.9,16.1,32.5,275.0,,55,950,True,False,False,False,False
+SYN-01108,Telangana,Warangal,17.98258,79.58319,0.51,IFR,6.9,38.8,32.9,262.0,,55,950,True,False,False,False,False
+SYN-01109,Telangana,Warangal,17.95878,79.59599,2.9,CR,6.75,22.76,30.26,270.0,,55,950,True,True,True,True,False
+SYN-01110,Telangana,Warangal,17.95882,79.58538,3.01,IFR,6.9,17.3,32.0,268.0,,55,950,True,False,False,False,False
+SYN-01111,Telangana,Warangal,18.00292,79.60518,0.6,IFR,6.9,18.1,35.2,259.0,,55,950,True,False,False,False,False
+SYN-01112,Telangana,Warangal,17.98022,79.58377,1.37,IFR,6.9,38.7,33.3,261.0,,55,950,True,False,False,False,False
+SYN-01113,Telangana,Warangal,17.97745,79.5702,1.23,IFR,7.0,15.4,32.5,270.0,,55,950,True,False,False,False,False
+SYN-01114,Telangana,Warangal,17.98554,79.61087,0.91,IFR,6.75,22.76,30.26,274.0,,55,950,True,True,True,True,False
+SYN-01115,Telangana,Warangal,17.99853,79.59258,2.31,IFR,6.75,22.76,30.26,266.0,,55,950,True,True,True,True,False
+SYN-01116,Telangana,Warangal,17.99144,79.61352,0.3,IFR,6.9,37.9,34.0,266.0,,55,950,True,False,False,False,False
+SYN-01117,Telangana,Warangal,17.99008,79.61274,0.55,CR,6.9,38.2,33.7,266.0,,55,950,True,False,False,False,False
+SYN-01118,Telangana,Warangal,17.99136,79.60408,1.43,IFR,6.75,22.76,30.26,263.0,,55,950,True,True,True,True,False
+SYN-01119,Telangana,Warangal,17.98447,79.6139,1.31,IFR,6.75,22.76,30.26,273.0,,55,950,True,True,True,True,False
+SYN-01120,Telangana,Warangal,17.98941,79.61127,0.52,CFR,6.9,38.2,33.7,270.0,,55,950,True,False,False,False,False
+SYN-01121,Telangana,Warangal,18.00038,79.58581,3.64,CFR,6.75,22.76,30.26,264.0,,55,950,True,True,True,True,False
+SYN-01122,Telangana,Warangal,17.99351,79.57169,2.37,IFR,6.75,22.76,30.26,260.0,,55,950,True,True,True,True,False
+SYN-01123,Telangana,Warangal,17.9899,79.57091,1.65,IFR,6.75,22.76,30.26,259.0,,55,950,True,True,True,True,False
+SYN-01124,Telangana,Warangal,17.99042,79.56554,1.34,IFR,6.75,22.76,30.26,265.0,,55,950,True,True,True,True,False
+SYN-01125,Telangana,Warangal,17.97393,79.61466,0.44,IFR,6.75,22.76,30.26,276.0,,55,950,True,True,True,True,False
+SYN-01126,Telangana,Warangal,18.00515,79.56591,1.8,IFR,6.75,22.76,30.26,257.0,,55,950,True,True,True,True,False
+SYN-01127,Telangana,Warangal,17.96397,79.60992,0.49,IFR,6.9,17.6,32.7,275.0,,55,950,True,False,False,False,False
+SYN-01128,Telangana,Warangal,17.99782,79.61222,1.14,CR,6.75,22.76,30.26,269.0,,55,950,True,True,True,True,False
+SYN-01129,Telangana,Warangal,17.99378,79.59252,2.46,IFR,6.75,22.76,30.26,266.0,,55,950,True,True,True,True,False
+SYN-01130,Telangana,Warangal,17.97724,79.61611,0.61,IFR,6.75,22.76,30.26,282.0,,55,950,True,True,True,True,False
+SYN-01131,Telangana,Warangal,17.96002,79.59454,3.81,IFR,6.75,22.76,30.26,274.0,,55,950,True,True,True,True,False
+SYN-01132,Telangana,Warangal,17.9533,79.58818,2.56,CFR,6.9,17.0,32.4,273.0,,55,950,True,False,False,False,False
+SYN-01133,Telangana,Warangal,17.97949,79.59392,1.45,IFR,6.75,22.76,30.26,268.0,,55,950,True,True,True,True,False
+SYN-01134,Telangana,Warangal,17.95694,79.60121,3.3,CFR,6.75,22.76,30.26,274.0,,55,950,True,True,True,True,False
+SYN-01135,Telangana,Warangal,17.97088,79.57885,3.9,IFR,7.0,17.8,33.9,264.0,,55,950,True,False,False,False,False
+SYN-01136,Telangana,Warangal,18.00682,79.60748,1.42,CFR,6.75,22.76,30.26,263.0,,55,950,True,True,True,True,False
+SYN-01137,Telangana,Warangal,17.97359,79.606,0.96,IFR,6.75,22.76,30.26,273.0,,55,950,True,True,True,True,False
+SYN-01138,Telangana,Warangal,17.95433,79.59091,3.87,CFR,6.75,22.76,30.26,280.0,,55,950,True,True,True,True,False
+SYN-01139,Telangana,Warangal,17.98077,79.59047,1.31,CR,6.75,22.76,30.26,260.0,,55,950,True,True,True,True,False
+SYN-01140,Telangana,Warangal,17.95537,79.61151,2.07,CR,6.9,17.4,32.5,281.0,,55,950,True,False,False,False,False
+SYN-01141,Telangana,Warangal,17.98791,79.61375,1.12,IFR,6.75,22.76,30.26,269.0,,55,950,True,True,True,True,False
+SYN-01142,Telangana,Warangal,17.98314,79.59405,3.3,IFR,6.75,22.76,30.26,269.0,,55,950,True,True,True,True,False
+SYN-01143,Telangana,Warangal,17.98703,79.58638,0.63,CR,6.75,22.76,30.26,259.0,,55,950,True,True,True,True,False
+SYN-01144,Telangana,Warangal,18.147,79.82888,2.45,IFR,6.8,32.6,29.6,251.0,,55,950,True,False,False,False,False
+SYN-01145,Telangana,Warangal,18.29472,79.98511,2.79,CR,6.6,16.8,27.9,249.0,,55,950,True,False,False,False,False
+SYN-01146,Telangana,Warangal,18.22368,79.92386,3.82,IFR,6.7,31.0,25.3,211.0,,55,950,True,False,False,False,False
+SYN-01147,Telangana,Warangal,17.88423,80.25994,2.89,IFR,6.0,34.1,30.0,514.0,,55,950,True,False,False,False,False
+SYN-01148,Telangana,Warangal,18.00777,79.71506,1.31,CR,6.8,13.5,31.4,248.0,,55,950,True,False,False,False,False
+SYN-01149,Telangana,Warangal,17.82402,79.08354,3.31,CFR,6.9,18.2,36.5,489.0,,55,950,True,False,False,False,False
+SYN-01150,Telangana,Warangal,18.02358,80.32019,1.75,IFR,6.4,21.1,28.3,260.0,,55,950,True,False,False,False,False
+SYN-01151,Telangana,Warangal,18.26037,80.31558,2.61,IFR,6.2,21.2,28.0,176.0,,55,950,True,False,False,False,False
+SYN-01152,Telangana,Warangal,18.03563,79.86384,2.7,CR,6.8,32.8,29.5,255.0,,55,950,True,False,False,False,False
+SYN-01153,Telangana,Warangal,18.01252,79.94452,3.2,IFR,6.9,34.0,28.4,267.0,,55,950,True,False,False,False,False
+SYN-01154,Telangana,Warangal,18.48506,80.22818,3.96,IFR,6.2,24.5,29.9,158.0,,55,950,True,False,False,False,False
+SYN-01155,Telangana,Warangal,17.85196,79.47163,1.72,IFR,7.0,17.0,33.7,293.0,,55,950,True,False,False,False,False
+SYN-01156,Telangana,Warangal,17.9808,80.0367,3.7,CR,6.8,29.6,29.2,269.0,,55,950,True,False,False,False,False
+SYN-01157,Telangana,Warangal,18.41779,80.42264,2.27,CFR,6.4,22.7,28.6,112.0,,55,950,True,False,False,False,False
+SYN-01158,Telangana,Warangal,18.02866,79.69126,1.57,CFR,6.9,14.2,33.6,252.0,,55,950,True,False,False,False,False
+SYN-01159,Telangana,Warangal,17.74646,79.73976,2.24,CR,6.8,14.4,27.7,236.0,,55,950,True,False,False,False,False
+SYN-01160,Telangana,Warangal,18.11465,79.6714,0.52,CFR,6.8,14.3,32.5,234.0,,55,950,True,False,False,False,False
+SYN-01161,Telangana,Warangal,17.78985,79.88634,2.7,IFR,6.7,13.4,26.4,239.0,,55,950,True,False,False,False,False
+SYN-01162,Telangana,Warangal,17.87215,79.42016,2.66,IFR,7.2,16.9,34.9,310.0,,55,950,True,False,False,False,False
+SYN-01163,Telangana,Warangal,18.40324,79.64424,3.94,CR,6.8,14.2,34.9,193.0,,55,950,True,False,False,False,False
+SYN-01164,Telangana,Warangal,17.71373,79.49948,1.72,CFR,6.9,16.9,33.3,291.0,,55,950,True,False,False,False,False
+SYN-01165,Telangana,Warangal,17.54646,79.86038,3.87,IFR,6.9,31.4,26.3,185.0,,55,950,True,False,False,False,False
+SYN-01166,Telangana,Warangal,18.40541,79.96318,0.24,IFR,6.0,27.1,32.4,240.0,,55,950,True,False,False,False,False
+SYN-01167,Telangana,Warangal,17.65926,79.83596,2.14,IFR,6.7,17.9,27.8,230.0,,55,950,True,False,False,False,False
+SYN-01168,Telangana,Warangal,17.36,79.77715,2.41,CR,6.6,28.9,26.6,171.0,,55,950,True,False,False,False,False
+SYN-01169,Telangana,Warangal,17.84226,79.91691,1.89,IFR,6.8,18.3,28.1,223.0,,55,950,True,False,False,False,False
+SYN-01170,Telangana,Warangal,18.48861,79.93214,3.13,CR,6.5,18.7,29.6,193.0,,55,950,True,False,False,False,False
+SYN-01171,Telangana,Warangal,18.02067,79.86023,2.1,IFR,6.8,33.8,29.5,265.0,,55,950,True,False,False,False,False
+SYN-01172,Telangana,Warangal,17.97804,79.69769,0.29,IFR,6.8,17.1,32.6,255.0,,55,950,True,False,False,False,False
+SYN-01173,Telangana,Warangal,17.9674,79.57065,1.78,CFR,7.0,19.2,32.8,267.0,,55,950,True,False,False,False,False
+SYN-01174,Telangana,Warangal,18.11168,80.33713,0.64,CFR,6.0,41.7,30.3,377.0,,55,950,True,False,False,False,False
+SYN-01175,Telangana,Warangal,17.98284,79.13865,0.74,IFR,7.0,15.6,34.9,456.0,,55,950,True,False,False,False,False
+SYN-01176,Telangana,Warangal,17.55081,79.66312,1.93,IFR,6.9,33.0,29.1,227.0,,55,950,True,False,False,False,False
+SYN-01177,Telangana,Warangal,18.1702,80.60308,2.04,IFR,6.8,30.7,27.3,139.0,,55,950,True,False,False,False,False
+SYN-01178,Telangana,Warangal,17.7825,79.73286,1.87,CR,6.8,16.0,28.2,250.0,,55,950,True,False,False,False,False
+SYN-01179,Telangana,Warangal,17.94867,79.23775,1.41,IFR,6.9,15.0,34.3,418.0,,55,950,True,False,False,False,False
+SYN-01180,Telangana,Warangal,17.79622,78.94601,3.28,IFR,7.1,15.0,36.0,480.0,,55,950,True,False,False,False,False
+SYN-01181,Telangana,Warangal,17.90611,79.70699,3.43,CR,6.8,16.8,33.7,254.0,,55,950,True,False,False,False,False
+SYN-01182,Telangana,Warangal,18.38975,79.8037,2.77,IFR,7.0,18.2,31.3,170.0,,55,950,True,False,False,False,False
+SYN-01183,Telangana,Warangal,17.54398,79.84668,3.94,IFR,6.8,31.6,26.1,194.0,,55,950,True,False,False,False,False
+SYN-01184,Telangana,Warangal,17.79088,80.05119,0.86,IFR,6.6,17.8,27.0,240.0,,55,950,True,False,False,False,False
+SYN-01185,Telangana,Warangal,18.39726,80.05055,2.33,CFR,6.2,24.4,24.8,198.0,,55,950,True,False,False,False,False
+SYN-01186,Telangana,Warangal,17.80511,79.79489,1.08,IFR,6.7,18.6,27.0,228.0,,55,950,True,False,False,False,False
+SYN-01187,Telangana,Warangal,17.94154,79.73915,0.9,CR,6.8,16.3,32.0,265.0,,55,950,True,False,False,False,False
+SYN-01188,Telangana,Warangal,17.96698,79.95866,1.84,IFR,6.8,18.2,24.9,248.0,,55,950,True,False,False,False,False
+SYN-01189,Telangana,Warangal,18.24867,80.3458,2.53,IFR,6.3,21.5,25.8,168.0,,55,950,True,False,False,False,False
+SYN-01190,Telangana,Warangal,17.93729,79.72915,2.45,IFR,6.8,16.4,31.8,261.0,,55,950,True,False,False,False,False
+SYN-01191,Telangana,Warangal,18.04664,79.94958,2.88,IFR,6.75,22.76,30.26,270.0,,55,950,True,True,True,True,False
+SYN-01192,Telangana,Warangal,17.68533,80.06628,3.06,CFR,6.75,22.76,30.26,200.0,,55,950,True,True,True,True,False
+SYN-01193,Telangana,Warangal,17.8991,78.98883,0.44,IFR,7.1,33.8,35.3,486.0,,55,950,True,False,False,False,False
+SYN-01194,Telangana,Warangal,18.34457,79.95235,3.51,IFR,7.0,25.5,29.1,217.0,,55,950,True,False,False,False,False
+SYN-01195,Telangana,Warangal,17.66092,80.06236,1.44,IFR,6.6,18.7,29.5,198.0,,55,950,True,False,False,False,False
+SYN-01196,Telangana,Warangal,17.76171,80.18308,1.2,CFR,6.0,35.7,30.2,299.0,,55,950,True,False,False,False,False
+SYN-01197,Telangana,Warangal,18.08145,79.67668,2.21,CR,6.8,31.0,31.7,239.0,,55,950,True,False,False,False,False
+SYN-01198,Telangana,Warangal,17.81689,79.25831,2.47,CR,6.8,19.3,32.3,428.0,,55,950,True,False,False,False,False
+SYN-01199,Telangana,Warangal,17.51265,79.61369,2.43,IFR,7.1,31.2,30.0,221.0,,55,950,True,False,False,False,False
+SYN-01200,Telangana,Warangal,17.93349,79.00856,3.41,CR,7.1,16.6,35.3,468.0,,55,950,True,False,False,False,False
+SYN-01201,Telangana,Warangal,17.9689,80.29472,3.29,CR,6.8,18.3,29.3,244.0,,55,950,True,False,False,False,False
+SYN-01202,Telangana,Warangal,17.94171,79.04825,1.33,CR,7.1,17.1,34.6,450.0,,55,950,True,False,False,False,False
+SYN-01203,Telangana,Warangal,18.47657,80.37638,0.52,IFR,6.8,28.8,27.4,79.0,,55,950,True,False,False,False,False
+SYN-01204,Telangana,Warangal,18.15707,80.27789,0.65,IFR,6.1,27.8,28.6,316.0,,55,950,True,False,False,False,False
+SYN-01205,Telangana,Warangal,17.79744,79.80496,0.9,CR,6.7,16.9,25.4,236.0,,55,950,True,False,False,False,False
+SYN-01206,Telangana,Warangal,18.27593,79.93029,2.14,IFR,6.7,23.1,28.4,203.0,,55,950,True,False,False,False,False
+SYN-01207,Telangana,Warangal,18.2183,80.25296,0.72,IFR,6.1,27.8,27.3,199.0,,55,950,True,False,False,False,False
+SYN-01208,Telangana,Warangal,17.61964,79.72096,0.91,CR,6.8,29.0,27.1,204.0,,55,950,True,False,False,False,False
+SYN-01209,Telangana,Warangal,18.06519,80.30511,2.84,CR,6.1,25.8,28.8,289.0,,55,950,True,False,False,False,False
+SYN-01210,Telangana,Warangal,18.20677,80.05282,4.0,CR,6.9,18.3,28.3,183.0,,55,950,True,False,False,False,False
+SYN-01211,Telangana,Warangal,17.78698,79.41935,2.06,IFR,6.5,16.7,32.1,425.0,,55,950,True,False,False,False,False
+SYN-01212,Telangana,Warangal,17.79133,79.62074,1.4,IFR,6.8,16.5,33.8,247.0,,55,950,True,False,False,False,False
+SYN-01213,Telangana,Warangal,17.8527,80.24067,0.4,IFR,6.0,27.2,29.8,430.0,,55,950,True,False,False,False,False
+SYN-01214,Telangana,Warangal,18.03543,79.52094,0.24,IFR,6.8,15.8,33.3,275.0,,55,950,True,False,False,False,False
+SYN-01215,Telangana,Warangal,17.71525,79.30314,3.3,CFR,7.2,14.6,33.7,320.0,,55,950,True,False,False,False,False
+SYN-01216,Telangana,Warangal,18.28421,80.06168,2.12,IFR,6.5,23.5,30.2,284.0,,55,950,True,False,False,False,False
+SYN-01217,Telangana,Warangal,18.22166,79.66382,2.8,IFR,7.0,29.8,30.1,216.0,,55,950,True,False,False,False,False
+SYN-01218,Telangana,Warangal,17.75625,79.57771,3.39,IFR,6.8,16.3,30.3,261.0,,55,950,True,False,False,False,False
+SYN-01219,Telangana,Warangal,18.21875,79.85833,0.51,IFR,6.7,37.5,33.8,262.0,,55,950,True,False,False,False,False
+SYN-01220,Telangana,Warangal,17.9917,79.97691,3.09,IFR,6.7,17.0,25.5,281.0,,55,950,True,False,False,False,False
+SYN-01221,Telangana,Warangal,18.09032,80.15955,1.24,IFR,6.1,25.3,25.6,207.0,,55,950,True,False,False,False,False
+SYN-01222,Telangana,Warangal,17.8859,80.02615,0.84,IFR,6.1,26.2,27.4,303.0,,55,950,True,False,False,False,False
+SYN-01223,Telangana,Warangal,17.61855,79.7933,3.02,CFR,6.9,16.9,27.2,216.0,,55,950,True,False,False,False,False
+SYN-01224,Telangana,Warangal,18.07563,79.56758,2.29,IFR,7.0,15.9,34.6,243.0,,55,950,True,False,False,False,False
+SYN-01225,Telangana,Warangal,18.27017,79.79691,0.63,CFR,6.9,29.9,28.7,211.0,,55,950,True,False,False,False,False
+SYN-01226,Telangana,Warangal,17.57064,79.96268,3.33,IFR,6.8,31.9,28.3,218.0,,55,950,True,False,False,False,False
+SYN-01227,Telangana,Warangal,17.84484,79.31685,3.33,IFR,6.8,14.6,32.4,358.0,,55,950,True,False,False,False,False
+SYN-01228,Telangana,Warangal,18.55362,80.3304,2.93,IFR,6.1,39.4,24.3,197.0,,55,950,True,False,False,False,False
+SYN-01229,Telangana,Warangal,18.36847,80.46728,3.96,IFR,6.9,39.4,25.3,66.0,,55,950,True,False,False,False,False
+SYN-01230,Telangana,Warangal,18.21506,79.90382,3.35,CFR,6.6,38.4,28.8,219.0,,55,950,True,False,False,False,False
+SYN-01231,Telangana,Warangal,18.29667,80.26872,1.33,CFR,6.1,25.5,26.0,154.0,,55,950,True,False,False,False,False
+SYN-01232,Telangana,Warangal,18.07659,79.69025,1.91,IFR,6.7,37.0,32.9,247.0,,55,950,True,False,False,False,False
+SYN-01233,Telangana,Warangal,17.72696,79.25853,3.3,IFR,7.0,15.9,34.3,336.0,,55,950,True,False,False,False,False
+SYN-01234,Telangana,Warangal,18.37869,80.08864,3.98,CFR,6.1,22.6,26.9,166.0,,55,950,True,False,False,False,False
+SYN-01235,Telangana,Warangal,17.77572,79.71987,1.1,CFR,6.8,15.0,29.2,247.0,,55,950,True,False,False,False,False
+SYN-01236,Telangana,Warangal,18.20076,80.6001,2.43,IFR,6.1,26.3,26.4,93.0,,55,950,True,False,False,False,False
+SYN-01237,Telangana,Warangal,17.6418,79.20772,2.9,CR,6.9,14.8,35.4,328.0,,55,950,True,False,False,False,False
+SYN-01238,Telangana,Warangal,17.52095,79.98557,0.83,IFR,6.8,17.3,26.2,206.0,,55,950,True,False,False,False,False
+SYN-01239,Telangana,Warangal,18.17537,80.0926,0.99,IFR,7.0,20.5,27.0,167.0,,55,950,True,False,False,False,False
+SYN-01240,Telangana,Warangal,18.3054,79.97665,0.43,IFR,6.9,15.6,26.3,208.0,,55,950,True,False,False,False,False
+SYN-01241,Telangana,Warangal,17.37427,79.8413,1.27,IFR,6.9,28.2,27.6,184.0,,55,950,True,False,False,False,False
+SYN-01242,Telangana,Warangal,18.12023,79.7306,1.43,CR,6.7,18.4,31.0,236.0,,55,950,True,False,False,False,False
+SYN-01243,Telangana,Warangal,18.01719,79.72317,1.3,IFR,6.8,16.8,32.5,251.0,,55,950,True,False,False,False,False
+SYN-01244,Telangana,Warangal,17.82754,79.76835,3.46,CFR,6.8,17.4,29.3,244.0,,55,950,True,False,False,False,False
+SYN-01245,Telangana,Warangal,18.20863,79.68903,2.78,IFR,7.1,29.1,28.6,216.0,,55,950,True,False,False,False,False
+SYN-01246,Telangana,Warangal,17.73948,79.91526,3.86,CFR,6.75,22.76,30.26,207.0,,55,950,True,True,True,True,False
+SYN-01247,Telangana,Warangal,17.6547,79.97468,3.69,CFR,6.6,34.0,26.0,201.0,,55,950,True,False,False,False,False
+SYN-01248,Telangana,Warangal,17.6256,79.85456,3.49,IFR,6.75,22.76,30.26,213.0,,55,950,True,True,True,True,False
+SYN-01249,Telangana,Warangal,18.11045,79.71012,3.49,IFR,7.0,15.3,31.5,238.0,,55,950,True,False,False,False,False
+SYN-01250,Telangana,Warangal,17.96302,79.51292,2.9,CFR,6.75,22.76,30.26,287.0,,55,950,True,True,True,True,False
+SYN-01251,Telangana,Warangal,17.55177,79.3515,3.09,CR,6.9,32.4,36.4,268.0,,55,950,True,False,False,False,False
+SYN-01252,Telangana,Warangal,17.62388,79.33339,2.06,CR,7.0,33.0,33.9,301.0,,55,950,True,False,False,False,False
+SYN-01253,Telangana,Warangal,17.81099,79.63693,1.22,IFR,6.8,16.4,32.3,260.0,,55,950,True,False,False,False,False
+SYN-01254,Telangana,Warangal,17.96409,79.15879,1.92,CR,7.0,16.2,33.9,450.0,,55,950,True,False,False,False,False
+SYN-01255,Telangana,Warangal,18.24906,79.79554,3.54,IFR,6.8,30.9,28.3,217.0,,55,950,True,False,False,False,False
+SYN-01256,Telangana,Warangal,18.05209,79.87996,2.16,IFR,6.9,30.5,29.0,253.0,,55,950,True,False,False,False,False
+SYN-01257,Telangana,Warangal,18.13209,79.71984,3.76,IFR,6.7,26.4,30.2,247.0,,55,950,True,False,False,False,False
+SYN-01258,Telangana,Warangal,17.75137,79.66992,3.81,IFR,6.9,14.3,28.1,238.0,,55,950,True,False,False,False,False
+SYN-01259,Telangana,Warangal,18.04244,79.50364,0.21,CFR,6.8,16.2,31.8,304.0,,55,950,True,False,False,False,False
+SYN-01260,Telangana,Warangal,17.54487,80.04269,2.98,CR,6.8,14.4,28.4,192.0,,55,950,True,False,False,False,False
+SYN-01261,Telangana,Warangal,17.94848,80.0877,1.94,CR,6.8,36.0,29.3,291.0,,55,950,True,False,False,False,False
+SYN-01262,Telangana,Warangal,17.68929,79.54125,1.56,IFR,6.75,22.76,30.26,261.0,,55,950,True,True,True,True,False
+SYN-01263,Telangana,Warangal,17.50658,80.0101,2.23,IFR,6.7,30.2,26.5,208.0,,55,950,True,False,False,False,False
+SYN-01264,Telangana,Warangal,18.41458,79.89773,1.83,IFR,6.6,18.6,32.2,227.0,,55,950,True,False,False,False,False
+SYN-01265,Telangana,Warangal,17.72844,79.25533,1.22,CFR,7.0,15.9,34.8,337.0,,55,950,True,False,False,False,False
+SYN-01266,Telangana,Warangal,17.66472,79.37343,1.48,CR,6.9,17.4,31.6,311.0,,55,950,True,False,False,False,False
+SYN-01267,Telangana,Warangal,17.66959,80.03429,2.35,IFR,6.7,35.8,29.5,197.0,,55,950,True,False,False,False,False
+SYN-01268,Telangana,Warangal,18.43252,79.66065,1.51,CR,6.8,18.3,32.5,176.0,,55,950,True,False,False,False,False
+SYN-01269,Telangana,Warangal,18.07671,79.50776,0.38,IFR,7.0,15.3,34.3,254.0,,55,950,True,False,False,False,False
+SYN-01270,Telangana,Warangal,18.17357,80.18979,3.18,IFR,6.8,19.5,26.5,149.0,,55,950,True,False,False,False,False
+SYN-01271,Telangana,Warangal,18.22345,80.5876,0.67,CFR,6.7,34.9,25.4,74.0,,55,950,True,False,False,False,False
+SYN-01272,Telangana,Warangal,17.83179,78.87774,1.88,IFR,6.9,18.6,35.7,561.0,,55,950,True,False,False,False,False
+SYN-01273,Telangana,Warangal,18.46175,80.05335,3.84,IFR,6.9,17.3,27.2,165.0,,55,950,True,False,False,False,False
+SYN-01274,Telangana,Warangal,17.63883,79.40713,2.82,IFR,6.9,13.3,31.4,288.0,,55,950,True,False,False,False,False
+SYN-01275,Telangana,Warangal,17.6711,79.83964,2.67,IFR,6.8,16.8,28.6,229.0,,55,950,True,False,False,False,False
+SYN-01276,Telangana,Warangal,18.13362,79.94626,3.74,IFR,6.6,36.0,27.2,245.0,,55,950,True,False,False,False,False
+SYN-01277,Telangana,Warangal,18.04713,80.01784,2.69,IFR,6.7,20.1,28.0,267.0,,55,950,True,False,False,False,False
+SYN-01278,Telangana,Warangal,18.14456,79.80761,1.61,CFR,6.9,32.2,30.5,231.0,,55,950,True,False,False,False,False
+SYN-01279,Telangana,Warangal,17.7675,79.40768,0.83,IFR,6.9,18.8,31.5,326.0,,55,950,True,False,False,False,False
+SYN-01280,Telangana,Warangal,18.35759,79.83792,1.36,CR,6.9,18.7,30.3,173.0,,55,950,True,False,False,False,False
+SYN-01281,Telangana,Warangal,17.79151,79.65497,1.09,CR,6.8,18.9,32.3,251.0,,55,950,True,False,False,False,False
+SYN-01282,Telangana,Warangal,17.71128,79.31442,2.87,IFR,7.1,17.1,33.6,327.0,,55,950,True,False,False,False,False
+SYN-01283,Telangana,Warangal,17.69754,79.63359,2.01,IFR,6.7,15.8,30.1,229.0,,55,950,True,False,False,False,False
+SYN-01284,Telangana,Warangal,17.85078,79.52736,1.06,CR,6.9,16.8,32.2,299.0,,55,950,True,False,False,False,False
+SYN-01285,Telangana,Warangal,17.82887,79.87699,0.24,CR,6.7,32.5,27.6,234.0,,55,950,True,False,False,False,False
+SYN-01286,Telangana,Warangal,17.80773,79.55744,3.31,CFR,7.0,17.5,32.3,273.0,,55,950,True,False,False,False,False
+SYN-01287,Telangana,Warangal,17.86432,79.32035,1.8,IFR,6.9,14.9,34.8,357.0,,55,950,True,False,False,False,False
+SYN-01288,Telangana,Warangal,18.36288,80.21814,0.47,IFR,6.1,29.1,26.5,183.0,,55,950,True,False,False,False,False
+SYN-01289,Telangana,Warangal,18.42049,79.6008,2.98,IFR,7.0,17.0,31.7,175.0,,55,950,True,False,False,False,False
+SYN-01290,Telangana,Warangal,17.69325,79.16963,1.39,CFR,6.9,15.2,36.5,360.0,,55,950,True,False,False,False,False
+SYN-01291,Telangana,Warangal,18.11644,80.01979,0.72,CFR,6.7,17.0,25.7,211.0,,55,950,True,False,False,False,False
+SYN-01292,Telangana,Warangal,17.95633,79.11029,3.06,IFR,7.0,15.6,35.8,432.0,,55,950,True,False,False,False,False
+SYN-01293,Telangana,Warangal,17.7216,79.46801,3.97,IFR,7.0,14.6,32.7,294.0,,55,950,True,False,False,False,False
+SYN-01294,Telangana,Warangal,18.34046,79.69579,2.22,IFR,7.0,28.1,32.4,205.0,,55,950,True,False,False,False,False
+SYN-01295,Telangana,Warangal,17.56763,79.70788,2.67,IFR,6.8,16.7,27.1,215.0,,55,950,True,False,False,False,False
+SYN-01296,Telangana,Warangal,18.37376,80.4026,2.95,CR,6.8,20.5,28.8,90.0,,55,950,True,False,False,False,False
+SYN-01297,Telangana,Warangal,17.89105,80.27107,0.78,IFR,5.9,34.3,29.5,498.0,,55,950,True,False,False,False,False
+SYN-01298,Telangana,Warangal,18.31411,79.69046,2.81,CFR,7.0,16.5,31.0,198.0,,55,950,True,False,False,False,False
+SYN-01299,Telangana,Warangal,18.19861,79.71289,0.53,IFR,6.9,32.2,32.5,206.0,,55,950,True,False,False,False,False
+SYN-01300,Telangana,Warangal,17.73642,79.41225,3.06,CR,7.0,16.0,33.1,307.0,,55,950,True,False,False,False,False
+SYN-01301,Telangana,Warangal,17.37417,80.00534,1.66,CFR,6.7,20.0,26.3,146.0,,55,950,True,False,False,False,False
+SYN-01302,Telangana,Warangal,17.53561,79.43546,1.4,IFR,6.8,33.3,30.8,282.0,,55,950,True,False,False,False,False
+SYN-01303,Telangana,Warangal,18.08869,79.71746,1.25,IFR,6.9,34.5,31.9,253.0,,55,950,True,False,False,False,False
+SYN-01304,Telangana,Warangal,18.12599,80.69336,2.3,CR,6.8,36.7,27.7,71.0,,55,950,True,False,False,False,False
+SYN-01305,Telangana,Warangal,18.34051,80.14033,2.51,CFR,6.9,17.1,27.5,149.0,,55,950,True,False,False,False,False
+SYN-01306,Telangana,Warangal,18.35864,80.2439,2.82,CFR,6.2,21.4,27.8,149.0,,55,950,True,False,False,False,False
+SYN-01307,Telangana,Warangal,17.56863,79.64909,2.7,IFR,6.9,15.7,27.8,235.0,,55,950,True,False,False,False,False
+SYN-01308,Telangana,Warangal,17.78169,80.11773,2.17,IFR,6.5,19.3,28.6,281.0,,55,950,True,False,False,False,False
+SYN-01309,Telangana,Warangal,17.884,79.73623,3.04,IFR,6.75,22.76,30.26,248.0,,55,950,True,True,True,True,False
+SYN-01310,Telangana,Warangal,17.6594,79.38151,0.41,CFR,6.9,16.4,32.8,305.0,,55,950,True,False,False,False,False
+SYN-01311,Telangana,Warangal,17.80861,80.02191,3.83,IFR,6.3,23.5,26.9,266.0,,55,950,True,False,False,False,False
+SYN-01312,Telangana,Warangal,18.32058,80.4312,0.63,IFR,6.75,22.76,30.26,81.0,,55,950,True,True,True,True,False
+SYN-01313,Telangana,Warangal,18.01485,80.05982,2.46,IFR,6.75,22.76,29.4,271.0,,55,950,True,True,True,False,False
+SYN-01314,Telangana,Warangal,17.99565,79.55326,3.92,CFR,6.75,22.76,30.26,276.0,,55,950,True,True,True,True,False
+SYN-01315,Telangana,Warangal,18.03099,79.75914,3.75,IFR,6.7,17.0,31.7,243.0,,55,950,True,False,False,False,False
+SYN-01316,Telangana,Warangal,17.73582,79.97517,3.47,CR,6.8,31.7,27.7,199.0,,55,950,True,False,False,False,False
+SYN-01317,Telangana,Warangal,17.46223,80.0273,1.59,CR,6.75,16.9,27.5,172.0,,55,950,True,True,False,False,False
+SYN-01318,Telangana,Warangal,17.40576,79.80712,3.1,CFR,6.7,31.7,26.8,175.0,,55,950,True,False,False,False,False
+SYN-01319,Telangana,Warangal,17.44713,79.73636,3.13,IFR,6.8,16.4,28.1,184.0,,55,950,True,False,False,False,False
+SYN-01320,Telangana,Warangal,18.39833,79.89656,0.46,IFR,6.9,13.6,30.9,219.0,,55,950,True,False,False,False,False
+SYN-01321,Tripura,West Tripura,23.778,91.56996,0.35,IFR,5.2,25.2,30.4,199.0,,40,2100,True,False,False,False,False
+SYN-01322,Tripura,West Tripura,23.85491,91.38496,3.2,IFR,5.5,20.3,30.6,24.0,,40,2100,True,False,False,False,False
+SYN-01323,Tripura,West Tripura,23.74497,91.28495,2.59,IFR,5.4,18.3,34.0,42.0,,40,2100,True,False,False,False,False
+SYN-01324,Tripura,West Tripura,23.62755,91.41643,1.78,CR,5.4,19.8,32.1,56.0,,40,2100,True,False,False,False,False
+SYN-01325,Tripura,West Tripura,24.06384,91.60201,0.51,IFR,5.5,18.5,30.0,35.0,,40,2100,True,False,False,False,False
+SYN-01326,Tripura,West Tripura,23.31235,91.32117,2.54,IFR,5.4,17.7,35.4,20.0,,40,2100,True,False,False,False,False
+SYN-01327,Tripura,West Tripura,23.56501,91.19717,1.38,IFR,5.6,19.4,34.2,20.0,,40,2100,True,False,False,False,False
+SYN-01328,Tripura,West Tripura,23.7136,91.37964,0.97,CFR,5.5,19.0,28.5,54.0,,40,2100,True,False,False,False,False
+SYN-01329,Tripura,West Tripura,23.59727,91.4073,2.24,IFR,5.5,18.6,32.8,47.0,,40,2100,True,False,False,False,False
+SYN-01330,Tripura,West Tripura,23.61148,91.4336,2.61,CFR,5.5,20.2,32.0,63.0,,40,2100,True,False,False,False,False
+SYN-01331,Tripura,West Tripura,23.6301,91.3585,2.79,IFR,5.4,18.4,32.0,46.0,,40,2100,True,False,False,False,False
+SYN-01332,Tripura,West Tripura,23.85727,91.61308,2.85,CR,5.5,21.7,30.1,54.0,,40,2100,True,False,False,False,False
+SYN-01333,Tripura,West Tripura,23.65445,91.43645,3.42,IFR,5.5,19.0,30.8,73.0,,40,2100,True,False,False,False,False
+SYN-01334,Tripura,West Tripura,23.77012,91.53052,0.53,IFR,5.3,25.0,28.0,124.0,,40,2100,True,False,False,False,False
+SYN-01335,Tripura,West Tripura,23.48629,91.34307,1.92,CR,5.4,21.9,31.7,23.0,,40,2100,True,False,False,False,False
+SYN-01336,Tripura,West Tripura,23.93531,91.67404,1.38,CR,5.4,18.9,27.1,78.0,,40,2100,True,False,False,False,False
+SYN-01337,Tripura,West Tripura,23.80472,91.32761,3.01,IFR,5.5,16.9,34.4,45.0,,40,2100,True,False,False,False,False
+SYN-01338,Tripura,West Tripura,23.40617,91.37817,2.89,CR,5.4,21.7,30.6,72.0,,40,2100,True,False,False,False,False
+SYN-01339,Tripura,West Tripura,23.83207,91.38543,0.82,CFR,5.5,18.2,29.4,25.0,,40,2100,True,False,False,False,False
+SYN-01340,Tripura,West Tripura,23.65705,91.21082,2.19,CFR,5.5,22.8,31.2,21.0,,40,2100,True,False,False,False,False
+SYN-01341,Tripura,West Tripura,23.97806,91.73491,2.94,IFR,5.4,29.0,29.3,101.0,,40,2100,True,False,False,False,False
+SYN-01342,Tripura,West Tripura,24.03434,91.61163,0.68,CFR,5.4,19.1,29.7,35.0,,40,2100,True,False,False,False,False
+SYN-01343,Tripura,West Tripura,23.82638,91.59006,1.22,CFR,5.3,23.3,27.7,93.0,,40,2100,True,False,False,False,False
+SYN-01344,Tripura,West Tripura,23.84462,91.72842,3.13,IFR,5.3,23.3,27.6,109.0,,40,2100,True,False,False,False,False
+SYN-01345,Tripura,West Tripura,23.97472,91.34311,3.27,IFR,5.4,16.8,33.6,24.0,,40,2100,True,False,False,False,False
+SYN-01346,Tripura,West Tripura,24.10625,91.41679,0.44,CR,5.3,20.1,27.4,56.0,,40,2100,True,False,False,False,False
+SYN-01347,Tripura,West Tripura,23.8514,91.5667,2.39,IFR,5.3,22.2,28.7,134.0,,40,2100,True,False,False,False,False
+SYN-01348,Tripura,West Tripura,23.56585,91.3952,1.93,IFR,5.5,20.2,29.9,33.0,,40,2100,True,False,False,False,False
+SYN-01349,Tripura,West Tripura,23.75552,91.24742,2.1,CR,5.4,21.4,32.0,9.0,,40,2100,True,False,False,False,False
+SYN-01350,Tripura,West Tripura,23.84452,91.43526,1.6,IFR,5.5,16.3,30.7,42.0,,40,2100,True,False,False,False,False
+SYN-01351,Tripura,West Tripura,23.65179,91.33638,0.59,CR,5.5,17.8,27.2,39.0,,40,2100,True,False,False,False,False
+SYN-01352,Tripura,West Tripura,24.01603,91.47092,2.95,IFR,5.3,17.3,28.5,86.0,,40,2100,True,False,False,False,False
+SYN-01353,Tripura,West Tripura,23.74157,91.50739,2.13,IFR,5.4,18.4,31.7,79.0,,40,2100,True,False,False,False,False
+SYN-01354,Tripura,West Tripura,23.97941,91.54336,3.48,IFR,5.4,21.4,27.9,72.0,,40,2100,True,False,False,False,False
+SYN-01355,Tripura,West Tripura,23.34209,91.30875,1.99,IFR,5.5,17.1,36.8,18.0,,40,2100,True,False,False,False,False
+SYN-01356,Tripura,West Tripura,23.58117,91.37351,0.77,CFR,5.5,17.4,31.5,46.0,,40,2100,True,False,False,False,False
+SYN-01357,Tripura,West Tripura,23.63211,91.27921,3.46,CR,5.4,19.4,30.3,14.0,,40,2100,True,False,False,False,False
+SYN-01358,Tripura,West Tripura,24.09179,91.6333,3.67,CR,5.4,22.0,32.4,33.0,,40,2100,True,False,False,False,False
+SYN-01359,Tripura,West Tripura,24.06048,91.70374,1.79,IFR,5.3,20.8,28.4,78.0,,40,2100,True,False,False,False,False
+SYN-01360,Tripura,West Tripura,23.70529,91.22312,1.78,CR,5.5,18.2,32.5,28.0,,40,2100,True,False,False,False,False
+SYN-01361,Tripura,West Tripura,23.97389,91.45899,1.23,IFR,5.3,18.5,29.3,74.0,,40,2100,True,False,False,False,False
+SYN-01362,Tripura,West Tripura,23.54592,91.26058,1.62,IFR,5.5,19.7,31.7,68.0,,40,2100,True,False,False,False,False
+SYN-01363,Tripura,West Tripura,23.86644,91.65325,3.63,IFR,5.4,17.1,31.7,66.0,,40,2100,True,False,False,False,False
+SYN-01364,Tripura,West Tripura,23.5761,91.21571,3.26,CFR,5.4,20.4,31.9,39.0,,40,2100,True,False,False,False,False
+SYN-01365,Tripura,West Tripura,23.78351,91.70248,3.83,IFR,5.5,20.3,28.0,100.0,,40,2100,True,False,False,False,False
+SYN-01366,Tripura,West Tripura,23.75384,91.27079,1.97,IFR,5.3,18.5,31.1,17.0,,40,2100,True,False,False,False,False
+SYN-01367,Tripura,West Tripura,23.61109,91.37254,3.41,IFR,5.6,19.4,32.3,34.0,,40,2100,True,False,False,False,False
+SYN-01368,Tripura,West Tripura,23.75442,91.77321,2.3,IFR,5.4,21.7,24.4,165.0,,40,2100,True,False,False,False,False
+SYN-01369,Tripura,West Tripura,23.87395,91.66766,0.96,CR,5.5,20.8,28.8,90.0,,40,2100,True,False,False,False,False
+SYN-01370,Tripura,West Tripura,24.12792,91.71004,1.35,CR,5.3,20.8,25.2,83.0,,40,2100,True,False,False,False,False
+SYN-01371,Tripura,West Tripura,23.87369,91.54111,1.96,CR,5.4,19.8,29.7,133.0,,40,2100,True,False,False,False,False
+SYN-01372,Tripura,West Tripura,23.50402,91.29681,2.07,CFR,5.4,20.5,30.1,16.0,,40,2100,True,False,False,False,False
+SYN-01373,Tripura,West Tripura,23.79291,91.24044,0.94,CFR,5.4,18.2,27.9,23.0,,40,2100,True,False,False,False,False
+SYN-01374,Tripura,West Tripura,24.10122,91.66018,3.09,IFR,5.5,20.6,27.6,48.0,,40,2100,True,False,False,False,False
+SYN-01375,Tripura,West Tripura,23.9501,91.34857,0.22,IFR,5.5,19.9,34.5,30.0,,40,2100,True,False,False,False,False
+SYN-01376,Tripura,West Tripura,23.57815,91.22763,1.09,IFR,5.4,20.0,32.9,58.0,,40,2100,True,False,False,False,False
+SYN-01377,Tripura,West Tripura,23.97116,91.71064,3.39,CFR,5.5,19.0,29.6,65.0,,40,2100,True,False,False,False,False
+SYN-01378,Tripura,West Tripura,23.66804,91.41522,3.81,IFR,5.4,17.9,31.4,37.0,,40,2100,True,False,False,False,False
+SYN-01379,Tripura,West Tripura,23.86069,91.63629,2.7,CFR,5.5,19.9,31.9,49.0,,40,2100,True,False,False,False,False
+SYN-01380,Tripura,West Tripura,23.81756,91.32184,2.96,IFR,5.4,20.0,34.8,35.0,,40,2100,True,False,False,False,False
+SYN-01381,Tripura,West Tripura,23.49617,91.29902,2.21,IFR,5.4,21.3,28.4,18.0,,40,2100,True,False,False,False,False
+SYN-01382,Tripura,West Tripura,23.85372,91.47124,2.07,IFR,5.5,17.4,28.2,72.0,,40,2100,True,False,False,False,False
+SYN-01383,Tripura,West Tripura,23.98584,91.41459,3.99,CR,5.5,17.8,29.8,44.0,,40,2100,True,False,False,False,False
+SYN-01384,Tripura,West Tripura,23.86024,91.35104,0.55,CFR,5.5,16.8,34.2,20.0,,40,2100,True,False,False,False,False
+SYN-01385,Tripura,West Tripura,23.84325,91.62361,3.61,IFR,5.42,20.07,30.04,51.0,,40,2100,True,True,True,True,False
+SYN-01386,Tripura,West Tripura,23.77304,91.65181,2.86,IFR,5.4,22.3,27.1,101.0,,40,2100,True,False,False,False,False
+SYN-01387,Tripura,West Tripura,24.06707,91.43906,3.9,IFR,5.3,18.5,26.5,57.0,,40,2100,True,False,False,False,False
+SYN-01388,Tripura,West Tripura,23.8086,91.61898,0.56,IFR,5.5,18.0,30.6,59.0,,40,2100,True,False,False,False,False
+SYN-01389,Tripura,West Tripura,23.87861,91.47999,3.32,IFR,5.4,18.6,28.8,73.0,,40,2100,True,False,False,False,False
+SYN-01390,Tripura,West Tripura,23.8618,91.42056,2.36,IFR,5.5,19.1,31.5,35.0,,40,2100,True,False,False,False,False
+SYN-01391,Tripura,West Tripura,23.96691,91.43911,3.86,IFR,5.4,20.0,30.2,53.0,,40,2100,True,False,False,False,False
+SYN-01392,Tripura,West Tripura,23.94144,91.74758,1.19,IFR,5.2,26.6,26.9,113.0,,40,2100,True,False,False,False,False
+SYN-01393,Tripura,West Tripura,23.67025,91.23836,3.24,CR,5.4,16.9,29.2,27.0,,40,2100,True,False,False,False,False
+SYN-01394,Tripura,West Tripura,23.9573,91.52707,2.99,IFR,5.2,20.6,29.2,115.0,,40,2100,True,False,False,False,False
+SYN-01395,Tripura,West Tripura,23.70972,91.28064,1.23,IFR,5.5,22.0,27.5,31.0,,40,2100,True,False,False,False,False
+SYN-01396,Tripura,West Tripura,23.93722,91.31119,0.97,CFR,5.4,21.1,32.6,36.0,,40,2100,True,False,False,False,False
+SYN-01397,Tripura,West Tripura,24.03778,91.72811,2.42,IFR,5.2,29.6,27.1,93.0,,40,2100,True,False,False,False,False
+SYN-01398,Tripura,West Tripura,23.70465,91.22495,0.82,IFR,5.5,17.7,31.4,28.0,,40,2100,True,False,False,False,False
+SYN-01399,Tripura,West Tripura,23.77608,91.3828,1.74,IFR,5.4,17.7,30.5,58.0,,40,2100,True,False,False,False,False
+SYN-01400,Tripura,West Tripura,23.63863,91.39278,3.87,IFR,5.6,20.6,32.3,39.0,,40,2100,True,False,False,False,False
+SYN-01401,Tripura,West Tripura,23.90633,91.51132,1.37,IFR,5.4,23.2,26.9,132.0,,40,2100,True,False,False,False,False
+SYN-01402,Tripura,West Tripura,24.09433,91.44352,0.66,IFR,5.3,18.0,26.7,71.0,,40,2100,True,False,False,False,False
+SYN-01403,Tripura,West Tripura,23.72991,91.52615,2.81,CFR,5.4,20.3,29.2,113.0,,40,2100,True,False,False,False,False
+SYN-01404,Tripura,West Tripura,23.86817,91.4998,2.85,IFR,5.4,20.6,25.9,75.0,,40,2100,True,False,False,False,False
+SYN-01405,Tripura,West Tripura,24.06539,91.50628,3.38,IFR,5.4,17.1,26.0,64.0,,40,2100,True,False,False,False,False
+SYN-01406,Tripura,West Tripura,23.9135,91.69427,0.55,IFR,5.4,18.9,30.4,63.0,,40,2100,True,False,False,False,False
+SYN-01407,Tripura,West Tripura,23.85984,91.57895,1.55,IFR,5.4,21.4,29.7,118.0,,40,2100,True,False,False,False,False
+SYN-01408,Tripura,West Tripura,23.84437,91.59128,2.77,IFR,5.5,20.5,29.0,63.0,,40,2100,True,False,False,False,False
+SYN-01409,Tripura,West Tripura,23.82901,91.44142,3.96,IFR,5.4,19.3,28.5,38.0,,40,2100,True,False,False,False,False
+SYN-01410,Tripura,West Tripura,23.62707,91.34241,1.74,IFR,5.5,18.7,34.9,36.0,,40,2100,True,False,False,False,False
+SYN-01411,Tripura,West Tripura,23.80166,91.42365,3.04,IFR,5.4,17.0,29.7,47.0,,40,2100,True,False,False,False,False
+SYN-01412,Tripura,West Tripura,23.40246,91.33831,1.96,CFR,5.4,22.3,33.3,80.0,,40,2100,True,False,False,False,False
+SYN-01413,Tripura,West Tripura,23.77687,91.48693,0.73,IFR,5.5,19.9,29.6,51.0,,40,2100,True,False,False,False,False
+SYN-01414,Tripura,West Tripura,23.86076,91.59402,3.36,CFR,5.4,18.2,29.0,79.0,,40,2100,True,False,False,False,False
+SYN-01415,Tripura,West Tripura,23.93428,91.4594,0.7,CFR,5.4,19.6,28.6,69.0,,40,2100,True,False,False,False,False
+SYN-01416,Tripura,West Tripura,23.85768,91.33473,1.61,CR,5.4,17.5,32.4,20.0,,40,2100,True,False,False,False,False
+SYN-01417,Tripura,West Tripura,23.77759,91.35332,2.65,CR,5.5,19.4,30.9,42.0,,40,2100,True,False,False,False,False
+SYN-01418,Tripura,West Tripura,23.87977,91.48227,1.18,CFR,5.5,18.7,27.4,72.0,,40,2100,True,False,False,False,False
+SYN-01419,Tripura,West Tripura,23.95341,91.53918,0.28,IFR,5.4,20.1,28.1,105.0,,40,2100,True,False,False,False,False
+SYN-01420,Tripura,West Tripura,23.59369,91.41522,3.63,IFR,5.5,20.5,31.3,55.0,,40,2100,True,False,False,False,False
+SYN-01421,Tripura,West Tripura,23.88519,91.5081,0.69,CFR,5.4,18.1,27.2,99.0,,40,2100,True,False,False,False,False
+SYN-01422,Tripura,West Tripura,23.75964,91.34779,3.35,IFR,5.5,17.7,30.7,49.0,,40,2100,True,False,False,False,False
+SYN-01423,Tripura,West Tripura,23.86455,91.61214,0.36,IFR,5.5,20.6,30.2,53.0,,40,2100,True,False,False,False,False
+SYN-01424,Tripura,West Tripura,23.59767,91.36222,0.84,CR,5.4,19.6,34.2,38.0,,40,2100,True,False,False,False,False
+SYN-01425,Tripura,West Tripura,23.89301,91.65837,3.32,IFR,5.4,21.4,29.0,69.0,,40,2100,True,False,False,False,False
+SYN-01426,Tripura,West Tripura,23.8753,91.45802,0.31,CR,5.5,18.2,28.7,50.0,,40,2100,True,False,False,False,False
+SYN-01427,Tripura,West Tripura,23.7887,91.71853,0.86,IFR,5.4,19.6,30.8,129.0,,40,2100,True,False,False,False,False
+SYN-01428,Tripura,West Tripura,23.98604,91.41516,0.91,IFR,5.5,17.8,29.8,44.0,,40,2100,True,False,False,False,False
+SYN-01429,Tripura,West Tripura,24.0407,91.58746,3.56,IFR,5.4,18.2,27.4,35.0,,40,2100,True,False,False,False,False
+SYN-01430,Tripura,West Tripura,23.95023,91.62937,2.55,IFR,5.4,17.0,30.2,40.0,,40,2100,True,False,False,False,False
+SYN-01431,Tripura,West Tripura,23.30368,91.35206,1.32,IFR,5.5,22.1,30.2,51.0,,40,2100,True,False,False,False,False
+SYN-01432,Tripura,West Tripura,23.75039,91.41511,2.29,IFR,5.5,20.07,32.0,49.0,,40,2100,True,False,True,False,False
+SYN-01433,Tripura,West Tripura,23.70706,91.30329,1.26,IFR,5.5,21.6,29.3,39.0,,40,2100,True,False,False,False,False
+SYN-01434,Tripura,West Tripura,23.38104,91.34433,0.96,CFR,5.4,20.1,29.2,62.0,,40,2100,True,False,False,False,False
+SYN-01435,Tripura,West Tripura,24.01983,91.65056,2.2,CR,5.4,22.1,27.4,59.0,,40,2100,True,False,False,False,False
+SYN-01436,Tripura,West Tripura,23.69925,91.73204,3.25,CFR,5.2,28.4,28.7,278.0,,40,2100,True,False,False,False,False
+SYN-01437,Tripura,West Tripura,23.73658,91.16833,3.96,CFR,5.3,20.3,30.04,40.0,,40,2100,True,False,False,True,False
+SYN-01438,Tripura,West Tripura,23.97631,91.73856,1.56,IFR,5.3,30.6,27.0,187.0,,40,2100,True,False,False,False,False
+SYN-01439,Tripura,West Tripura,24.01767,91.48475,2.04,CFR,5.3,19.5,27.7,111.0,,40,2100,True,False,False,False,False
+SYN-01440,Tripura,West Tripura,24.17362,91.67416,2.11,IFR,5.4,22.9,29.8,44.0,,40,2100,True,False,False,False,False
+SYN-01441,Tripura,West Tripura,23.77466,91.60534,0.88,IFR,5.4,19.8,25.8,87.0,,40,2100,True,False,False,False,False
+SYN-01442,Tripura,West Tripura,23.84371,91.58845,1.03,CFR,5.5,20.6,28.6,62.0,,40,2100,True,False,False,False,False
+SYN-01443,Tripura,West Tripura,23.72143,91.20776,3.16,IFR,5.4,17.0,33.1,27.0,,40,2100,True,False,False,False,False
+SYN-01444,Tripura,West Tripura,23.53885,91.27468,3.97,IFR,5.4,17.9,30.3,39.0,,40,2100,True,False,False,False,False
+SYN-01445,Tripura,West Tripura,23.6967,91.35501,3.11,CFR,5.4,18.7,32.5,32.0,,40,2100,True,False,False,False,False
+SYN-01446,Tripura,West Tripura,23.28797,91.32613,3.9,IFR,5.5,18.3,34.1,32.0,,40,2100,True,False,False,False,False
+SYN-01447,Tripura,West Tripura,23.76671,91.54777,2.7,IFR,5.4,19.5,26.9,176.0,,40,2100,True,False,False,False,False
+SYN-01448,Tripura,West Tripura,23.60956,91.28358,3.3,CFR,5.4,18.7,30.7,23.0,,40,2100,True,False,False,False,False
+SYN-01449,Tripura,West Tripura,23.40919,91.35459,0.41,CFR,5.4,18.8,32.8,87.0,,40,2100,True,False,False,False,False
+SYN-01450,Tripura,West Tripura,23.34171,91.30785,1.03,CFR,5.5,17.1,36.8,20.0,,40,2100,True,False,False,False,False
+SYN-01451,Tripura,West Tripura,23.92165,91.45119,3.23,IFR,5.5,20.5,30.6,57.0,,40,2100,True,False,False,False,False
+SYN-01452,Tripura,West Tripura,23.84224,91.53075,3.39,CFR,5.3,19.9,26.9,118.0,,40,2100,True,False,False,False,False
+SYN-01453,Tripura,West Tripura,23.94456,91.68307,0.87,CR,5.4,20.5,28.4,75.0,,40,2100,True,False,False,False,False
+SYN-01454,Tripura,West Tripura,23.95755,91.67118,3.26,CR,5.4,26.1,27.1,78.0,,40,2100,True,False,False,False,False
+SYN-01455,Tripura,West Tripura,23.78536,91.57818,3.67,IFR,5.4,19.6,26.3,101.0,,40,2100,True,False,False,False,False
+SYN-01456,Tripura,West Tripura,24.15603,91.66827,2.86,CFR,5.4,21.7,28.7,52.0,,40,2100,True,False,False,False,False
+SYN-01457,Tripura,West Tripura,23.71059,91.44963,2.34,CR,5.4,18.2,32.0,56.0,,40,2100,True,False,False,False,False
+SYN-01458,Tripura,West Tripura,23.95498,91.58681,0.92,CFR,5.5,16.8,27.6,57.0,,40,2100,True,False,False,False,False
+SYN-01459,Tripura,West Tripura,23.9448,91.40128,3.55,IFR,5.5,18.6,35.6,32.0,,40,2100,True,False,False,False,False
+SYN-01460,Tripura,West Tripura,24.03038,91.57457,1.37,IFR,5.4,20.4,27.6,41.0,,40,2100,True,False,False,False,False
+SYN-01461,Tripura,West Tripura,23.72954,91.17171,0.54,IFR,5.4,18.4,31.2,47.0,,40,2100,True,False,False,False,False
+SYN-01462,Tripura,West Tripura,23.71602,91.3755,1.03,IFR,5.5,20.6,29.0,49.0,,40,2100,True,False,False,False,False
+SYN-01463,Tripura,West Tripura,24.03389,91.56459,0.2,CFR,5.5,18.1,28.0,51.0,,40,2100,True,False,False,False,False
+SYN-01464,Tripura,West Tripura,23.86923,91.41484,0.97,IFR,5.5,17.5,31.3,44.0,,40,2100,True,False,False,False,False
+SYN-01465,Tripura,West Tripura,23.60034,91.39604,2.92,CFR,5.5,20.1,33.4,33.0,,40,2100,True,False,False,False,False
+SYN-01466,Tripura,West Tripura,23.84053,91.66894,3.41,IFR,5.5,19.5,33.2,68.0,,40,2100,True,False,False,False,False
+SYN-01467,Tripura,West Tripura,23.79595,91.65207,0.28,CR,5.5,20.0,27.3,83.0,,40,2100,True,False,False,False,False
+SYN-01468,Tripura,West Tripura,23.90929,91.30235,3.69,CFR,5.4,23.0,33.4,52.0,,40,2100,True,False,False,False,False
+SYN-01469,Tripura,West Tripura,23.74039,91.51684,3.42,CFR,5.5,20.6,31.8,70.0,,40,2100,True,False,False,False,False
+SYN-01470,Tripura,West Tripura,23.71762,91.52824,3.85,IFR,5.5,18.2,29.9,98.0,,40,2100,True,False,False,False,False
+SYN-01471,Tripura,West Tripura,24.06229,91.50472,3.78,IFR,5.5,17.4,26.4,78.0,,40,2100,True,False,False,False,False
+SYN-01472,Tripura,West Tripura,24.01365,91.66904,0.58,IFR,5.5,17.9,30.1,44.0,,40,2100,True,False,False,False,False
+SYN-01473,Tripura,West Tripura,23.74774,91.39293,0.72,IFR,5.5,17.7,29.5,61.0,,40,2100,True,False,False,False,False
+SYN-01474,Tripura,West Tripura,24.1249,91.67092,3.81,CFR,5.4,23.8,27.2,57.0,,40,2100,True,False,False,False,False
+SYN-01475,Tripura,West Tripura,23.88387,91.72563,3.85,CR,5.3,22.0,26.4,118.0,,40,2100,True,False,False,False,False
+SYN-01476,Tripura,West Tripura,23.78322,91.24719,0.86,CFR,5.4,19.6,30.0,20.0,,40,2100,True,False,False,False,False
+SYN-01477,Tripura,West Tripura,23.82801,91.39996,2.84,CFR,5.5,16.2,28.5,35.0,,40,2100,True,False,False,False,False
+SYN-01478,Tripura,West Tripura,23.92743,91.27666,3.19,IFR,5.4,22.1,33.6,18.0,,40,2100,True,False,False,False,False
+SYN-01479,Tripura,West Tripura,23.82067,91.35339,2.44,IFR,5.5,16.6,34.0,35.0,,40,2100,True,False,False,False,False
+SYN-01480,Tripura,West Tripura,23.69057,91.75106,1.37,CR,5.4,23.7,27.4,176.0,,40,2100,True,False,False,False,False
+SYN-01481,Tripura,West Tripura,23.55568,91.23344,0.68,CR,5.5,18.1,30.5,48.0,,40,2100,True,False,False,False,False
+SYN-01482,Tripura,West Tripura,23.80014,91.38678,3.81,CFR,5.4,17.9,30.8,43.0,,40,2100,True,False,False,False,False
+SYN-01483,Tripura,West Tripura,24.10419,91.69898,1.69,CFR,5.4,21.1,27.9,67.0,,40,2100,True,False,False,False,False
+SYN-01484,Tripura,West Tripura,23.94731,91.30177,3.87,IFR,5.5,24.6,29.6,11.0,,40,2100,True,False,False,False,False
+SYN-01485,Tripura,West Tripura,23.63955,91.39539,2.49,CFR,5.5,21.4,33.0,44.0,,40,2100,True,False,False,False,False
+SYN-01486,Tripura,West Tripura,23.90917,91.49839,3.88,IFR,5.3,19.9,27.1,102.0,,40,2100,True,False,False,False,False
+SYN-01487,Tripura,West Tripura,23.6925,91.46132,2.35,CFR,5.4,17.9,30.8,61.0,,40,2100,True,False,False,False,False
+SYN-01488,Tripura,West Tripura,24.03052,91.44186,0.73,CR,5.4,23.7,30.0,64.0,,40,2100,True,False,False,False,False
+SYN-01489,Tripura,West Tripura,23.76225,91.26659,1.1,CFR,5.42,20.07,30.04,24.0,,40,2100,True,True,True,True,False
+SYN-01490,Tripura,West Tripura,23.70527,91.50279,0.84,CFR,5.4,18.1,34.0,86.0,,40,2100,True,False,False,False,False
+SYN-01491,Tripura,West Tripura,23.45165,91.37795,0.54,CR,5.3,17.0,32.3,46.0,,40,2100,True,False,False,False,False
+SYN-01492,Tripura,West Tripura,23.82802,91.53611,2.63,CFR,5.4,18.9,28.5,114.0,,40,2100,True,False,False,False,False
+SYN-01493,Tripura,West Tripura,23.66764,91.47086,1.9,IFR,5.4,18.4,28.9,82.0,,40,2100,True,False,False,False,False
+SYN-01494,Tripura,West Tripura,23.93605,91.45804,1.15,IFR,5.4,18.9,29.3,58.0,,40,2100,True,False,False,False,False
+SYN-01495,Tripura,West Tripura,23.72678,91.20863,1.18,IFR,5.4,17.7,32.8,33.0,,40,2100,True,False,False,False,False
+SYN-01496,Tripura,West Tripura,23.60306,91.18599,0.2,IFR,5.4,20.1,32.4,36.0,,40,2100,True,False,False,False,False
+SYN-01497,Tripura,West Tripura,23.72369,91.4778,2.98,CFR,5.5,19.0,31.2,52.0,,40,2100,True,False,False,False,False
+SYN-01498,Tripura,West Tripura,23.30723,91.33601,3.56,IFR,5.3,18.6,35.6,34.0,,40,2100,True,False,False,False,False
+SYN-01499,Tripura,West Tripura,23.99261,91.73807,1.64,IFR,5.3,30.8,26.3,177.0,,40,2100,True,False,False,False,False
+SYN-01500,Tripura,West Tripura,23.81436,91.61378,0.59,IFR,5.5,20.1,29.9,66.0,,40,2100,True,False,False,False,False
+SYN-01501,Tripura,West Tripura,23.72746,91.19148,3.48,CR,5.3,20.3,28.6,31.0,,40,2100,True,False,False,False,False
+SYN-01502,Tripura,West Tripura,23.543,91.23661,2.81,IFR,5.5,18.8,30.6,56.0,,40,2100,True,False,False,False,False
+SYN-01503,Tripura,West Tripura,24.04868,91.43591,0.48,CFR,5.4,17.4,29.9,50.0,,40,2100,True,False,False,False,False
+SYN-01504,Tripura,West Tripura,23.94592,91.31828,1.32,IFR,5.4,21.1,30.7,21.0,,40,2100,True,False,False,False,False
+SYN-01505,Tripura,West Tripura,24.04055,91.46019,3.82,IFR,5.4,20.5,29.1,97.0,,40,2100,True,False,False,False,False
+SYN-01506,Tripura,West Tripura,23.88526,91.43181,0.85,IFR,5.5,18.4,30.4,51.0,,40,2100,True,False,False,False,False
+SYN-01507,Tripura,West Tripura,23.97815,91.2863,2.98,IFR,5.3,17.9,30.5,9.0,,40,2100,True,False,False,False,False
+SYN-01508,Tripura,West Tripura,23.88976,91.37146,3.61,IFR,5.5,21.1,33.3,52.0,,40,2100,True,False,False,False,False
+SYN-01509,Tripura,West Tripura,23.65603,91.25885,2.46,CR,5.4,21.0,30.9,24.0,,40,2100,True,False,False,False,False
+SYN-01510,Tripura,West Tripura,23.78443,91.62993,2.03,IFR,5.4,19.2,26.4,70.0,,40,2100,True,False,False,False,False
+SYN-01511,Tripura,West Tripura,23.95056,91.39349,3.78,IFR,5.5,18.0,34.0,30.0,,40,2100,True,False,False,False,False
+SYN-01512,Tripura,West Tripura,23.7041,91.74084,3.58,IFR,5.2,27.6,28.6,261.0,,40,2100,True,False,False,False,False
+SYN-01513,Tripura,West Tripura,23.88511,91.7348,0.58,IFR,5.2,23.1,27.6,109.0,,40,2100,True,False,False,False,False
+SYN-01514,Tripura,West Tripura,23.68775,91.75921,0.92,CR,5.3,27.6,28.3,227.0,,40,2100,True,False,False,False,False
+SYN-01515,Tripura,West Tripura,24.09716,91.73501,2.94,CR,5.2,26.3,26.4,112.0,,40,2100,True,False,False,False,False
+SYN-01516,Tripura,West Tripura,23.52967,91.36505,1.21,IFR,5.4,20.1,30.3,36.0,,40,2100,True,False,False,False,False
+SYN-01517,Tripura,West Tripura,24.01538,91.4007,1.1,IFR,5.6,17.0,33.6,31.0,,40,2100,True,False,False,False,False
+SYN-01518,Tripura,West Tripura,23.97811,91.62781,2.37,CFR,5.5,19.5,30.5,38.0,,40,2100,True,False,False,False,False
+SYN-01519,Tripura,West Tripura,23.93584,91.3666,0.78,IFR,5.4,22.9,33.9,31.0,,40,2100,True,False,False,False,False
+SYN-01520,Tripura,West Tripura,23.79891,91.26667,1.82,IFR,5.42,20.07,30.04,23.0,,40,2100,True,True,True,True,False
+SYN-01521,Tripura,West Tripura,24.07157,91.57941,2.72,CR,5.6,18.3,27.0,34.0,,40,2100,True,False,False,False,False
+SYN-01522,Tripura,West Tripura,23.70133,91.21844,0.96,IFR,5.6,18.3,32.5,34.0,,40,2100,True,False,False,False,False
+SYN-01523,Tripura,West Tripura,23.54523,91.29173,0.85,IFR,5.4,17.6,32.5,41.0,,40,2100,True,False,False,False,False
+SYN-01524,Tripura,West Tripura,24.07518,91.56913,0.51,CFR,5.7,16.5,26.7,26.0,,40,2100,True,False,False,False,False
+SYN-01525,Tripura,West Tripura,23.88575,91.7556,1.37,IFR,5.3,29.7,27.8,259.0,,40,2100,True,False,False,False,False
+SYN-01526,Tripura,West Tripura,23.941,91.72103,2.06,CR,5.3,19.2,28.1,120.0,,40,2100,True,False,False,False,False
+SYN-01527,Tripura,West Tripura,23.7215,91.31325,0.55,IFR,5.5,20.2,30.0,38.0,,40,2100,True,False,False,False,False
+SYN-01528,Tripura,West Tripura,23.88642,91.74652,0.9,CFR,5.3,24.3,26.6,159.0,,40,2100,True,False,False,False,False
+SYN-01529,Tripura,West Tripura,23.33097,91.36358,1.6,IFR,5.5,18.8,33.7,47.0,,40,2100,True,False,False,False,False
+SYN-01530,Tripura,West Tripura,23.74527,91.43206,1.2,IFR,5.5,18.7,30.4,72.0,,40,2100,True,False,False,False,False
+SYN-01531,Tripura,West Tripura,23.85908,91.7417,1.06,IFR,5.3,26.4,25.5,170.0,,40,2100,True,False,False,False,False
+SYN-01532,Tripura,West Tripura,23.74559,91.26573,0.43,CFR,5.3,19.7,31.9,14.0,,40,2100,True,False,False,False,False
+SYN-01533,Tripura,West Tripura,23.89079,91.29108,2.74,IFR,5.4,17.6,33.8,39.0,,40,2100,True,False,False,False,False
+SYN-01534,Tripura,West Tripura,23.95995,91.73157,1.51,IFR,5.3,21.9,28.1,148.0,,40,2100,True,False,False,False,False
+SYN-01535,Tripura,West Tripura,23.88791,91.24696,3.89,CR,5.4,18.6,31.3,23.0,,40,2100,True,False,False,False,False
+SYN-01536,Tripura,West Tripura,23.9112,91.74444,2.3,CFR,5.2,21.9,26.9,182.0,,40,2100,True,False,False,False,False
+SYN-01537,Tripura,West Tripura,23.94523,91.32156,3.31,IFR,5.5,18.5,31.9,21.0,,40,2100,True,False,False,False,False
+SYN-01538,Tripura,West Tripura,23.82486,91.72649,2.23,CFR,5.3,23.5,26.3,144.0,,40,2100,True,False,False,False,False
+SYN-01539,Tripura,West Tripura,23.69185,91.46385,2.0,CFR,5.4,18.2,30.0,65.0,,40,2100,True,False,False,False,False
+SYN-01540,Tripura,West Tripura,24.02285,91.68806,2.01,IFR,5.3,20.2,27.3,69.0,,40,2100,True,False,False,False,False
