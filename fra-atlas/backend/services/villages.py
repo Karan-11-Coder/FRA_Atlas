@@ -1,6 +1,6 @@
 from sqlalchemy import select, insert
 from sqlalchemy.exc import IntegrityError
-from backend.db.models import Village
+from backend.models import Village
 from backend.services.locations import normalize_triplet, coords_plausible, geocode_village
 
 async def upsert_village(session, *, state, district, village,
@@ -35,10 +35,20 @@ async def upsert_village(session, *, state, district, village,
             lat, lon = geo
 
     try:
-        await session.execute(insert(Village).values(
+        result = await session.execute(insert(Village).values(
             state=state, district=district, village=village, lat=lat, lon=lon
-        ))
+        ).returning(Village))
         await session.flush()
+        return result.scalar_one_or_none()
     except IntegrityError:
+        # Lost a race to a concurrent insert of the same (state, district,
+        # village) — fetch whichever row won.
         await session.rollback()
-    return None
+        row = await session.execute(
+            select(Village).where(
+                Village.state == state,
+                Village.district == district,
+                Village.village == village,
+            )
+        )
+        return row.scalar_one_or_none()

@@ -9,12 +9,11 @@ from PIL import Image, ImageFilter, ImageOps
 
 # ---- Config (edit if needed) ----------------------------------------------
 
-# Force pdf2image to use your Poppler binaries (Windows-safe).
-# If you set the POPPLER_PATH env var, that value will be used instead.
-POPPLER_PATH = os.getenv(
-    "POPPLER_PATH",
-    r"C:\poppler\poppler-25.07.0\Library\bin"  # <-- update if your path differs
-)
+# Poppler binaries: on Windows these usually aren't on PATH, so set
+# POPPLER_PATH in your .env to point at <poppler>/Library/bin. Left unset,
+# pdf2image falls back to searching PATH (works out of the box on Linux/macOS
+# where poppler-utils is a normal package).
+POPPLER_PATH = os.getenv("POPPLER_PATH")
 
 # OCR languages (install Tesseract language packs first if you add more)
 # Example: "eng+hin" for English + Hindi

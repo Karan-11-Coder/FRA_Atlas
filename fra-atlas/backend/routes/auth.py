@@ -4,11 +4,27 @@ from pydantic import BaseModel, EmailStr, constr
 from datetime import datetime, timedelta
 import os
 import sqlite3
+from pathlib import Path
 from jose import jwt, JWTError
 from passlib.context import CryptContext
 from typing import Optional
 from starlette.concurrency import run_in_threadpool
 from fastapi.security import HTTPBearer
+from dotenv import load_dotenv
+
+# Load here rather than relying on main.py having done it first — main.py
+# imports this module before it calls load_dotenv(), so without this,
+# JWT_SECRET below reads as unset even when backend/.env exists.
+#
+# Pass the path explicitly (this file lives in backend/routes/, so .env is
+# one level up) rather than a bare load_dotenv(): its default frame-based
+# path detection breaks inside uvicorn --reload's spawned subprocess on
+# Windows and silently finds nothing, which crashed this module's JWT_SECRET
+# check below on every --reload run. load_dotenv() never overrides an
+# already-set env var, so this is also a harmless no-op on the normal path
+# where main.py's own explicit-path load already ran first.
+load_dotenv(Path(__file__).resolve().parent.parent / ".env")
+
 security = HTTPBearer()
 
 router = APIRouter()
@@ -16,10 +32,18 @@ router = APIRouter()
 # -----------------------------
 # Config
 # -----------------------------
-JWT_SECRET = os.getenv("JWT_SECRET", "change_this_in_prod")
+JWT_SECRET = os.getenv("JWT_SECRET")
+if not JWT_SECRET:
+    raise RuntimeError(
+        "JWT_SECRET is not set. Define it in backend/.env (see backend/.env.example) "
+        "before starting the server — there is no insecure fallback."
+    )
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "120"))
-DATABASE_FILE = os.getenv("DATABASE_FILE", "backend/fra_atlas.db")
+
+# Use the same DB path resolution as backend/db.py so auth never opens a
+# different database file than the rest of the app (see get_db_path()).
+from backend.db import get_db_path
 
 # Robust password hashing/verification:
 # - verify existing raw bcrypt hashes ($2b$…)
@@ -46,7 +70,7 @@ class LoginIn(BaseModel):
 # DB helpers
 # -----------------------------
 def get_db_conn():
-    conn = sqlite3.connect(DATABASE_FILE, check_same_thread=False)
+    conn = sqlite3.connect(get_db_path(), check_same_thread=False)
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -175,3 +199,31 @@ async def me(request: Request):
             "role": row_dict.get("role"),
         }
     }
+
+
+async def get_current_tribal_user(request: Request):
+    """
+    Auth dependency for tribal-claimant JWTs (issued by
+    routes/auth_tribal.py::verify_otp). Separate from get_current_user()
+    because tribal claimants aren't rows in the officers table — this only
+    verifies the token's signature/expiry and its role claim, it doesn't
+    look anything up in the DB.
+
+    Returns {"identifier": <mobile or Aadhaar value>, "method": "mobile"|"aadhaar"}.
+    """
+    auth: str = request.headers.get("Authorization") or ""
+    if not auth.lower().startswith("bearer "):
+        raise HTTPException(status_code=401, detail="Missing auth token")
+    token = auth.split(" ", 1)[1]
+    try:
+        payload = jwt.decode(token, JWT_SECRET, algorithms=[ALGORITHM])
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+    if payload.get("role") != "tribal":
+        raise HTTPException(status_code=403, detail="Not a tribal-claimant token")
+    identifier = payload.get("sub")
+    if not identifier:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+    return {"identifier": identifier, "method": payload.get("method")}

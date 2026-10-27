@@ -1,13 +1,12 @@
 import sqlite3
-from pathlib import Path
 from datetime import datetime, timezone
 
-BASE_DIR = Path(__file__).resolve().parents[1]
-DB_PATH = BASE_DIR / "fra_atlas.db"
+from backend.db import get_db_path
+from backend.config.thresholds import LONG_PENDING_DAYS
 
 
 def calculate_metrics(officer_id: int) -> dict:
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(get_db_path())
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
 
@@ -33,7 +32,7 @@ def calculate_metrics(officer_id: int) -> dict:
         SELECT COUNT(*) AS pending
         FROM claims
         WHERE assigned_officer_id = ?
-        AND status != 'Pending'
+        AND status = 'Pending'
     """, (officer_id,))
     pending = cur.fetchone()["pending"]
 
@@ -71,18 +70,19 @@ def calculate_metrics(officer_id: int) -> dict:
     for row in cur.fetchall():
         try:
             start = datetime.fromisoformat(row["assigned_date"])
-            if (now - start).days > 30:
+            if (now - start).days > LONG_PENDING_DAYS:
                 long_pending += 1
         except Exception:
             pass
 
-    # 6️⃣ Reopen penalty
+    # 6️⃣ Reopens
     cur.execute("""
         SELECT SUM(reopen_count) AS total_reopens
         FROM claims
         WHERE assigned_officer_id = ?
     """, (officer_id,))
-    reopen_penalty = cur.fetchone()["total_reopens"] or 0
+    reopen_count = cur.fetchone()["total_reopens"] or 0
+    reopen_rate = min(1.0, reopen_count / total_assigned) if total_assigned else 0.0
 
     conn.close()
 
@@ -93,5 +93,6 @@ def calculate_metrics(officer_id: int) -> dict:
         "pending": pending,
         "avg_resolution_days": avg_resolution_days,
         "long_pending": long_pending,
-        "reopen_penalty": reopen_penalty,
+        "reopen_count": reopen_count,
+        "reopen_rate": reopen_rate,
     }

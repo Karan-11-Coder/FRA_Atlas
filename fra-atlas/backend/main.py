@@ -12,7 +12,21 @@ Notes:
 
 from pathlib import Path
 import os
+import logging
 from dotenv import load_dotenv
+
+# Load environment variables before importing any backend module — several
+# (routes.auth, routes.auth_tribal) read required env vars like JWT_SECRET
+# at import time, so this must run first.
+#
+# Pass the path explicitly rather than calling load_dotenv() bare: its
+# default find_dotenv() walks up from the *calling frame's* file location,
+# and inside uvicorn --reload's spawned subprocess on Windows that frame
+# inspection resolves to somewhere that isn't backend/, so it silently finds
+# no .env at all. This crashed on every --reload run (the app's own
+# documented dev workflow) because JWT_SECRET then reads as unset — masked
+# before only because the old code had an insecure hardcoded fallback.
+load_dotenv(Path(__file__).resolve().parent / ".env")
 
 # FastAPI imports
 from fastapi import FastAPI
@@ -34,6 +48,7 @@ import json
 import sqlite3
 import datetime
 import pathlib
+import uuid
 from typing import Optional, Dict, Any
 
  # FastAPI OpenAPI customization
@@ -42,13 +57,10 @@ from backend.routes.auth import get_current_user
 from fastapi.security import HTTPBearer
 bearer_scheme = HTTPBearer()
 
-
-# load environment variables once
-load_dotenv()
-
 # Project helpers / DB / models (adjust names/paths as your project uses)
 from backend.ocr import extract_text
 from backend.ner import extract_entities
+from backend.utils.normalize_claims import normalize_entities
 
 from backend.db import (
     get_db,
@@ -62,6 +74,8 @@ from backend.db import (
 )
 
 from backend.models import Base, Village
+from backend.services.villages import upsert_village
+from pydantic import BaseModel
 
 # Routers (import routers once)
 from backend.routes.diagnostics import router as diagnostics_router
@@ -112,18 +126,22 @@ app.include_router(claims_router, prefix="/api")
 app.include_router(officers.router)
 
 # -----------------------------------------------------------------------------
-# CORS configuration (adjust origins if necessary)
+# CORS configuration
 # -----------------------------------------------------------------------------
+_DEFAULT_CORS_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+_env_origins = os.getenv("CORS_ORIGINS")
+CORS_ORIGINS = (
+    [o.strip() for o in _env_origins.split(",") if o.strip()]
+    if _env_origins
+    else _DEFAULT_CORS_ORIGINS
+)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-        "http://localhost:5174",
-        "http://127.0.0.1:5174",
-    ],
+    allow_origins=CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -136,11 +154,8 @@ app.add_middleware(
 UPLOAD_DIR = Path("uploads")
 UPLOAD_DIR.mkdir(exist_ok=True)
 
-# Debug print (optional)
-try:
-    print("DEBUG: backend.main sees DATABASE_URL =", DATABASE_URL, flush=True)
-except NameError:
-    print("DEBUG: DATABASE_URL not available", flush=True)
+_DEBUG_ROUTES_ENABLED = os.getenv("ENABLE_DEBUG_ROUTES") == "1"
+logging.getLogger(__name__).info("backend.main using DATABASE_URL = %s", DATABASE_URL)
 
 # ----------------------------------------------------------------------
 # Simple root endpoint to verify the backend runs
@@ -200,90 +215,82 @@ def ping():
     return {"message": "pong", "service": "FRA Atlas Backend"}
 
 # -----------------------------------------------------------------------------
-# Debug echo (raw body) — handy for uploads/webhooks
+# Debug-only routes — never registered unless ENABLE_DEBUG_ROUTES=1, and even
+# then require an authenticated admin. Not mounted by default.
 # -----------------------------------------------------------------------------
-@app.post("/debug/echo")
-async def debug_echo(request: Request):
-    body = await request.body()
-    print("DEBUG ECHO GOT BYTES:", len(body), flush=True)
-    try:
-        s = body.decode("utf-8")
-    except Exception:
-        s = repr(body)
-    print("DEBUG ECHO BODY:", s, flush=True)
-    return {"ok": True, "len": len(body)}
-
-# -----------------------------------------------------------------------------
-# DB info debug endpoint
-# -----------------------------------------------------------------------------
-@app.get("/api/_debug_db_info")
-async def _debug_db_info():
-    """
-    Show resolved sqlite file (if using sqlite) and a peek at rows.
-    """
-    env_url = os.environ.get("DATABASE_URL", None)
-
-    resolved = None
-    file_part = None
-    try:
-        if isinstance(DATABASE_URL, str) and DATABASE_URL.startswith("sqlite"):
-            file_part = DATABASE_URL.split(":///")[-1]
-            resolved = str(Path(file_part).resolve())
-        elif env_url and env_url.startswith("sqlite"):
-            file_part = env_url.split(":///")[-1]
-            resolved = str(Path(file_part).resolve())
-        else:
-            repo_root = Path(__file__).resolve().parent.parent
-            resolved = str((repo_root / "fra_atlas.db").resolve())
-    except Exception:
+if _DEBUG_ROUTES_ENABLED:
+    @app.post("/debug/echo")
+    async def debug_echo(request: Request, current_user=Depends(get_current_user)):
+        if current_user.get("role") != "admin":
+            raise HTTPException(status_code=403, detail="Admin access required")
+        body = await request.body()
         try:
-            resolved = str(Path(file_part).as_posix())
+            s = body.decode("utf-8")
         except Exception:
-            resolved = "unknown"
+            s = repr(body)
+        logging.getLogger(__name__).debug("DEBUG ECHO BODY (%d bytes): %s", len(body), s)
+        return {"ok": True, "len": len(body)}
 
-    villages = None
-    claims = None
-    try:
-        conn = sqlite3.connect(resolved)
-        cur = conn.cursor()
-        try:
-            villages = cur.execute(
-                "SELECT id,state,district,block,village,lat,lon FROM villages ORDER BY id"
-            ).fetchall()
-        except Exception as e:
-            villages = f"ERR:{e}"
-        try:
-            claims = cur.execute(
-                "SELECT id,state,district,village,lat,lon FROM claims ORDER BY id"
-            ).fetchall()
-        except Exception as e:
-            claims = f"ERR:{e}"
-        conn.close()
-    except Exception as e:
-        villages = f"ERR_OPEN:{e}"
-        claims = f"ERR_OPEN:{e}"
+    @app.get("/api/_debug_db_info")
+    async def _debug_db_info(current_user=Depends(get_current_user)):
+        """
+        Show resolved sqlite file (if using sqlite) and a peek at rows.
+        """
+        if current_user.get("role") != "admin":
+            raise HTTPException(status_code=403, detail="Admin access required")
 
-    return {
-        "env_DATABASE_URL": env_url,
-        "resolved_db_file": resolved,
-        "villages_rows": villages,
-        "claims_rows": claims,
-    }
+        env_url = os.environ.get("DATABASE_URL", None)
+
+        resolved = None
+        file_part = None
+        try:
+            if isinstance(DATABASE_URL, str) and DATABASE_URL.startswith("sqlite"):
+                file_part = DATABASE_URL.split(":///")[-1]
+                resolved = str(Path(file_part).resolve())
+            elif env_url and env_url.startswith("sqlite"):
+                file_part = env_url.split(":///")[-1]
+                resolved = str(Path(file_part).resolve())
+            else:
+                repo_root = Path(__file__).resolve().parent.parent
+                resolved = str((repo_root / "fra_atlas.db").resolve())
+        except Exception:
+            try:
+                resolved = str(Path(file_part).as_posix())
+            except Exception:
+                resolved = "unknown"
+
+        villages = None
+        claims = None
+        try:
+            conn = sqlite3.connect(resolved)
+            cur = conn.cursor()
+            try:
+                villages = cur.execute(
+                    "SELECT id,state,district,block,village,lat,lon FROM villages ORDER BY id"
+                ).fetchall()
+            except Exception as e:
+                villages = f"ERR:{e}"
+            try:
+                claims = cur.execute(
+                    "SELECT id,state,district,village,lat,lon FROM claims ORDER BY id"
+                ).fetchall()
+            except Exception as e:
+                claims = f"ERR:{e}"
+            conn.close()
+        except Exception as e:
+            villages = f"ERR_OPEN:{e}"
+            claims = f"ERR_OPEN:{e}"
+
+        return {
+            "env_DATABASE_URL": env_url,
+            "resolved_db_file": resolved,
+            "villages_rows": villages,
+            "claims_rows": claims,
+        }
 
 # -----------------------------------------------------------------------------
 # Small helpers for OCR→NER mapping
 # -----------------------------------------------------------------------------
-def _first(x):
-    return (x or [None])[0] if isinstance(x, list) else x
-
-def _clean_line(s: str | None) -> str | None:
-    if not s:
-        return None
-    # keep only the first line and trim any leaked trailing labels
-    s = s.splitlines()[0].strip()
-    s = re.sub(r'\s*(?:state|district|village|patta\s*holder)\s*$', '', s, flags=re.I)
-    return ' '.join(s.split())
-
 def _title_if_name(s: str | None) -> str | None:
     if not s:
         return None
@@ -339,7 +346,11 @@ async def upload_fra(
     """
 
     try:
-        file_path = UPLOAD_DIR / file.filename
+        safe_suffix = pathlib.Path(file.filename or "").suffix or ".pdf"
+        safe_name = f"{uuid.uuid4().hex}{safe_suffix}"
+        file_path = (UPLOAD_DIR / safe_name).resolve()
+        if UPLOAD_DIR.resolve() not in file_path.parents:
+            raise HTTPException(status_code=400, detail="Invalid filename")
         with open(file_path, "wb") as f:
             f.write(await file.read())
 
@@ -350,17 +361,17 @@ async def upload_fra(
         text = extract_text(str(file_path))
         entities = extract_entities(text)
 
+        # One document = one claim, so take the first candidate
+        # normalize_entities() produces (it returns one claim dict per
+        # village found, for the rare multi-village document).
+        candidates = normalize_entities(entities)
+        base = candidates[0] if candidates else {}
+
         payload = {
-            "state": _clean_line(entities.get("state")) or "Unknown",
-            "district": _clean_line(entities.get("district")) or "Unknown",
-            "block": None,
-            "village": _clean_line(_first(entities.get("villages"))),
-            "patta_holder": _clean_line(_first(entities.get("patta_holders"))),
-            "address": None,
-            "land_area": _clean_line(entities.get("land_area")),
+            **base,
+            "state": base.get("state") or "Unknown",
+            "district": base.get("district") or "Unknown",
             "status": "Pending",
-            "lat": entities.get("lat"),
-            "lon": entities.get("lon"),
             "source": "ocr",
             "raw_ocr": json.dumps(entities),
 
@@ -368,6 +379,7 @@ async def upload_fra(
             "assigned_officer_id": officer_id,
             "assigned_date": datetime.date.today().isoformat(),
         }
+        payload.pop("raw_ner", None)
 
         payload = _normalize_names(payload)
         created = await insert_claim(payload)
@@ -402,6 +414,56 @@ async def list_villages(db: AsyncSession = Depends(get_db)):
             }
             for v in villages
         ]
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+class VillageIn(BaseModel):
+    state: str
+    district: str
+    village: str
+    block: Optional[str] = None
+    lat: Optional[float] = None
+    lon: Optional[float] = None
+
+
+@app.post("/api/villages")
+async def create_village(
+    payload: VillageIn,
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    """
+    Upsert a village by (state, district, village). If lat/lon aren't given
+    (or fall outside India's bounding box), falls back to geocoding via
+    Nominatim. Used by bulk_insert_villages.py and available for any UI that
+    wants to seed a village directly rather than only picking one up from a
+    claim.
+    """
+    try:
+        village = await upsert_village(
+            db,
+            state=payload.state,
+            district=payload.district,
+            village=payload.village,
+            claimed_lat=payload.lat,
+            claimed_lon=payload.lon,
+        )
+        await db.commit()
+        if village is None:
+            # state/district/village normalized down to an empty string
+            raise HTTPException(status_code=400, detail="state, district, and village are required")
+        return {
+            "id": village.id,
+            "state": village.state,
+            "district": village.district,
+            "block": village.block,
+            "village": village.village,
+            "lat": village.lat,
+            "lon": village.lon,
+        }
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

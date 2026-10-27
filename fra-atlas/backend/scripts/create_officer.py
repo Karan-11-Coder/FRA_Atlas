@@ -1,15 +1,21 @@
 # backend/scripts/create_officer.py
 import sqlite3
-import os
 import argparse
-from passlib.context import CryptContext
+import sys
+from pathlib import Path
 
-pwd_ctx = CryptContext(schemes=["bcrypt"], deprecated="auto")
-DB = os.getenv("DATABASE_FILE", "backend/fra_atlas.db")
+# Run from repo root so `backend` resolves as a package (same convention as
+# the rest of the app), then reuse the exact same hashing context as
+# routes/auth.py and routes/officers.py — this used to have its own plain
+# `bcrypt` CryptContext, which was the one place in the codebase not using
+# bcrypt_sha256.
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from backend.routes.auth import hash_password
+from backend.db import get_db_path
 
 def create_officer(username, password, full_name="Admin User", role="admin"):
-    hashed = pwd_ctx.hash(password)
-    conn = sqlite3.connect(DB)
+    hashed = hash_password(password)
+    conn = sqlite3.connect(get_db_path())
     cur = conn.cursor()
     cur.execute("""
         CREATE TABLE IF NOT EXISTS officers (

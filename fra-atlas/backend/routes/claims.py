@@ -29,6 +29,7 @@ import pandas as pd
 from sqlalchemy.ext.asyncio import AsyncSession
 from backend.ocr import extract_text
 from backend.ner import extract_entities
+from backend.utils.normalize_claims import normalize_entities
 from backend.db import get_db  # used as Depends(get_db) in some endpoints
 from pathlib import Path as PPath
 import uuid
@@ -38,7 +39,7 @@ import os
 # ✅ NEW (add these)
 from sqlalchemy import text as sa_text
 from backend.db import insert_claim
-from backend.routes.auth import get_current_user
+from backend.routes.auth import get_current_user, get_current_tribal_user
 import datetime 
 
 
@@ -51,11 +52,31 @@ logger = logging.getLogger(__name__)
 # -------------------------
 # Temp upload dir (single canonical definition)
 # -------------------------
-TEMP_UPLOAD_DIR = PPath("uploads/temp")
+TEMP_UPLOAD_DIR = PPath("uploads/temp").resolve()
 TEMP_UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+
+
+def _safe_temp_path(tmp_filename: str) -> PPath:
+    """
+    Resolve a client-supplied temp filename against TEMP_UPLOAD_DIR and
+    reject anything that escapes it (path traversal, absolute paths, etc.).
+    """
+    candidate = (TEMP_UPLOAD_DIR / PPath(tmp_filename).name).resolve()
+    if TEMP_UPLOAD_DIR not in candidate.parents and candidate != TEMP_UPLOAD_DIR:
+        raise HTTPException(status_code=400, detail="Invalid filename")
+    try:
+        candidate.relative_to(TEMP_UPLOAD_DIR)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid filename")
+    return candidate
 
 # India bounding box (lat_min, lon_min, lat_max, lon_max)
 INDIA_BBOX: Tuple[float, float, float, float] = (6.0, 68.0, 37.5, 97.5)
+
+# claims.status has no DB-level CHECK constraint (adding one to the live
+# SQLite table would require a full table rebuild), so it's enforced here
+# at the API boundary instead.
+ALLOWED_CLAIM_STATUSES = {"Pending", "Granted", "Rejected"}
 
 
 # -------------------------
@@ -94,7 +115,10 @@ async def _geocode_village_backend(state: str, district: str, village: str) -> O
     query = f"{village}, {district}, {state}, India"
     url = "https://nominatim.openstreetmap.org/search?" + urlencode({"format": "json", "q": query})
     headers = {
-        "User-Agent": "fra-atlas/1.0 (contact: you@example.com)"
+        "User-Agent": os.getenv(
+            "NOMINATIM_USER_AGENT",
+            "fra-atlas-sih2025/1.0 (+https://github.com/imrozdotpi; no-reply@example.com)",
+        )
     }
 
     def _do_req_sync() -> Optional[Tuple[float, float]]:
@@ -208,6 +232,7 @@ async def get_claims(
     status: Optional[str] = None,
     limit: Optional[int] = Query(None, ge=1),
     offset: int = 0,
+    current_user: dict = Depends(get_current_user),
 ):
     """
     Return claims. Optional filters: state, district, village, status.
@@ -238,7 +263,7 @@ async def get_claims(
 
 @router.get("/claims/count", tags=["claims"])
 @router.get("/api/claims/count", tags=["claims"])
-async def get_claims_count(village: str):
+async def get_claims_count(village: str, current_user: dict = Depends(get_current_user)):
     """
     Return {"count": N} for the exact village name provided.
     """
@@ -292,6 +317,32 @@ async def get_my_assigned_claims(request: Request):
     except Exception as e:
         logger.exception("get_my_assigned_claims failed for officer=%s", officer_id)
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/my-claims", tags=["claims"])
+@router.get("/api/my-claims", tags=["claims"])
+async def get_my_tribal_claims(tribal_user: dict = Depends(get_current_tribal_user)):
+    """
+    Claims belonging to the tribal claimant behind the bearer token
+    (from the OTP login flow in routes/auth_tribal.py).
+
+    Honest limitation: `claims` has no claimant-identity column (mobile or
+    Aadhaar) to match against yet — patta_holder is a free-text name, not a
+    reliable lookup key. Rather than guess a fuzzy match and risk showing a
+    claimant somebody else's data, this returns an explicit "not linked"
+    result until a real claims.claimant_contact column (and a way to
+    populate it) exists.
+    """
+    return {
+        "linked": False,
+        "claims": [],
+        "message": (
+            "Claim-to-claimant linking isn't implemented yet — there's no "
+            "field on a claim record tying it to the mobile/Aadhaar number "
+            "used to log in. Contact your local FRA committee for claim "
+            "status until this is built."
+        ),
+    }
 
 
 # -------------------------
@@ -380,6 +431,12 @@ async def update_claim(
     if not updates:
         return existing
 
+    if updates.get("status") and updates["status"] not in ALLOWED_CLAIM_STATUSES:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid status '{updates['status']}'. Must be one of {sorted(ALLOWED_CLAIM_STATUSES)}",
+        )
+
     # -------------------------
     # STEP 3.3: officer audit fields
     # -------------------------
@@ -448,6 +505,12 @@ async def create_claim(
         if not payload.get(r):
             raise HTTPException(status_code=400, detail=f"{r} is required")
 
+    if payload.get("status") and payload["status"] not in ALLOWED_CLAIM_STATUSES:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid status '{payload['status']}'. Must be one of {sorted(ALLOWED_CLAIM_STATUSES)}",
+        )
+
     now_iso = datetime.datetime.utcnow().isoformat()
 
     # ✅ AUTO-LINK CLAIM TO OFFICER
@@ -485,7 +548,7 @@ async def create_claim(
 
 @router.get("/claims/{claim_id}", tags=["claims"])
 @router.get("/api/claims/{claim_id}", tags=["claims"])
-async def get_claim(claim_id: int = Path(..., ge=1)):
+async def get_claim(claim_id: int = Path(..., ge=1), current_user: dict = Depends(get_current_user)):
     """
     Return a single claim by id.
     """
@@ -503,7 +566,7 @@ async def get_claim(claim_id: int = Path(..., ge=1)):
 
 @router.delete("/claims/{claim_id}", tags=["claims"])
 @router.delete("/api/claims/{claim_id}", tags=["claims"])
-async def delete_claim(claim_id: int = Path(..., ge=1)):
+async def delete_claim(claim_id: int = Path(..., ge=1), current_user: dict = Depends(get_current_user)):
     """
     Delete a single claim by id. Returns 204 on success.
     """
@@ -528,10 +591,14 @@ async def bulk_delete_claims(
     ids: Optional[str] = Query(None, description="Comma separated ids, e.g. ?ids=1,2,3"),
     payload: Optional[dict] = Body(None, description='Also accepts JSON body {"ids":[1,2,3]}'),
     confirm: bool = Query(False, description="Set true to confirm bulk delete"),
+    current_user: dict = Depends(get_current_user),
 ):
     """
     Bulk delete claims. Must pass confirm=true and ids either via ?ids=1,2 or JSON body {"ids":[...]}.
+    Restricted to admins since this is a destructive, multi-row operation.
     """
+    if current_user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin role required for bulk delete")
     if not confirm:
         raise HTTPException(
             status_code=400,
@@ -550,10 +617,11 @@ async def bulk_delete_claims(
     if not id_list:
         raise HTTPException(status_code=400, detail="No ids provided for bulk delete")
 
-    id_csv = ",".join(str(i) for i in id_list)
+    placeholders = ",".join(f":id{i}" for i in range(len(id_list)))
+    params = {f"id{i}": v for i, v in enumerate(id_list)}
     try:
         async with db.engine.begin() as conn:
-            await conn.execute(text(f"DELETE FROM claims WHERE id IN ({id_csv})"))
+            await conn.execute(text(f"DELETE FROM claims WHERE id IN ({placeholders})"), params)
         return {"deleted": len(id_list)}
     except Exception as e:
         logger.exception("bulk_delete_claims failed ids=%s", id_list)
@@ -562,7 +630,7 @@ async def bulk_delete_claims(
 
 @router.get("/export/claims.csv", tags=["claims"])
 @router.get("/api/export/claims.csv", tags=["claims"])
-async def export_claims_csv():
+async def export_claims_csv(current_user: dict = Depends(get_current_user)):
     """
     Stream CSV of claims. Columns: id,state,district,block,village,patta_holder,address,land_area,status,date,lat,lon,created_at
     """
@@ -740,7 +808,7 @@ async def import_json_verbose(
                 "village": village,
                 "patta_holder": patta_holder,
                 "land_area": land_area,
-                "status": status if status in ("Pending", "Granted") else "Pending",
+                "status": status if status in ALLOWED_CLAIM_STATUSES else "Pending",
                 "date": date,
                 "lat": lat_val,
                 "lon": lon_val,
@@ -858,7 +926,7 @@ async def import_json_verbose(
 # Parse Excel (preview-only) endpoint (added)
 # -------------------------
 @router.post("/claims/parse-excel", tags=["claims"])
-async def parse_excel(file: UploadFile = File(...)):
+async def parse_excel(file: UploadFile = File(...), current_user: dict = Depends(get_current_user)):
     """
     Accept an Excel (.xlsx/.xls/.csv), parse rows and return JSON for client-side review.
     Does NOT insert into DB.
@@ -914,7 +982,7 @@ async def parse_excel(file: UploadFile = File(...)):
 # -------------------------
 
 @router.post("/claims/parse-fra", tags=["claims"])
-async def parse_fra(file: UploadFile = File(...)):
+async def parse_fra(file: UploadFile = File(...), current_user: dict = Depends(get_current_user)):
     """
     Accept a file, run OCR+NER and return the structured extraction without inserting.
     Returns:
@@ -935,14 +1003,6 @@ async def parse_fra(file: UploadFile = File(...)):
     except Exception as e:
         logger.exception("parse_fra failed: %s", e)
         raise HTTPException(status_code=500, detail=str(e))
-
-
-def _first(arr):
-    if not arr:
-        return None
-    if isinstance(arr, (list, tuple)):
-        return arr[0]
-    return arr
 
 
 def _clean_line(v):
@@ -970,10 +1030,15 @@ def _normalize_names(payload: Dict[str, Any]) -> Dict[str, Any]:
 
 @router.post("/claims/commit-parsed", tags=["claims"])
 async def commit_parsed(
-    request: Request,            # ✅ ADD
+    request: Request,
     tmp_filename: str,
-    db: AsyncSession = Depends(get_db)
 ):
+    # NOTE: this used to also take `db: AsyncSession = Depends(get_db)`, which
+    # shadowed the module-level `from backend import db` import used below —
+    # `db.insert_claim(...)` was silently calling a nonexistent method on the
+    # AsyncSession instead of the db module's function, so this endpoint
+    # always 500'd. The AsyncSession was never otherwise used, so it's
+    # removed rather than renamed.
     """
     Commit a previously created temp file into the DB (runs exact same mapping as upload-fra).
     Client calls this after user reviews/edits fields and confirms. It will:
@@ -982,10 +1047,10 @@ async def commit_parsed(
     NOTE: For simplicity this function re-runs extract_text/ner; you can adapt it to accept edited JSON from client instead)
     """
     try:
-        tmp_path = TEMP_UPLOAD_DIR / tmp_filename
+        tmp_path = _safe_temp_path(tmp_filename)
         if not tmp_path.exists():
             raise HTTPException(status_code=404, detail="Temp file not found")
-        
+
         # ✅ identify logged-in officer
         user = await get_current_user(request)
         officer_id = user["id"]
@@ -994,36 +1059,24 @@ async def commit_parsed(
         text = extract_text(str(tmp_path))
         entities = extract_entities(text)
 
-        # map fields conservatively (mirrors earlier mapping intent)
-        state = _clean_line(entities.get("state") or _first(entities.get("states")))
-        district = _clean_line(entities.get("district") or _first(entities.get("districts")))
-        village = _clean_line(_first(entities.get("villages")))
-        patta = _clean_line(_first(entities.get("patta_holders")))
-        date_ = _clean_line(_first(entities.get("dates")))
-        ifr_no = _clean_line(entities.get("ifr_number"))
-        area = _clean_line(entities.get("land_area") or entities.get("area"))
-        status = _clean_line(entities.get("status"))
-        lat = entities.get("lat")
-        lon = entities.get("lon")
+        # Map OCR entities -> claim shape. One document = one claim, so take
+        # the first candidate normalize_entities() produces (it returns one
+        # claim dict per village found, for the rare multi-village case).
+        candidates = normalize_entities(entities)
+        base = candidates[0] if candidates else {}
 
         claim_payload = {
-            "state": state or "Unknown",
-            "district": district or "Unknown",
-            "block": None,
-            "village": village,
-            "patta_holder": patta,
-            "address": None,
-            "land_area": area,
-            "status": status or "Pending",
-            "date": date_,
-            "lat": float(lat) if isinstance(lat, (int, float, str)) and str(lat).strip() else None,
-            "lon": float(lon) if isinstance(lon, (int, float, str)) and str(lon).strip() else None,
+            **base,
+            "state": base.get("state") or "Unknown",
+            "district": base.get("district") or "Unknown",
+            "status": base.get("status") or "Pending",
             "source": "ocr",
             "raw_ocr": json.dumps({"entities": entities, "extracted_text": text}),
 
             "assigned_officer_id": officer_id,
             "assigned_date": datetime.datetime.utcnow().isoformat(),
         }
+        claim_payload.pop("raw_ner", None)
 
         claim_payload = _normalize_names(claim_payload)
 
@@ -1057,12 +1110,12 @@ async def commit_parsed(
 
 
 @router.delete("/claims/temp/{tmp_filename}", tags=["claims"])
-async def delete_temp_file(tmp_filename: str):
+async def delete_temp_file(tmp_filename: str, current_user: dict = Depends(get_current_user)):
     """
     Delete a temp file if user cancels.
     """
     try:
-        tmp_path = TEMP_UPLOAD_DIR / tmp_filename
+        tmp_path = _safe_temp_path(tmp_filename)
         if tmp_path.exists():
             tmp_path.unlink()
         return {"ok": True}

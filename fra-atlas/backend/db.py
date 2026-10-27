@@ -21,20 +21,23 @@ else:
     DB_FILE = BASE_DIR / "fra_atlas.db"
     DATABASE_URL = f"sqlite+aiosqlite:///{DB_FILE.as_posix()}"
 
-logging.getLogger().info(f"DEBUG: backend.db using DATABASE_URL = {DATABASE_URL}")
-print("DEBUG: backend.db using DATABASE_URL =", DATABASE_URL, flush=True)
-
-try:
-    if isinstance(DATABASE_URL, str) and DATABASE_URL.startswith("sqlite"):
-        candidate_file = DATABASE_URL.split(":///")[-1]
-        print("DEBUG: resolved DB file path =", str(Path(candidate_file).resolve()), flush=True)
-except Exception:
-    pass
+_DEBUG = os.getenv("FRA_DEBUG_LOGGING") == "1"
+_logger = logging.getLogger(__name__)
+_logger.info("backend.db using DATABASE_URL = %s", DATABASE_URL)
+if _DEBUG:
+    try:
+        if isinstance(DATABASE_URL, str) and DATABASE_URL.startswith("sqlite"):
+            candidate_file = DATABASE_URL.split(":///")[-1]
+            _logger.debug("resolved DB file path = %s", str(Path(candidate_file).resolve()))
+    except Exception:
+        pass
 
 # ----------------------------
 # Async engine + session factory
 # ----------------------------
-engine = create_async_engine(DATABASE_URL, echo=True, future=True)
+# echo=True would log every SQL statement (with bound params, incl. claim/officer
+# PII) to stdout — only enable via FRA_DEBUG_LOGGING for local debugging.
+engine = create_async_engine(DATABASE_URL, echo=_DEBUG, future=True)
 SessionLocal = sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)
 
 # ----------------------------
@@ -80,7 +83,7 @@ async def init_claims_table() -> None:
         village TEXT,
         patta_holder TEXT,
         address TEXT,
-        land_area TEXT,
+        land_area REAL,
         status TEXT,
         date TEXT,
         lat REAL,

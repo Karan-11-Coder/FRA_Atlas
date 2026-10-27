@@ -1,9 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, Request
 from backend.services.officer_metrics import calculate_metrics
 from backend.services.credibility_engine import calculate_credibility
-from backend.routes.auth import get_current_user
+from backend.routes.auth import get_current_user, hash_password
 from pydantic import BaseModel, EmailStr
-from backend.utils.password import hash_password
 from fastapi import Security
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 security = HTTPBearer()
@@ -28,8 +27,6 @@ async def create_officer(
     credentials: HTTPAuthorizationCredentials = Security(security),
     current_user=Depends(get_current_user)
 ):
-    print("AUTH HEADER:", request.headers.get("Authorization"))
-
     # 🔐 Only admin can create officers
     if current_user["role"] != "admin":
         raise HTTPException(status_code=403, detail="Admin access required")
@@ -71,7 +68,7 @@ async def create_officer(
     return {"message": "Officer created successfully"}
 
 @router.get("/officers")
-def list_officers():
+def list_officers(current_user=Depends(get_current_user)):
     import sqlite3
     from backend.db import get_db_path  # or use your db helper
 
@@ -102,22 +99,31 @@ def list_officers():
 
 
 @router.get("/officers/{officer_id}/dashboard")
-def officer_dashboard(officer_id: int):
+def officer_dashboard(officer_id: int, current_user=Depends(get_current_user)):
     raw_metrics = calculate_metrics(officer_id)
 
-    # 🔧 NORMALIZE METRICS (single source of truth)
+    # 🔧 NORMALIZE METRICS for the frontend (display-friendly keys)
     metrics = {
-    "assigned": raw_metrics.get("total_assigned", 0),
+        "assigned": raw_metrics.get("total_assigned", 0),
         "completed": raw_metrics.get("granted", 0),
         "pending": raw_metrics.get("pending", 0),
         "avg_resolution": raw_metrics.get("avg_resolution_days", 0),
         "long_pending": raw_metrics.get("long_pending", 0),
-    # ✅ REQUIRED BY credibility_engine
-    "reopened": raw_metrics.get("reopened", 0),
-    "reopen_rate": raw_metrics.get("reopen_rate", 0.0),
+        "reopened": raw_metrics.get("reopen_count", 0),
+        "reopen_rate": raw_metrics.get("reopen_rate", 0.0),
     }
 
-    credibility = calculate_credibility(metrics)
+    # credibility_engine.calculate_credibility expects its own key names
+    # (total_assigned/granted/avg_resolution/long_pending/reopen_rate) —
+    # pass those explicitly rather than the display-normalized dict above,
+    # otherwise completion_ratio and the assignment bonus silently zero out.
+    credibility = calculate_credibility({
+        "total_assigned": raw_metrics.get("total_assigned", 0),
+        "granted": raw_metrics.get("granted", 0),
+        "avg_resolution": raw_metrics.get("avg_resolution_days") or 0,
+        "long_pending": raw_metrics.get("long_pending", 0),
+        "reopen_rate": raw_metrics.get("reopen_rate", 0.0),
+    })
 
     alerts = []
     if metrics["long_pending"] > 0:
@@ -144,21 +150,21 @@ def officer_dashboard(officer_id: int):
 
 #  OFFICER CASE BREAKDOWN 
 @router.get("/officers/{officer_id}/breakdown")
-def officer_case_breakdown(officer_id: int):
+def officer_case_breakdown(officer_id: int, current_user=Depends(get_current_user)):
     raw_metrics = calculate_metrics(officer_id)
     return {
     "approved": raw_metrics.get("granted", 0),
     "pending": raw_metrics.get("pending", 0),
     "rejected": raw_metrics.get("rejected", 0),
-    "reopened": raw_metrics.get("reopened", 0),
+    "reopened": raw_metrics.get("reopen_count", 0),
     }
 
 @router.get("/officers/{officer_id}/timeline")
-def officer_timeline(officer_id: int):
+def officer_timeline(officer_id: int, current_user=Depends(get_current_user)):
     import sqlite3
-    from backend.db import DATABASE_URL
+    from backend.db import get_db_path
 
-    db_path = DATABASE_URL.split("///")[-1]
+    db_path = get_db_path()
     conn = sqlite3.connect(db_path)
     cur = conn.cursor()
 

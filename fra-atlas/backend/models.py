@@ -30,7 +30,7 @@ class Claim(Base):
     village = Column(String, nullable=True, index=True)
     patta_holder = Column(String, nullable=True, index=False)
     address = Column(Text, nullable=True)
-    land_area = Column(String, nullable=True)
+    land_area = Column(Float, nullable=True)
     status = Column(String, default="Pending", index=True)
     date = Column(String, nullable=True)
 

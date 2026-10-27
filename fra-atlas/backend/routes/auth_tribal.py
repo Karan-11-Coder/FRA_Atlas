@@ -4,11 +4,15 @@ from pydantic import BaseModel
 import random
 import time
 import os
+from pathlib import Path
 import requests
 from dotenv import load_dotenv
+from backend.routes.auth import create_access_token
 
-# Load environment variables from .env (dev)
-load_dotenv()
+# Explicit path, not a bare load_dotenv() — see the comment in
+# backend/routes/auth.py for why (frame-based path detection breaks inside
+# uvicorn --reload's spawned subprocess on Windows).
+load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 router = APIRouter(prefix="/auth/tribal", tags=["auth"])
 
@@ -17,8 +21,32 @@ MSG91_API_KEY = os.getenv("MSG91_API_KEY")
 MSG91_SENDER_ID = os.getenv("MSG91_SENDER_ID", "FRAOTP")
 MSG91_TEMPLATE_ID = os.getenv("MSG91_TEMPLATE_ID")  # optional, provider-specific
 
-# temporary in-memory store — dev only
+
+def _msg91_configured() -> bool:
+    """
+    A plain `if MSG91_API_KEY:` treats the unfilled template value in
+    backend/.env.example ("your_real_msg91_key_here") as configured, since
+    it's a non-empty string — which routed every mobile-number OTP request
+    down the real-SMS path (send_sms_otp_msg91) instead of the dev-mode
+    fallback logger that the Aadhaar path already correctly uses. Reject
+    obvious placeholder values too, not just empty/unset ones.
+    """
+    key = (MSG91_API_KEY or "").strip()
+    if not key:
+        return False
+    placeholder_markers = ("your_", "changeme", "xxxxx", "placeholder", "replace_me")
+    return not any(marker in key.lower() for marker in placeholder_markers)
+
+
+MSG91_CONFIGURED = _msg91_configured()
+
+# temporary in-memory store — dev only. Lost on restart and not shared across
+# worker processes; fine for a single-process hackathon deployment, not for
+# production (use Redis or a DB table with a TTL there instead).
 otp_store: dict = {}
+
+MAX_OTP_ATTEMPTS = 5
+OTP_RESEND_COOLDOWN_SECONDS = 30
 
 class OTPRequest(BaseModel):
     method: str  # "mobile" or "aadhaar"
@@ -34,7 +62,7 @@ def send_sms_otp_msg91(mobile: str, otp: str):
     Send OTP using MSG91's OTP API.
     Raises HTTPException on failure.
     """
-    if not MSG91_API_KEY:
+    if not MSG91_CONFIGURED:
         raise RuntimeError("MSG91 API key not configured")
 
     url = "https://control.msg91.com/api/v5/otp"
@@ -77,20 +105,34 @@ async def send_otp(data: OTPRequest):
     if method == "aadhaar" and not (data.value.isdigit() and len(data.value) == 12):
         raise HTTPException(status_code=400, detail="Invalid Aadhaar number format")
 
+    # Cooldown: block rapid repeat requests for the same identifier (basic
+    # anti-SMS-bombing / anti-brute-force measure).
+    existing = otp_store.get(data.value)
+    if existing and time.time() < existing.get("resend_after", 0):
+        wait = int(existing["resend_after"] - time.time())
+        raise HTTPException(status_code=429, detail=f"Please wait {wait}s before requesting another OTP")
+
     # Generate OTP
     otp = f"{random.randint(100000, 999999)}"  # 6-digit
     ttl_seconds = 300  # 5 minutes
 
+    record = {
+        "otp": otp,
+        "expires": time.time() + ttl_seconds,
+        "resend_after": time.time() + OTP_RESEND_COOLDOWN_SECONDS,
+        "attempts": 0,
+    }
+
     # If MSG91 is configured and method is mobile -> attempt to send SMS
-    if method == "mobile" and MSG91_API_KEY:
+    if method == "mobile" and MSG91_CONFIGURED:
         # Attempt sending; if successful, store OTP; on failure, exception is raised
         send_sms_otp_msg91(data.value, otp)
         # store OTP only after successful SMS send
-        otp_store[data.value] = {"otp": otp, "expires": time.time() + ttl_seconds}
+        otp_store[data.value] = record
         print(f"[OTP] Sent via MSG91 to {data.value}")  # avoid printing OTP in prod
     else:
         # Dev fallback: store OTP and print to logs (for local testing)
-        otp_store[data.value] = {"otp": otp, "expires": time.time() + ttl_seconds}
+        otp_store[data.value] = record
         # For Aadhaar and non-MSG91 flow we print OTP so dev can test UI
         print(f"[DEV OTP] {method} {data.value} -> {otp}")
 
@@ -99,7 +141,14 @@ async def send_otp(data: OTPRequest):
 @router.post("/verify-otp")
 async def verify_otp(data: OTPVerify):
     """
-    Verify OTP for identifier. On success, returns a token (mock) and role 'tribal'.
+    Verify OTP for identifier. On success, returns a real signed JWT (role
+    'tribal', sub = the mobile/Aadhaar identifier) — not a plain mock string.
+
+    Note: this token isn't recognized by get_current_user() in
+    backend/routes/auth.py, which looks the subject up in the officers table.
+    Tribal claimants aren't officers, so any endpoint meant to accept tribal
+    tokens needs its own lookup/authorization path — out of scope for this
+    fix, which only replaces the fake token with a real, unforgeable one.
     """
     rec = otp_store.get(data.value)
     if not rec:
@@ -111,14 +160,23 @@ async def verify_otp(data: OTPVerify):
         except KeyError:
             pass
         raise HTTPException(status_code=400, detail="OTP expired. Request a new OTP.")
+
+    rec["attempts"] = rec.get("attempts", 0) + 1
+    if rec["attempts"] > MAX_OTP_ATTEMPTS:
+        try:
+            del otp_store[data.value]
+        except KeyError:
+            pass
+        raise HTTPException(status_code=429, detail="Too many incorrect attempts. Request a new OTP.")
+
     if data.otp != rec["otp"]:
         raise HTTPException(status_code=400, detail="Invalid OTP. Please try again.")
 
-    # Successful verification: delete OTP and return mock token (replace with real auth)
+    # Successful verification: delete OTP and issue a real signed JWT
     try:
         del otp_store[data.value]
     except KeyError:
         pass
 
-    token = f"mock-jwt-token-for-{data.value}"
+    token = create_access_token({"sub": data.value, "role": "tribal", "method": data.method})
     return {"success": True, "token": token, "role": "tribal", "message": "OTP verified"}
