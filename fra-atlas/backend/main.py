@@ -77,6 +77,7 @@ from backend.db import (
 
 from backend.models import Base, Village
 from backend.services.villages import upsert_village
+from backend.services import ml_inference
 from pydantic import BaseModel
 
 # Routers (import routers once)
@@ -180,6 +181,9 @@ async def on_startup():
     await init_claims_table()
     await init_villages_table()
     await init_officers_table()
+
+    # Load the DSS model once; if it's missing, /api/diagnostics returns 503
+    ml_inference.load()
 
     # Optional seeding controlled by env var
     try:

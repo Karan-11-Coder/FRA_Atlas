@@ -119,6 +119,40 @@ export const apiUpload = async <T = any>(endpoint: string, form: FormData): Prom
 
 export type Claim = { id: number | string } & Record<string, any>;
 
+export type ClaimType = "IFR" | "CFR" | "CR";
+
+export interface DiagnosticsRequest {
+  claim_id?: number;
+  lat?: number;
+  lon?: number;
+  land_area?: number;
+  claim_type?: ClaimType;
+}
+
+export interface SchemeScore {
+  key: string;
+  name: string;
+  score: number;
+  reasons: string[];
+  top_inputs: Array<{ input: string; label: string; effect: number }>;
+  model: string;
+  typical_error: number;
+  test_r2: number;
+}
+
+export interface DiagnosticsResponse {
+  claim_id: number | null;
+  state: string;
+  district: string;
+  input: Record<string, any>;
+  metrics: Record<string, any>;
+  estimated_inputs: Array<{ input: string; label: string; value: number | string; source: string }>;
+  notes: string[];
+  recommendations: SchemeScore[];
+  disclaimer: string;
+  model_info: Record<string, any>;
+}
+
 // API endpoints
 export const api = {
   // Authentication — uses the robust apiFetch (returns same shape as your backend)
@@ -222,14 +256,10 @@ export const api = {
       body: JSON.stringify({ rows }),
     }),
 
-  // DSS diagnostics for a claim/coordinate. Note: the scoring behind this
-  // endpoint is currently a placeholder (see backend/routes/diagnostics.py) —
-  // not real soil/water/groundwater data yet.
-  getDiagnostics: (payload: { claim_id?: number; lat?: number; lon?: number; land_area?: number }) =>
-    apiFetch<{ metrics: Record<string, any>; recommendations: Array<{ name: string; score: number; reasons: string[] }> }>(
-      "/api/diagnostics",
-      { method: "POST", body: JSON.stringify(payload) }
-    ),
+  // DSS scheme-suitability scores from the trained models (backend/services/ml_inference.py).
+  // Rule-derived suitability, not an eligibility decision — see ml/MODEL_CARD.md.
+  getDiagnostics: (payload: DiagnosticsRequest) =>
+    apiFetch<DiagnosticsResponse>("/api/diagnostics", { method: "POST", body: JSON.stringify(payload) }),
 
   // Current authenticated officer (validated server-side from the bearer token)
   getMe: () => apiFetch<{ user: { id: string; username: string; full_name: string; role: string } }>("/api/me"),

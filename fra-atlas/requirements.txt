@@ -92,3 +92,6 @@ pytesseract==0.3.13
 
 # Excel import (pandas.read_excel, routes/claims.py)
 openpyxl==3.1.5
+
+# DSS model inference (must match the version that built ml/artifacts/model.joblib)
+scikit-learn==1.9.1
