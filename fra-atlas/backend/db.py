@@ -67,12 +67,81 @@ def _row_to_dict(row) -> Dict[str, Any]:
             return {}
 
 # ----------------------------
+# Timestamps
+# ----------------------------
+def utc_now_iso() -> str:
+    """Timezone-aware UTC timestamp, the one format every claim date column uses."""
+    return datetime.datetime.now(datetime.timezone.utc).isoformat()
+
+# ----------------------------
+# Schema: columns added after the original tables were created.
+# Older databases (and tables created by Base.metadata.create_all before these
+# existed) get them via ALTER TABLE on startup — see _add_missing_columns.
+# ----------------------------
+CLAIMS_EXTRA_COLUMNS = {
+    "source": "TEXT DEFAULT 'manual'",
+    "raw_ocr": "TEXT",
+    "assigned_officer_id": "INTEGER",
+    "assigned_date": "TEXT",
+    "last_status_update": "TEXT",
+    "closed_date": "TEXT",
+    "reopen_count": "INTEGER DEFAULT 0",
+}
+
+OFFICERS_TABLE_SQL = """
+CREATE TABLE IF NOT EXISTS officers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE NOT NULL,
+    hashed_password TEXT NOT NULL,
+    full_name TEXT,
+    role TEXT,
+    age INTEGER,
+    gender TEXT,
+    district TEXT,
+    is_active INTEGER DEFAULT 1,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+"""
+
+OFFICERS_EXTRA_COLUMNS = {
+    "age": "INTEGER",
+    "gender": "TEXT",
+    "district": "TEXT",
+    "is_active": "INTEGER DEFAULT 1",
+}
+
+
+async def _add_missing_columns(conn, table: str, columns: Dict[str, str]) -> None:
+    res = await conn.execute(text(f"PRAGMA table_info({table})"))
+    existing = {r[1] for r in res.fetchall()}
+    for name, ddl in columns.items():
+        if name not in existing:
+            await conn.execute(text(f"ALTER TABLE {table} ADD COLUMN {name} {ddl}"))
+
+
+def ensure_officers_table_sync(conn) -> None:
+    """Same as init_officers_table(), for scripts using a plain sqlite3 connection."""
+    cur = conn.cursor()
+    cur.execute(OFFICERS_TABLE_SQL)
+    existing = {r[1] for r in cur.execute("PRAGMA table_info(officers)").fetchall()}
+    for name, ddl in OFFICERS_EXTRA_COLUMNS.items():
+        if name not in existing:
+            cur.execute(f"ALTER TABLE officers ADD COLUMN {name} {ddl}")
+    conn.commit()
+
+
+async def init_officers_table() -> None:
+    async with engine.begin() as conn:
+        await conn.execute(text(OFFICERS_TABLE_SQL))
+        await _add_missing_columns(conn, "officers", OFFICERS_EXTRA_COLUMNS)
+
+# ----------------------------
 # Claims table helpers
 # ----------------------------
 async def init_claims_table() -> None:
     """
-    Create the claims table if it does not exist.
-    Ensure new fields (source, raw_ocr) exist.
+    Create the claims table if it does not exist, and add any columns that
+    were introduced after it was first created.
     """
     sql = """
     CREATE TABLE IF NOT EXISTS claims (
@@ -95,15 +164,7 @@ async def init_claims_table() -> None:
     """
     async with engine.begin() as conn:
         await conn.execute(text(sql))
-        # Try adding new columns if table already existed (ignore errors)
-        try:
-            await conn.execute(text("ALTER TABLE claims ADD COLUMN source TEXT DEFAULT 'manual'"))
-        except Exception:
-            pass
-        try:
-            await conn.execute(text("ALTER TABLE claims ADD COLUMN raw_ocr TEXT"))
-        except Exception:
-            pass
+        await _add_missing_columns(conn, "claims", CLAIMS_EXTRA_COLUMNS)
 
 
 async def insert_claim(payload: Dict[str, Any]) -> Dict[str, Any]:

@@ -66,7 +66,9 @@ from backend.db import (
     get_db,
     engine,
     init_claims_table,
+    init_officers_table,
     insert_claim,
+    utc_now_iso,
     query_claims,
     get_claim_by_id,
     init_villages_table,
@@ -177,6 +179,7 @@ async def on_startup():
     # Ensure helper tables exist
     await init_claims_table()
     await init_villages_table()
+    await init_officers_table()
 
     # Optional seeding controlled by env var
     try:
@@ -377,7 +380,7 @@ async def upload_fra(
 
             # 🔐 CRITICAL PART
             "assigned_officer_id": officer_id,
-            "assigned_date": datetime.date.today().isoformat(),
+            "assigned_date": utc_now_iso(),
         }
         payload.pop("raw_ner", None)
 

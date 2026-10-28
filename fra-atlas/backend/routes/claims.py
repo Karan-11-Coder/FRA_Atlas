@@ -38,7 +38,7 @@ import os
 
 # ✅ NEW (add these)
 from sqlalchemy import text as sa_text
-from backend.db import insert_claim
+from backend.db import insert_claim, utc_now_iso
 from backend.routes.auth import get_current_user, get_current_tribal_user
 import datetime 
 
@@ -441,12 +441,12 @@ async def update_claim(
     # STEP 3.3: officer audit fields
     # -------------------------
     updates["assigned_officer_id"] = officer_id
-    updates["last_status_update"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+    updates["last_status_update"] = utc_now_iso()
 
 
     # mark closed date if granted
     if payload.status and payload.status.lower() == "granted":
-        updates["closed_date"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+        updates["closed_date"] = utc_now_iso()
 
     # perform update
     try:
@@ -511,7 +511,7 @@ async def create_claim(
             detail=f"Invalid status '{payload['status']}'. Must be one of {sorted(ALLOWED_CLAIM_STATUSES)}",
         )
 
-    now_iso = datetime.datetime.utcnow().isoformat()
+    now_iso = utc_now_iso()
 
     # ✅ AUTO-LINK CLAIM TO OFFICER
     payload["assigned_officer_id"] = officer_id
@@ -731,7 +731,7 @@ async def import_excel(
                 "raw_ocr": None,
 
                 "assigned_officer_id": officer_id,
-                "assigned_date": datetime.datetime.utcnow().isoformat(),
+                "assigned_date": utc_now_iso(),
 
             }
 
@@ -771,7 +771,7 @@ async def import_json_verbose(
 
     # ✅ identify logged-in officer ONCE
     officer_id = current_user["id"]
-    now_iso = datetime.datetime.utcnow().isoformat()
+    now_iso = utc_now_iso()
     
     rows = body.get("rows") if isinstance(body, dict) else None
     if not rows or not isinstance(rows, list):
@@ -1074,7 +1074,7 @@ async def commit_parsed(
             "raw_ocr": json.dumps({"entities": entities, "extracted_text": text}),
 
             "assigned_officer_id": officer_id,
-            "assigned_date": datetime.datetime.utcnow().isoformat(),
+            "assigned_date": utc_now_iso(),
         }
         claim_payload.pop("raw_ner", None)
 

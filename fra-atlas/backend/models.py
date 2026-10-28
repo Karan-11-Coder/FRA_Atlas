@@ -42,6 +42,13 @@ class Claim(Base):
     source = Column(String, default="manual")   # e.g. "manual" or "uploaded"
     raw_ocr = Column(Text, nullable=True)       # JSON/text dump of OCR/NER results
 
+    # Officer tracking — ISO-8601 UTC strings (see db.utc_now_iso)
+    assigned_officer_id = Column(Integer, nullable=True, index=True)
+    assigned_date = Column(String, nullable=True)
+    last_status_update = Column(String, nullable=True)
+    closed_date = Column(String, nullable=True)
+    reopen_count = Column(Integer, default=0, server_default="0")  # raw-SQL inserts need the DB default
+
     created_at = Column(DateTime, default=datetime.utcnow, index=True)
 
     # Helpful composite index for common filters

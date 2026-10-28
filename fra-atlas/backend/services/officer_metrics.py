@@ -5,6 +5,18 @@ from backend.db import get_db_path
 from backend.config.thresholds import LONG_PENDING_DAYS
 
 
+def _parse_ts(value: str) -> datetime:
+    """
+    Parse a stored claim timestamp as an aware UTC datetime. Older rows hold
+    naive values (utcnow().isoformat() or a bare date); treat those as UTC,
+    otherwise subtracting them from aware values raises TypeError.
+    """
+    dt = datetime.fromisoformat(value)
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt
+
+
 def calculate_metrics(officer_id: int) -> dict:
     conn = sqlite3.connect(get_db_path())
     conn.row_factory = sqlite3.Row
@@ -47,8 +59,8 @@ def calculate_metrics(officer_id: int) -> dict:
     durations = []
     for row in cur.fetchall():
         try:
-            start = datetime.fromisoformat(row["assigned_date"])
-            end = datetime.fromisoformat(row["closed_date"])
+            start = _parse_ts(row["assigned_date"])
+            end = _parse_ts(row["closed_date"])
             durations.append((end - start).days)
         except Exception:
             pass
@@ -69,7 +81,7 @@ def calculate_metrics(officer_id: int) -> dict:
 
     for row in cur.fetchall():
         try:
-            start = datetime.fromisoformat(row["assigned_date"])
+            start = _parse_ts(row["assigned_date"])
             if (now - start).days > LONG_PENDING_DAYS:
                 long_pending += 1
         except Exception:
