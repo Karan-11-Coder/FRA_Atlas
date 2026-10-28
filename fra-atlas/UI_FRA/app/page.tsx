@@ -146,13 +146,13 @@ export default function LandingPage() {
             <div className="flex flex-col items-center">
               <img
                 src="/images/officer-large.jpg"
-                alt="Hon'ble Minister Shri Jual Oram"
+                alt="Hon&apos;ble Minister Shri Jual Oram"
                 className="w-full max-w-sm rounded-md shadow-lg object-cover"
                 style={{ height: "360px" }}
               />
               <div className="mt-4 text-center">
                 <h4 className="font-semibold text-gov-blue">Shri Jual Oram</h4>
-                <p className="text-sm text-gray-600">Hon'ble Minister</p>
+                <p className="text-sm text-gray-600">Hon&apos;ble Minister</p>
               </div>
             </div>
           </div>

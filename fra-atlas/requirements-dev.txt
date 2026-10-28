@@ -1,0 +1,5 @@
+-r requirements.txt
+
+# Tests (python -m pytest backend/tests, run from fra-atlas/)
+pytest==9.2.0
+httpx==0.28.1

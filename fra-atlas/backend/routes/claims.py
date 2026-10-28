@@ -387,9 +387,11 @@ async def _sqlite_update_claim(db_path: str, claim_id: int, updates: Dict[str, A
 
 
 def _get_default_db_path() -> str:
-    base = pathlib.Path(__file__).resolve().parents[1]
-    candidate = base / "fra_atlas.db"
-    return str(candidate)
+    # Same file the rest of the app uses (honours DATABASE_URL). This used
+    # to hard-code backend/fra_atlas.db, so with DATABASE_URL set (tests,
+    # Docker's /data volume) claim updates and /claims/my silently read and
+    # wrote a different database and returned 404.
+    return db.get_db_path()
 
 
 @router.put("/claims/{claim_id}", tags=["claims"])

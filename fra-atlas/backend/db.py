@@ -378,10 +378,14 @@ def get_db_path() -> str:
     Used by legacy sqlite3-based services (officer_metrics, credibility_engine).
     """
     url = urlparse(DATABASE_URL)
+    if not url.scheme.startswith("sqlite"):
+        raise RuntimeError("get_db_path() called for non-sqlite database")
 
-    # sqlite+aiosqlite:///C:/path/to/db.sqlite
-    if url.scheme.startswith("sqlite"):
-        return str(Path(url.path.lstrip("/")).resolve())
-
-    raise RuntimeError("get_db_path() called for non-sqlite database")
+    # Everything after "sqlite[+driver]:///" is the file path, as SQLAlchemy reads it:
+    #   sqlite+aiosqlite:///C:/path/db.sqlite  -> C:/path/db.sqlite   (Windows absolute)
+    #   sqlite+aiosqlite:////data/db.sqlite    -> /data/db.sqlite     (POSIX absolute)
+    #   sqlite+aiosqlite:///relative/db.sqlite -> relative/db.sqlite  (relative to cwd)
+    # (Stripping every leading "/" used to turn /data/... into a relative path.)
+    path = DATABASE_URL.split(":///", 1)[1].split("?", 1)[0]
+    return str(Path(path).resolve())
 

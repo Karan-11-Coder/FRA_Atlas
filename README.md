@@ -4,126 +4,171 @@
 
 <h1 align="center">FRA Atlas</h1>
 <p align="center">
-  AI-Powered Geospatial Governance Platform
+  WebGIS + decision support for Forest Rights Act (FRA, 2006) claims
 </p>
 
 ---
 
-##   About
-FRA Atlas is an AI-powered geospatial governance platform designed to digitize, verify, and monitor Forest Rights Act (FRA) claims across India. The current FRA implementation relies heavily on paper-based records, manual verification, and fragmented databases, which leads to delays, lack of transparency, and exclusion of eligible beneficiaries from welfare schemes.
+## What it is
 
-The platform integrates automated document processing, satellite-based mapping, and decision-support analytics to create a unified digital atlas of forest land claims. By combining OCR and NLP for extracting data from legacy claim forms, GIS layers for boundary validation, and rule-based intelligence for scheme eligibility mapping, FRA Atlas enables faster, more reliable, and more transparent claim verification.
+The Forest Rights Act recognises the land and forest rights of tribal and forest-dwelling communities: Individual Forest Rights (IFR), Community Rights (CR) and Community Forest Resource rights (CFR). Claim records are mostly on paper and scattered across departments. FRA Atlas is a Smart India Hackathon prototype that:
 
-FRA Atlas is built to support government officers, district administrators, Gram Sabhas, and policy planners by providing real-time visibility into claim status, land distribution, and beneficiary coverage. The system aims to strengthen governance, reduce disputes, and ensure that forest-dependent and tribal communities receive secure land rights and timely access to development schemes.
+1. **Digitises claims.** Upload a scanned claim PDF; OCR (Tesseract/pdfplumber) and NER (spaCy plus rules) pre-fill the fields for an officer to review. Excel/CSV bulk import is also supported.
+2. **Maps them.** Claims and villages are shown on an interactive Leaflet map with state and district boundaries.
+3. **Supports officers.** Officer login, claim management (create, edit, grant or reject, delete), per-officer dashboards and claim export. Tribal claimants can log in with an OTP.
+4. **Scores scheme suitability (DSS).** For a claim, ML models give 0–100 suitability scores for PM-KISAN, MGNREGA, Jal Jeevan Mission, PMFBY, PMKSY and Soil Health Card. **These reproduce rule-derived labels and are not eligibility decisions**; see [Honest limits](#honest-limits).
 
+## Architecture
 
-## Problem Statement
-The Forest Rights Act (FRA), 2006 grants land and forest rights to tribal and forest-dwelling communities, yet its implementation remains constrained by fragmented, paper-based records and limited use of digital verification tools. Legacy data related to Individual Forest Rights (IFR), Community Rights (CR), and Community Forest Resource (CFR) claims is scattered across departments, often non-digitized, and difficult to validate spatially. There is no centralized, real-time geospatial repository to visualize FRA claims, granted titles, and village-level assets together on a single platform.
+```
+ Browser ──► Next.js 14 frontend (fra-atlas/UI_FRA, :3000)
+                │  fetch + JWT bearer
+                ▼
+            FastAPI backend (fra-atlas/backend, :8000)
+             ├─ routes/auth.py, auth_tribal.py   officer JWT login · tribal OTP login
+             ├─ routes/claims.py, officers.py    claims CRUD, import, export · officer metrics
+             ├─ ocr.py, ner.py                   PDF → text → claim fields
+             ├─ routes/diagnostics.py ─► services/ml_inference.py ─► ml/artifacts/model.joblib
+             └─ SQLite (SQLAlchemy async + sqlite3)
 
-Additionally, current systems do not integrate satellite-based land-use and asset mapping with FRA data, making it difficult to assess agricultural potential, water resources, forest cover, and infrastructure needs in FRA villages. As a result, policymakers and field officers lack data-driven tools to link eligible FRA beneficiaries with relevant Central Sector Schemes (CSS) such as PM-KISAN, MGNREGA, and Jal Jeevan Mission. The absence of an integrated Decision Support System (DSS) limits targeted planning, slows service delivery, and reduces the overall socio-economic impact of FRA implementation.
-## Features
+ ml/ (offline)  labeled_dataset.csv → notebooks 01–05 → model.joblib + feature_schema.json
+```
 
-- Automated Claim Digitization (OCR + NLP)
-- Geospatial Boundary Validation
-- Interactive WebGIS Atlas
-- Rule-Based Decision Support System (DSS) — see note below on current data sources
-- Officer Dashboard & Analytics
-- Search, Filter & Status Tracking
-- Export & Reporting Tools
-- Scalable & Government Ready Architecture
+- **Frontend:** Next.js 14 (App Router), TypeScript, Tailwind, shadcn/Radix, react-leaflet.
+- **Backend:** FastAPI, SQLAlchemy/aiosqlite, python-jose (JWT), passlib (bcrypt_sha256), pytesseract, pdfplumber, pdf2image, spaCy, scikit-learn.
+- **Data:** SQLite file (a Docker volume, or `fra-atlas/backend/fra_atlas.db` locally). It is never committed.
 
+## Run with Docker (recommended)
 
+Needs [Docker Desktop](https://www.docker.com/products/docker-desktop/) (or Docker Engine with the compose plugin).
 
+```bash
+cp .env.example .env
+```
 
-## System Architecture
-FRA Atlas follows a modular, service oriented architecture that integrates document intelligence, geospatial processing, and decision support analytics into a unified digital governance platform. Users such as Gram Sabha members and district officers interact with the system through a web based frontend built using React and Leaflet, where claim forms, sketches, or GeoJSON files can be uploaded and visualized on an interactive map interface. These inputs are sent to a FastAPI based backend that orchestrates all processing workflows through secure REST APIs.
+Open `.env` and set `JWT_SECRET` to a fresh random value, generated with:
 
-Uploaded documents are first processed by an OCR and NLP pipeline that extracts structured claim information such as claimant identity, land category, and ownership type from scanned forms and handwritten documents. In parallel, geospatial data is validated and converted into standardized GeoJSON layers using GIS processing modules powered by GeoPandas and Shapely, with reference to satellite imagery and boundary datasets from sources such as OpenStreetMap and Sentinel. Both textual and spatial data are then stored in a centralized spatially enabled database, currently implemented using SQLite for prototyping and designed to scale to PostgreSQL with PostGIS for production deployments.
+```bash
+python -c "import secrets; print(secrets.token_hex(32))"
+```
 
-Once claims are verified and structured, they are passed to a rule-based Decision Support System (DSS) that evaluates eligibility conditions and maps beneficiaries to relevant government welfare schemes such as PM-KISAN, MGNREGA, and Jal Jeevan Mission. The backend continuously aggregates claim status, processing timelines, and scheme coverage metrics, which are exposed to the frontend through analytics APIs. Officers can monitor progress through administrative dashboards, perform searches and filters, and export verified datasets in CSV or GeoJSON formats for audits and inter-departmental coordination. This layered architecture enables independent scaling of AI services, geospatial validation, and policy engines, making the platform suitable for phased rollout from pilot districts to nationwide deployments.
-## Intelligent Processing Pipeline
-The system automates the transformation of unstructured and spatial data into actionable intelligence through a multi-stage processing pipeline. Scanned FRA claim forms and supporting documents are first processed using OCR to extract raw text, followed by NLP-based entity recognition to identify key fields such as claimant details, village names, land categories, and claim status. In parallel, uploaded sketches, shapefiles, and satellite-derived datasets are converted into standardized GeoJSON formats. These textual and spatial datasets are then validated, structured, and stored in a centralized database, enabling consistent downstream analytics, visualization, and decision-making workflows.
-## Decision Support System
-The Decision Support System (DSS) is a policy intelligence layer intended to evaluate verified FRA claims against eligibility rules and development indicators, scoring suitability for Central Sector Schemes such as PM-KISAN, MGNREGA, and Jal Jeevan Mission.
+Then:
 
-**Current status:** `POST /api/diagnostics` (`backend/routes/diagnostics.py`, `backend/services/ml_inference.py`) scores a claim for six schemes with the models trained in `ml/notebooks/02_regression.ipynb` (`ml/artifacts/model.joblib`; see `ml/MODEL_CARD.md`). A claim supplies its coordinates, land area and claim type. Its district comes from point-in-polygon, groundwater and rainfall from the district reference tables, and soil from the nearest real SoilGrids reading in the training data (else the district mean). All of those are shown in the UI as estimated inputs. Claims outside the 7 training districts are refused, and if the model file is missing the endpoint returns 503 rather than made-up numbers.
+```bash
+docker compose up --build
+```
 
-**These are rule-derived suitability scores, not eligibility decisions.** The models were trained on labels generated by `backend/services/scheme_rules.py` (rules plus noise), on synthetic plots. No real allocation or outcome data has validated them.
-## Geospatial Intelligence
-FRA Atlas integrates multiple geospatial data sources to provide accurate spatial validation and asset-level visibility for FRA villages. Satellite imagery, village boundaries, forest compartments, and land-use layers are processed using GIS tools to validate claim boundaries and detect assets such as agricultural plots, water bodies, forest cover, and habitation clusters. These layers are dynamically visualized through a WebGIS interface, allowing officials to assess environmental conditions, infrastructure availability, and resource distribution alongside FRA ownership data. This spatial intelligence supports planning for sustainable livelihoods and conservation-aligned development.
-## Dashboard & Analytics
-The platform provides role-based dashboards for administrators and field officers to monitor operational and policy-level metrics. Key indicators include claim processing status, approval timelines, geographic distribution of beneficiaries, and scheme coverage across districts and villages. Interactive charts, filters, and map-based views enable rapid identification of underserved areas and procedural delays. Built-in reporting and export features allow data to be shared across departments, supporting audits, progress tracking, and inter-ministerial coordination.
-## Tech Stack
+- **Frontend:** http://localhost:3000. **Backend:** http://localhost:8000 (API docs at `/docs`).
+- **First start** seeds a demo officer (`demo.officer@example.org`), 16 villages and 14 sample claims in the 7 model districts. If `DEMO_OFFICER_PASSWORD` is empty, a random password is generated and **printed once** in the backend log (`docker compose logs backend`). Set it in `.env` if you'd rather choose your own.
+- **Data** persists in the `fra_data` and `fra_uploads` volumes. `docker compose down -v` deletes them.
+- **Changing ports or hosts:** set `NEXT_PUBLIC_API_BASE` (the backend URL as the browser sees it; it is built into the frontend, so rebuild after changing it) and `CORS_ORIGINS` (the frontend origins the backend accepts) together.
 
-**Client:** `UI_FRA/` — Next.js 14 + TypeScript + Radix UI/shadcn, Leaflet.js, Tailwind CSS. This is the single UI; an earlier parallel Vite/React app (`frontend/`) has been retired and its map/upload/claims-management functionality ported in under `/dashboard/workspace`.
+## Run without Docker
 
-**Server:** FastAPI, REST APIs
+Needs Python 3.12 and Node 20+. Windows also needs the Microsoft Visual C++ Redistributable (x64), which spaCy requires. For OCR on scanned PDFs, install Tesseract and Poppler; on Windows, set `POPPLER_PATH` in `fra-atlas/backend/.env`.
 
-**Document Processing:** pytesseract (Tesseract OCR) + pdfplumber + pdf2image for extraction, spaCy for NLP entity recognition
+**Backend** (from `fra-atlas/`):
 
-**Database:** SQLite, SQLAlchemy
-
-**GIS:** GeoJSON, GeoPandas, Shapely, OpenStreetMap
-
-
-## Installation & Setup
-## 1) Clone the repository:
-git clone https://github.com/Karan-11-Coder/FRA_Atlas.git
-
-
-cd FRA_Atlas/fra-atlas
-
-## 2) Backend setup:
-cd backend
-
+```bash
 python -m venv venv
+venv/Scripts/python -m pip install -r requirements.txt
+```
 
-venv\Scripts\activate   (macOS/Linux: source venv/bin/activate)
+(on macOS/Linux use `venv/bin/python`). Copy `backend/.env.example` to `backend/.env` and set `JWT_SECRET`. Then:
 
-pip install -r requirements.txt
+```bash
+venv/Scripts/python -m backend.scripts.seed_demo
+venv/Scripts/python -m uvicorn backend.main:app --reload --port 8000
+```
 
-cp .env.example .env    (macOS/Linux) or copy .env.example .env (Windows), then fill in real values — JWT_SECRET especially, see below
+The backend uses absolute imports (`from backend...`), so run it from `fra-atlas/`, not from inside `backend/`. To create an extra officer:
 
-cd ..
+```bash
+venv/Scripts/python backend/scripts/create_officer.py --username you@example.org --password <choose one> --role admin
+```
 
-`backend/main.py` uses absolute imports (`from backend...`), so it must be run as a module from the `fra-atlas/` directory — not from inside `backend/`:
+**Frontend** (from `fra-atlas/UI_FRA/`):
 
-uvicorn backend.main:app --reload --port 8000
-
-(or `bash backend/scripts/run-backend.sh` from `fra-atlas/`, which does the same thing — this used to be a root-level `npm run backend` wrapping a Node script, but it never did anything Node-specific, so it's a plain shell script now and there's no root-level `package.json` anymore)
-
-Backend: http://127.0.0.1:8000
-
-API Docs: http://127.0.0.1:8000/docs
-
-**Generate a JWT_SECRET** rather than reusing any value that may have been committed previously:
-`python -c "import secrets; print(secrets.token_hex(32))"`
-
-## 3) Frontend setup:
-cd UI_FRA
+```bash
 npm install
 npm run dev
+```
 
-Frontend: http://localhost:3000 — log in at `/login`, land on `/dashboard` (analytics) or `/dashboard/workspace` (map + claims management: upload, OCR review, Excel import, claim CRUD, diagnostics).
+Open http://localhost:3000. Run the backend and frontend in two terminals.
 
-Run the backend and frontend in two terminals (`bash backend/scripts/run-backend.sh` in one, `npm run dev` inside `UI_FRA/` in the other) — there's no combined root-level launcher anymore.
+**Tests and checks:**
 
-## 4) Database:
-SQLite, no setup needed for local dev. The bundled `backend/fra_atlas.db` is no longer committed to git (see `.gitignore`) — if you're starting fresh, the backend creates the required tables automatically on first run.
+```bash
+venv/Scripts/python -m pip install -r requirements-dev.txt
+venv/Scripts/python -m pytest backend/tests
+```
 
+That runs the suite (from `fra-atlas/`): auth and OTP, claims, officers, the DSS API, and model agreement with the rules. The tests use a throwaway database and refuse to run against a real one. For the frontend (in `UI_FRA/`), `npm run lint` and `npm run build` must both pass; type and lint errors fail the build.
 
+## Secrets and configuration
 
+**Secrets live in `.env` files only, never in code, images or git.** The `.env` files are gitignored; only the `.env.example` templates are committed.
 
+- `JWT_SECRET` is required, and the backend refuses to start without it. There is no fallback.
+- An old JWT secret and old officer password hashes exist in this repository's git **history**, from before they were untracked. Treat them as compromised: always generate a fresh `JWT_SECRET`, and don't reuse old officer passwords.
+- Uploaded claim documents can contain personal data. They stay in `uploads/` (or the `fra_uploads` volume), which is gitignored.
+
+## The ML pipeline (DSS)
+
+Everything is in `ml/`; the full details are in [`ml/MODEL_CARD.md`](ml/MODEL_CARD.md) and [`ml/DATA_DICTIONARY.md`](ml/DATA_DICTIONARY.md).
+
+1. **Data:** `fra-atlas/backend/services/` builds `ml/data/labeled_dataset.csv`: 1,540 **synthetic** plots, 220 in each of 7 districts (Chhindwara and Shivpuri in MP; Kandhamal and Koraput in Odisha; Adilabad and Warangal in Telangana; West Tripura), sampled inside real district boundaries.
+   - **Soil:** real ISRIC SoilGrids readings, with about 30% imputed by district mean.
+   - **Climate:** rainfall and groundwater are one reference value per district.
+   - **Labels:** the six scheme scores come from `scheme_rules.py` (rules plus Gaussian noise).
+2. **Notebooks** (`ml/notebooks/`, all run clean top to bottom):
+   - `01_eda`: findings and a decisions log.
+   - `02_regression`: baselines, linear models, tree, SVR and forest, with group-aware CV, bootstrap intervals, an oracle-R² leakage guard, leave-one-district-out, and ablation. It saves the model.
+   - `03_classification` and `04_neural_net`: check the regression choices.
+   - `05_unsupervised`: clustering, PCA/t-SNE and association rules.
+3. **Selection:** the simplest model within 0.02 CV R² of the best, chosen per scheme. Every chosen model is within 5% of the best score achievable on the test plots.
+4. **Serving:** `services/ml_inference.py` loads `ml/artifacts/model.joblib`. For a claim it works out the district (point-in-polygon), groundwater and rainfall (reference tables), and soil (the nearest real reading within 5 km, else the district mean). The UI marks those inputs as **estimated**. Claims outside the 7 districts are refused. If the model is missing, the API returns 503, never placeholder numbers.
+
+To rebuild the model:
+
+```bash
+python -m venv ml/.venv
+ml/.venv/Scripts/python -m pip install -r ml/requirements-ml.txt
+```
+
+Then run `ml/notebooks/02_regression.ipynb`. scikit-learn must match between `ml/` and the backend (1.9.1).
+
+## Honest limits
+
+- **The DSS labels are rule-derived.** The models reproduce `scheme_rules.py`; they do not predict real eligibility or real scheme outcomes. No real allocation data has validated them.
+- **There are only 7 districts.** The models don't cover any other district, and the API refuses claims outside them.
+- **Climate is coarse:** one reference value per district. Only Chhindwara's rainfall is verified against a published source.
+- **Soil is mostly imputed in Kandhamal (83%) and Koraput (65%)**, so soil-driven scores there are close to district averages.
+- **Claims have no `claim_type` field yet.** The officer picks IFR, CFR or CR in the DSS panel.
+- **There is no water-body data**, so distance to water isn't used.
+- **Tribal claimants** can log in, but claims aren't linked to them yet.
+- **Tribal OTPs** are stored in memory. Without a real MSG91 key they are only printed to the backend log, which is dev mode.
+- **SQLite** is fine for a prototype; a production deployment should move to PostgreSQL/PostGIS.
+
+## 5-minute demo walkthrough
+
+1. **Start:** `docker compose up --build`, then read the demo password from `docker compose logs backend` if you didn't set one.
+2. **Log in** at http://localhost:3000/login as `demo.officer@example.org`.
+3. **Map:** open **Claims Workspace** and pick a state, for example Madhya Pradesh. Markers appear once a state is selected: red "P" for pending, green ✓ for granted.
+4. **Claim:** click a marker to see its details. Optionally create a claim with **New FRA Claim**, or upload a scanned claim PDF in **Upload FRA Document** and review the extracted fields.
+5. **DSS:** in the marker popup, click **Run diagnostics**, then choose the claim type.
+   - Six scheme scores appear, each with a typical error (±) and its top contributing inputs.
+   - The amber badge lists the estimated inputs and their sources.
+   - Switching IFR to CR shows PM-KISAN drop from about 85 to about 22, because that rule depends on claim type.
+6. **How the model was built:** open `ml/notebooks/01_eda.ipynb` (Findings) and `02_regression.ipynb` (comparison table, selection, robustness), then `ml/MODEL_CARD.md`.
 
 ## Authors
 
-- [@Imroz Kamboj](https://github.com/Imrozdotpi)
-- [@Karan Chauhan](https://github.com/Karan-11-Coder)
-- [@Palak Gupta](https://github.com/PalakGupta6006)
-- [@Mansi Punia](https://github.com/mansi-punia)
-
+- [Imroz Kamboj](https://github.com/Imrozdotpi)
+- [Karan Chauhan](https://github.com/Karan-11-Coder)
+- [Palak Gupta](https://github.com/PalakGupta6006)
+- [Mansi Punia](https://github.com/mansi-punia)
 
 ## License
+
 This project is licensed under the [MIT](https://choosealicense.com/licenses/mit/) License.
-
-

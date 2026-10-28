@@ -1,0 +1,23 @@
+# Backend build context is the repo root; send only what the image copies.
+.git
+**/.env
+**/.env.*
+!**/.env.example
+**/venv
+**/.venv
+**/node_modules
+**/.next
+**/__pycache__
+**/*.pyc
+**/*.db
+**/*.sqlite*
+**/.ipynb_checkpoints
+**/uploads/*
+EDA
+docs
+logo
+installerResources
+ml/notebooks
+ml/results
+fra-atlas/*.csv
+fra-atlas/backend/tests

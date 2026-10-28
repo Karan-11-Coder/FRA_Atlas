@@ -1,14 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Type and lint errors fail the build (both were previously ignored).
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
   },
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
   images: {
     unoptimized: true,
   },
+  // Self-contained server bundle for the Docker image (see Dockerfile).
+  output: "standalone",
 }
 
 export default nextConfig

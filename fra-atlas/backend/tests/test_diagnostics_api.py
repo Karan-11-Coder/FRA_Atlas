@@ -1,34 +1,9 @@
 """POST /api/diagnostics end to end through the FastAPI app."""
-import sqlite3
-
 import pytest
-from fastapi.testclient import TestClient
 
-from backend.db import get_db_path, ensure_officers_table_sync
-from backend.main import app
-from backend.routes.auth import create_access_token, hash_password
 from backend.services import ml_inference
 
 CHHINDWARA = (22.03435, 78.92785)
-
-
-@pytest.fixture(scope="module")
-def client():
-    with TestClient(app) as c:      # runs startup: tables + model load
-        yield c
-
-
-@pytest.fixture(scope="module")
-def auth(client):
-    conn = sqlite3.connect(get_db_path())
-    ensure_officers_table_sync(conn)
-    conn.execute("INSERT OR IGNORE INTO officers (username, hashed_password, full_name, role) VALUES (?, ?, ?, ?)",
-                 ("dss-test@fra-atlas.test", hash_password("not-used-for-login"), "DSS Test", "case_officer"))
-    conn.commit()
-    officer_id = conn.execute("SELECT id FROM officers WHERE username = ?", ("dss-test@fra-atlas.test",)).fetchone()[0]
-    conn.close()
-    token = create_access_token({"sub": "dss-test@fra-atlas.test", "role": "case_officer", "officer_id": officer_id})
-    return {"Authorization": f"Bearer {token}"}
 
 
 def test_requires_auth(client):
