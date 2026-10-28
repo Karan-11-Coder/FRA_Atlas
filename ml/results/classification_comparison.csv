@@ -1,0 +1,13 @@
+model,params,cv_f1_macro,train_accuracy,test_accuracy,test_acc_ci_low,test_acc_ci_high,test_precision_macro,test_recall_macro,test_f1_macro,test_auc,task
+logistic regression,"{""C"": 1}",0.7705,0.7836,0.769,0.7204,0.8116,0.7567,0.7773,0.7635,0.9075,pmksy terciles (train cuts)
+KNN,"{""n_neighbors"": 5, ""weights"": ""uniform""}",0.762,0.8266,0.7781,0.7295,0.8237,0.7692,0.7702,0.7695,0.9057,pmksy terciles (train cuts)
+linear SVM,"{""C"": 1}",0.7807,0.787,0.7964,0.7508,0.8359,0.7834,0.7975,0.7863,0.889,pmksy terciles (train cuts)
+kernel SVM (RBF),"{""C"": 1, ""gamma"": 0.05}",0.7678,0.7894,0.7964,0.7537,0.8359,0.7834,0.7975,0.7863,0.8978,pmksy terciles (train cuts)
+naive Bayes,"{""var_smoothing"": 1e-09}",0.5653,0.6738,0.6717,0.6201,0.7204,0.6177,0.6722,0.5708,0.8588,pmksy terciles (train cuts)
+decision tree,"{""max_depth"": 6, ""min_samples_leaf"": 20}",0.7722,0.8051,0.769,0.7173,0.8116,0.767,0.7604,0.7627,0.9094,pmksy terciles (train cuts)
+logistic regression,"{""C"": 0.1}",1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,sanity: pm_kisan > 50
+KNN,"{""n_neighbors"": 3, ""weights"": ""uniform""}",1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,sanity: pm_kisan > 50
+linear SVM,"{""C"": 0.1}",1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,sanity: pm_kisan > 50
+kernel SVM (RBF),"{""C"": 1, ""gamma"": ""scale""}",1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,sanity: pm_kisan > 50
+naive Bayes,"{""var_smoothing"": 1e-09}",1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,sanity: pm_kisan > 50
+decision tree,"{""max_depth"": 2, ""min_samples_leaf"": 1}",1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,sanity: pm_kisan > 50

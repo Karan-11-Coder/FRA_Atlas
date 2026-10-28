@@ -1,0 +1,159 @@
+{
+  "version": 1,
+  "description": "Inputs for ml/artifacts/model.joblib. Pass a DataFrame with raw_features in this order.",
+  "raw_features": [
+    {
+      "name": "land_area_ha",
+      "type": "float",
+      "unit": "ha",
+      "range": [
+        0.2,
+        4.0
+      ],
+      "required": true,
+      "fallback": null
+    },
+    {
+      "name": "claim_type",
+      "type": "category",
+      "values": [
+        "IFR",
+        "CFR",
+        "CR"
+      ],
+      "required": true,
+      "fallback": null
+    },
+    {
+      "name": "soil_ph",
+      "type": "float",
+      "unit": "pH (H2O, 0-5 cm)",
+      "range": [
+        5.2,
+        7.6
+      ],
+      "required": false,
+      "fallback": "nearest dataset plot within cutoff, else districts[d].soil_ph_mean (mark as estimated)"
+    },
+    {
+      "name": "soil_organic_carbon",
+      "type": "float",
+      "unit": "g/kg (0-5 cm)",
+      "range": [
+        7.5,
+        46.1
+      ],
+      "required": false,
+      "fallback": "nearest dataset plot within cutoff, else districts[d].soil_organic_carbon_mean (mark as estimated)"
+    },
+    {
+      "name": "groundwater_stress_pct",
+      "type": "float",
+      "unit": "% stage of extraction",
+      "range": [
+        30.0,
+        65.0
+      ],
+      "required": false,
+      "fallback": "district constant: backend/services/reference_datasheets.py (= districts[d].groundwater_stress_pct)"
+    },
+    {
+      "name": "rainfall_mm_avg",
+      "type": "float",
+      "unit": "mm/yr",
+      "range": [
+        850.0,
+        2100.0
+      ],
+      "required": false,
+      "fallback": "district constant: backend/services/reference_datasheets.py (= districts[d].rainfall_mm_avg)"
+    }
+  ],
+  "engineered_by": "backend.services.ml_features.add_engineered_features",
+  "model_features": [
+    "land_area_ha",
+    "small_holding",
+    "is_ifr",
+    "is_cfr",
+    "soil_ph",
+    "ph_band",
+    "oc_pct",
+    "groundwater_stress_pct",
+    "rainfall_mm_avg"
+  ],
+  "targets": [
+    "pm_kisan_score",
+    "mgnrega_score",
+    "jjm_score",
+    "pmfby_score",
+    "pmksy_score",
+    "soil_health_card_score"
+  ],
+  "scope": "Only the 7 training districts; leave-one-district-out shows the model does not transfer to new districts.",
+  "districts": {
+    "Chhindwara": {
+      "state": "Madhya Pradesh",
+      "groundwater_stress_pct": 58.0,
+      "rainfall_mm_avg": 1150.0,
+      "soil_ph_mean": 7.098,
+      "soil_organic_carbon_mean": 17.205,
+      "real_soil_rows": 176,
+      "imputed_share": 0.2
+    },
+    "Shivpuri": {
+      "state": "Madhya Pradesh",
+      "groundwater_stress_pct": 65.0,
+      "rainfall_mm_avg": 850.0,
+      "soil_ph_mean": 7.216,
+      "soil_organic_carbon_mean": 9.78,
+      "real_soil_rows": 206,
+      "imputed_share": 0.064
+    },
+    "Kandhamal": {
+      "state": "Odisha",
+      "groundwater_stress_pct": 32.0,
+      "rainfall_mm_avg": 1450.0,
+      "soil_ph_mean": 5.997,
+      "soil_organic_carbon_mean": 32.089,
+      "real_soil_rows": 36,
+      "imputed_share": 0.836
+    },
+    "Koraput": {
+      "state": "Odisha",
+      "groundwater_stress_pct": 30.0,
+      "rainfall_mm_avg": 1400.0,
+      "soil_ph_mean": 6.046,
+      "soil_organic_carbon_mean": 27.479,
+      "real_soil_rows": 76,
+      "imputed_share": 0.655
+    },
+    "Adilabad": {
+      "state": "Telangana",
+      "groundwater_stress_pct": 45.0,
+      "rainfall_mm_avg": 1100.0,
+      "soil_ph_mean": 7.038,
+      "soil_organic_carbon_mean": 15.639,
+      "real_soil_rows": 191,
+      "imputed_share": 0.132
+    },
+    "Warangal": {
+      "state": "Telangana",
+      "groundwater_stress_pct": 55.0,
+      "rainfall_mm_avg": 950.0,
+      "soil_ph_mean": 6.751,
+      "soil_organic_carbon_mean": 22.797,
+      "real_soil_rows": 180,
+      "imputed_share": 0.182
+    },
+    "West Tripura": {
+      "state": "Tripura",
+      "groundwater_stress_pct": 40.0,
+      "rainfall_mm_avg": 2100.0,
+      "soil_ph_mean": 5.419,
+      "soil_organic_carbon_mean": 20.071,
+      "real_soil_rows": 216,
+      "imputed_share": 0.018
+    }
+  },
+  "out_of_range_policy": "Values outside 'range' are extrapolation; clip or flag them as estimated."
+}
