@@ -1,0 +1,15 @@
+{
+  "_note": "Hand-labelled ground truth for the 3 sample claim PDFs in this folder, read from the documents themselves. land_area is in hectares (the documents give acres: 1 acre = 0.40468564 ha). A tiny, synthetic sample: use it as a regression check, not as an accuracy estimate.",
+  "FRA_Baghpur.pdf": {
+    "village": "Baghpur", "district": "Koraput", "state": "Odisha", "patta_holder": "Sita Devi",
+    "land_area": 3.2375, "status": "Pending", "claim_type": "IFR", "ifr_number": "IFR-54321", "date": "15-Mar-2021"
+  },
+  "FRA_Rampur.pdf": {
+    "village": "Rampur", "district": "Sehore", "state": "Madhya Pradesh", "patta_holder": "Ram Singh",
+    "land_area": 4.0469, "status": "Granted", "claim_type": "IFR", "ifr_number": "IFR-12345", "date": "01-Jan-2020"
+  },
+  "FRA_Telangana.pdf": {
+    "village": "Kothapally", "district": "Warangal", "state": "Telangana", "patta_holder": "Ramesh Kumar",
+    "land_area": 4.8562, "status": "Granted", "claim_type": "IFR", "ifr_number": "IFR-98765", "date": "12-Jul-2019"
+  }
+}

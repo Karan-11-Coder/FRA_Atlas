@@ -9,15 +9,12 @@ Container entry point: optionally seed demo data, then run the API.
 import os
 import sys
 
-if not os.getenv("JWT_SECRET"):
-    sys.exit("JWT_SECRET is not set. Copy .env.example to .env and set it (see README).")
-
 if os.getenv("SEED_DEMO") == "1":
     from backend.scripts import seed_demo
     seed_demo.main()
 
 # exec replaces this process without flushing Python's buffers; flush first
-# or the seed output (including a generated demo password) can be lost.
+# or the seed output can be lost.
 sys.stdout.flush()
 sys.stderr.flush()
 os.execvp(sys.executable, [sys.executable, "-m", "uvicorn", "backend.main:app",

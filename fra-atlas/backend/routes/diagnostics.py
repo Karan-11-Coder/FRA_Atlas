@@ -10,11 +10,10 @@ can't be loaded this returns 503 — it never falls back to made-up numbers.
 """
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
 from backend import db
-from backend.routes.auth import get_current_user
 from backend.services import ml_inference
 
 router = APIRouter()
@@ -25,7 +24,7 @@ class DiagnosticsRequest(BaseModel):
     lat: Optional[float] = None
     lon: Optional[float] = None
     land_area: Optional[float] = Field(None, description="Land area in hectares")
-    claim_type: Optional[str] = Field(None, description="IFR, CFR or CR (claims don't store this yet, so the caller supplies it)")
+    claim_type: Optional[str] = Field(None, description="IFR, CFR or CR; defaults to the stored claim's claim_type")
 
 
 class SchemeResult(BaseModel):
@@ -59,7 +58,7 @@ def diagnostics_status():
 
 
 @router.post("/diagnostics", response_model=DiagnosticsResponse)
-async def run_diagnostics(req: DiagnosticsRequest, current_user=Depends(get_current_user)):
+async def run_diagnostics(req: DiagnosticsRequest):
     lat, lon, land_area, claim_type = req.lat, req.lon, req.land_area, req.claim_type
 
     if req.claim_id is not None:

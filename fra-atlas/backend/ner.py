@@ -31,6 +31,22 @@ P_DATE_FREE = re.compile(
 # Optional: decimal coordinate pairs like "23.1984, 77.0951"
 P_COORDS = re.compile(r'(?i)\b(-?\d{1,2}\.\d{3,}),\s*(-?\d{1,3}\.\d{3,})\b')
 
+# Claim type: explicit label first ("Claim Type: IFR"), then the full names
+P_CLAIM_TYPE_LBL = re.compile(r'(?im)^\s*(?:claim\s*type|type\s*of\s*(?:claim|right))\s*[:\-]\s*([^\r\n]+)')
+CLAIM_TYPE_PATTERNS = [
+    ("CFR", re.compile(r'(?i)\b(?:CFR|community\s+forest\s+resources?)\b')),
+    ("IFR", re.compile(r'(?i)\b(?:IFR|individual\s+forest\s+rights?)\b')),
+    ("CR",  re.compile(r'(?i)\b(?:CR|community\s+(?:forest\s+)?rights?)\b')),
+]
+
+# Regex fields shown as highlighted spans in the claim-intake UI: (field, pattern, group)
+SPAN_PATTERNS = [
+    ("state", P_STATE, 1), ("district", P_DISTRICT, 1), ("village", P_VILLAGE, 1),
+    ("patta_holder", P_PATTA, 1), ("ifr_number", P_IFR, 1), ("land_area", P_AREA, 1),
+    ("status", P_STATUS, 1), ("date", P_DATE_LBL, 1), ("claim_type", P_CLAIM_TYPE_LBL, 1),
+]
+SPACY_FIELD = {"GPE": "place", "PERSON": "person", "DATE": "date"}
+
 # If labels leaked to next line, trim trailing label words
 TRAILING_LABELS = re.compile(r'\s*(?:state|district|village|patta\s*holder)\s*$', re.I)
 
@@ -140,4 +156,46 @@ def extract_entities(text: str):
     if coords:
         out["lat"], out["lon"] = coords[0]
 
+    out["claim_type"] = detect_claim_type(text)
     return out
+
+
+def detect_claim_type(text: str):
+    """
+    'IFR' / 'CFR' / 'CR' from the document, or None if it can't tell.
+    A labelled line wins; otherwise the first full-name or acronym match.
+    CFR is checked before CR because "community forest resource" also
+    contains "community forest".
+    """
+    text = text or ""
+    m = P_CLAIM_TYPE_LBL.search(text)
+    candidates = [m.group(1)] if m else []
+    candidates.append(text)
+    for chunk in candidates:
+        hits = [(p.search(chunk).start(), code) for code, p in CLAIM_TYPE_PATTERNS if p.search(chunk)]
+        if hits:
+            return min(hits)[1]
+    return None
+
+
+def entity_spans(text: str):
+    """
+    Character spans of everything the extractor found, for highlighting:
+    [{"start", "end", "text", "field", "source": "regex" | "spacy", "label"}]
+    Regex spans are labelled-field values; spaCy spans are its GPE / PERSON /
+    DATE entities. Overlaps are kept: the UI shows where the two agree.
+    """
+    text = text or ""
+    spans = []
+    for field, pattern, group in SPAN_PATTERNS:
+        for m in pattern.finditer(text):
+            s, e = m.span(group)
+            value = text[s:e].rstrip()
+            if value.strip():
+                spans.append({"start": s, "end": s + len(value), "text": value, "field": field,
+                              "source": "regex", "label": field})
+    for ent in nlp(text).ents:
+        if ent.label_ in SPACY_FIELD:
+            spans.append({"start": ent.start_char, "end": ent.end_char, "text": ent.text,
+                          "field": SPACY_FIELD[ent.label_], "source": "spacy", "label": ent.label_})
+    return sorted(spans, key=lambda d: (d["start"], d["end"]))

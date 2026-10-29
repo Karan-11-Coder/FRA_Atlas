@@ -42,6 +42,8 @@ _FRA_ATLAS_DIR = Path(__file__).resolve().parents[2]      # fra-atlas/
 _REPO_ROOT = _FRA_ATLAS_DIR.parent
 
 MODEL_PATH = Path(os.getenv("ML_MODEL_PATH", _REPO_ROOT / "ml" / "artifacts" / "model.joblib"))
+# Every model from notebooks 02-04, for the lab (ml/export_dashboard.py).
+ALL_MODELS_PATH = Path(os.getenv("ML_ALL_MODELS_PATH", _REPO_ROOT / "ml" / "artifacts" / "all_models.joblib"))
 SCHEMA_PATH = Path(os.getenv("ML_SCHEMA_PATH", _REPO_ROOT / "ml" / "artifacts" / "feature_schema.json"))
 REFERENCE_DATA_PATH = Path(os.getenv("ML_REFERENCE_DATA", _REPO_ROOT / "ml" / "data" / "labeled_dataset.csv"))
 DISTRICT_GEOJSON_DIR = Path(os.getenv("DISTRICT_GEOJSON_DIR", _FRA_ATLAS_DIR / "UI_FRA" / "public" / "geojson" / "districts"))
@@ -108,6 +110,12 @@ def load(force: bool = False) -> bool:
     _state.update(bundle=bundle, schema=schema, ref=ref, polygons=polygons, loaded=True,
                   ranges={f["name"]: f["range"] for f in schema["raw_features"] if "range" in f})
     logger.info("ML model loaded from %s (%s)", MODEL_PATH, bundle.get("model_names"))
+    try:
+        import joblib
+        _state["all_models"] = joblib.load(ALL_MODELS_PATH)
+    except Exception as e:
+        _state["all_models_error"] = f"{type(e).__name__}: {e}"
+        logger.warning("All-models bundle not loaded (%s); lab live routes will return 503", _state["all_models_error"])
     return True
 
 
@@ -248,3 +256,97 @@ def predict_schemes(lat=None, lon=None, land_area_ha=None, claim_type=None) -> D
         "model_info": {"models": bundle["model_names"], "sklearn_version": bundle["sklearn_version"],
                        "labels_rule_derived": True},
     }
+
+
+# =============================================================================
+# Lab: every model, side by side (used by /api/lab/predict and /api/lab/sweep)
+# =============================================================================
+class _NoNoise:
+    def gauss(self, mu, sd):
+        return mu
+
+
+def _require_all_models():
+    _require_loaded()
+    if "all_models" not in _state:
+        raise ModelUnavailable(_state.get("all_models_error", "all-models bundle not loaded"))
+    return _state["all_models"]
+
+
+def district_defaults(district: str) -> Dict[str, Any]:
+    """Typical inputs for a training district: climate constants + mean of real soil readings."""
+    _require_loaded()
+    d = _state["schema"]["districts"].get(district)
+    if d is None:
+        raise InputError(f"Unknown district '{district}'. Use one of: " + ", ".join(sorted(_state["schema"]["districts"])))
+    return {"state": d["state"], "district": district,
+            "values": {"land_area_ha": 1.5, "claim_type": "IFR",
+                       "soil_ph": d["soil_ph_mean"], "soil_organic_carbon": d["soil_organic_carbon_mean"],
+                       "groundwater_stress_pct": d["groundwater_stress_pct"], "rainfall_mm_avg": d["rainfall_mm_avg"]}}
+
+
+def _check_values(values: Dict[str, Any]) -> pd.DataFrame:
+    missing = [f for f in RAW_FEATURES if values.get(f) in (None, "")]
+    if missing:
+        raise InputError(f"Missing inputs: {', '.join(missing)}")
+    row = {f: values[f] for f in RAW_FEATURES}
+    row["claim_type"] = str(row["claim_type"]).upper()
+    if row["claim_type"] not in CLAIM_TYPES:
+        raise InputError(f"claim_type must be one of {list(CLAIM_TYPES)}")
+    for f in RAW_FEATURES:
+        if f != "claim_type":
+            row[f] = float(row[f])
+    return pd.DataFrame([row])[RAW_FEATURES]
+
+
+def rule_scores(frame: pd.DataFrame) -> Dict[str, np.ndarray]:
+    """Noiseless scheme_rules.py scores for each row (the 'ground truth' the models learn)."""
+    from backend.services.scheme_rules import SCORERS
+    recs = frame.assign(is_scheduled_area=True).to_dict("records")
+    return {t: np.array([fn(r, _NoNoise()) for r in recs]) for t, fn in SCORERS.items()}
+
+
+def out_of_range(values: Dict[str, Any]) -> List[str]:
+    notes = []
+    for f, (lo, hi) in _state["ranges"].items():
+        v = values.get(f)
+        if isinstance(v, (int, float)) and not lo <= float(v) <= hi:
+            notes.append(f"{INPUT_LABELS.get(f, f)} {v:g} is outside the training range ({lo:g}-{hi:g}): every model is extrapolating.")
+    return notes
+
+
+def predict_all(values: Dict[str, Any]) -> Dict[str, Any]:
+    """Scores from every model for one set of inputs, plus the noiseless rule."""
+    bundle = _require_all_models()
+    row = _check_values(values)
+    rules = rule_scores(row)
+    scores = {}
+    for t in bundle["targets"]:
+        scores[t] = {name: round(float(m.predict(row)[0]), 2) for name, m in bundle["models"][t].items()}
+        scores[t]["rule"] = round(float(rules[t][0]), 2)
+    return {"inputs": row.iloc[0].to_dict(), "scores": scores, "models": bundle["model_order"],
+            "chosen": bundle["chosen"], "notes": out_of_range(values), "disclaimer": DISCLAIMER}
+
+
+SWEEP_RANGES = {"claim_type": list(CLAIM_TYPES)}
+
+
+def sweep(values: Dict[str, Any], feature: str, points: int = 41) -> Dict[str, Any]:
+    """Vary one input across its training range (others fixed); every model's curve + the rule's."""
+    bundle = _require_all_models()
+    if feature not in RAW_FEATURES:
+        raise InputError(f"feature must be one of {RAW_FEATURES}")
+    base = _check_values(values)
+    if feature == "claim_type":
+        grid = SWEEP_RANGES["claim_type"]
+    else:
+        lo, hi = _state["ranges"][feature]
+        grid = np.linspace(lo, hi, max(5, min(points, 201))).round(4).tolist()
+    frame = pd.concat([base.assign(**{feature: v}) for v in grid], ignore_index=True)
+    rules = rule_scores(frame)
+    curves = {}
+    for t in bundle["targets"]:
+        curves[t] = {name: np.round(m.predict(frame), 2).tolist() for name, m in bundle["models"][t].items()}
+        curves[t]["rule"] = np.round(rules[t], 2).tolist()
+    return {"feature": feature, "grid": grid, "curves": curves, "current": base.iloc[0][feature],
+            "models": bundle["model_order"], "chosen": bundle["chosen"]}

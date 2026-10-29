@@ -40,23 +40,34 @@ def _as_list(obj: Dict[str, Any], keys: List[str]) -> List[Any]:
     return []
 
 
+# Unit -> hectares. Claims store land_area in hectares (the DSS model's unit).
+_AREA_UNITS = [
+    (re.compile(r"(?i)\b(?:ha|hectares?|hect)\b"), 1.0),
+    (re.compile(r"(?i)\b(?:acres?|ac)\b"), 0.40468564),
+    (re.compile(r"(?i)(?:sq\.?\s*m|m2|m²|square\s+met(?:er|re)s?)"), 0.0001),
+    (re.compile(r"(?i)\b(?:bighas?)\b"), None),      # varies by state: not converted
+]
+
+
 def _parse_area(area_raw: Optional[str]) -> Optional[Number]:
     """
-    Parse a land area string to a numeric value (best-effort).
-    Examples it handles: "1.2 ha", "0.5 ha", "1200 sq.m", "1234", "1,234.5"
-    Returns a numeric value (units not converted) or None on failure.
+    Parse a land area string to HECTARES (best-effort).
+    "1.2 ha" -> 1.2, "8 acres" -> 3.24, "1200 sq.m" -> 0.12, "1,234.5" -> 1234.5
+    (a bare number is assumed to already be hectares). Units whose size
+    varies by state (bigha) return None rather than a wrong number.
     """
     if not area_raw:
         return None
     try:
-        s = str(area_raw).strip()
-        # Remove commas
-        s = s.replace(",", "")
-        # capture first number (integer or decimal)
+        s = str(area_raw).strip().replace(",", "")
         m = re.search(r"(-?\d+(?:\.\d+)?)", s)
         if not m:
             return None
-        return float(m.group(1))
+        value = float(m.group(1))
+        for pattern, factor in _AREA_UNITS:
+            if pattern.search(s):
+                return None if factor is None else round(value * factor, 4)
+        return value
     except Exception as e:
         logger.debug("parse_area failed for %r: %s", area_raw, e)
         return None
@@ -186,6 +197,7 @@ def normalize_entities(entities: Dict[str, Any]) -> List[Dict[str, Any]]:
             "date": date if date is not None else None,
             "lat": lat,
             "lon": lon,
+            "claim_type": entities.get("claim_type"),
             "raw_ner": entities,
         }
         claims.append(claim)

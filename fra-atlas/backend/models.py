@@ -42,7 +42,12 @@ class Claim(Base):
     source = Column(String, default="manual")   # e.g. "manual" or "uploaded"
     raw_ocr = Column(Text, nullable=True)       # JSON/text dump of OCR/NER results
 
-    # Officer tracking — ISO-8601 UTC strings (see db.utc_now_iso)
+    # IFR / CFR / CR (Individual / Community Forest Resource / Community rights)
+    claim_type = Column(String, nullable=True)
+
+    # Status tracking (ISO-8601 UTC strings, see db.utc_now_iso). The old
+    # officer-assignment columns (assigned_officer_id, assigned_date) still
+    # exist in older databases but are no longer used.
     assigned_officer_id = Column(Integer, nullable=True, index=True)
     assigned_date = Column(String, nullable=True)
     last_status_update = Column(String, nullable=True)

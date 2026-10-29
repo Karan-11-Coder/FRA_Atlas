@@ -86,30 +86,8 @@ CLAIMS_EXTRA_COLUMNS = {
     "last_status_update": "TEXT",
     "closed_date": "TEXT",
     "reopen_count": "INTEGER DEFAULT 0",
+    "claim_type": "TEXT",          # IFR / CFR / CR
 }
-
-OFFICERS_TABLE_SQL = """
-CREATE TABLE IF NOT EXISTS officers (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT UNIQUE NOT NULL,
-    hashed_password TEXT NOT NULL,
-    full_name TEXT,
-    role TEXT,
-    age INTEGER,
-    gender TEXT,
-    district TEXT,
-    is_active INTEGER DEFAULT 1,
-    created_at TEXT DEFAULT CURRENT_TIMESTAMP
-);
-"""
-
-OFFICERS_EXTRA_COLUMNS = {
-    "age": "INTEGER",
-    "gender": "TEXT",
-    "district": "TEXT",
-    "is_active": "INTEGER DEFAULT 1",
-}
-
 
 async def _add_missing_columns(conn, table: str, columns: Dict[str, str]) -> None:
     res = await conn.execute(text(f"PRAGMA table_info({table})"))
@@ -118,22 +96,6 @@ async def _add_missing_columns(conn, table: str, columns: Dict[str, str]) -> Non
         if name not in existing:
             await conn.execute(text(f"ALTER TABLE {table} ADD COLUMN {name} {ddl}"))
 
-
-def ensure_officers_table_sync(conn) -> None:
-    """Same as init_officers_table(), for scripts using a plain sqlite3 connection."""
-    cur = conn.cursor()
-    cur.execute(OFFICERS_TABLE_SQL)
-    existing = {r[1] for r in cur.execute("PRAGMA table_info(officers)").fetchall()}
-    for name, ddl in OFFICERS_EXTRA_COLUMNS.items():
-        if name not in existing:
-            cur.execute(f"ALTER TABLE officers ADD COLUMN {name} {ddl}")
-    conn.commit()
-
-
-async def init_officers_table() -> None:
-    async with engine.begin() as conn:
-        await conn.execute(text(OFFICERS_TABLE_SQL))
-        await _add_missing_columns(conn, "officers", OFFICERS_EXTRA_COLUMNS)
 
 # ----------------------------
 # Claims table helpers
@@ -177,17 +139,15 @@ async def insert_claim(payload: Dict[str, Any]) -> Dict[str, Any]:
         INSERT INTO claims (
    state, district, block, village,
    patta_holder, address, land_area, status, date,
-   lat, lon, source, raw_ocr,
-   assigned_officer_id, assigned_date, last_status_update,
-   closed_date,
+   lat, lon, source, raw_ocr, claim_type,
+   last_status_update, closed_date,
    created_at
 )
 VALUES (
    :state, :district, :block, :village,
    :patta_holder, :address, :land_area, :status, :date,
-   :lat, :lon, :source, :raw_ocr,
-   :assigned_officer_id, :assigned_date, :last_status_update,
-   :closed_date,
+   :lat, :lon, :source, :raw_ocr, :claim_type,
+   :last_status_update, :closed_date,
    datetime('now')
 )
         """
@@ -207,9 +167,7 @@ VALUES (
     "source": payload.get("source", "manual"),
     "raw_ocr": payload.get("raw_ocr"),
 
-    # ✅ OFFICER TRACKING (CRITICAL)
-    "assigned_officer_id": payload.get("assigned_officer_id"),
-    "assigned_date": payload.get("assigned_date"),
+    "claim_type": payload.get("claim_type"),
     "last_status_update": payload.get("last_status_update"),
     "closed_date": payload.get("closed_date"),
 
@@ -375,7 +333,7 @@ from urllib.parse import urlparse
 def get_db_path() -> str:
     """
     Return absolute filesystem path to the SQLite database file.
-    Used by legacy sqlite3-based services (officer_metrics, credibility_engine).
+    Used by the sqlite3-based claim update path in routes/claims.py.
     """
     url = urlparse(DATABASE_URL)
     if not url.scheme.startswith("sqlite"):
