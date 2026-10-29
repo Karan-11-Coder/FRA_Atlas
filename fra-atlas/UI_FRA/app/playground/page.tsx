@@ -59,6 +59,7 @@ function PlaygroundInner() {
   const [picked, setPicked] = useState<[number, number] | null>(null);
   const [context, setContext] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const [blocked, setBlocked] = useState<string | null>(null);
   const [pred, setPred] = useState<PredictResult | null>(null);
   const [sweep, setSweep] = useState<SweepResult | null>(null);
   const [sweepFeature, setSweepFeature] = useState<keyof Inputs>("soil_organic_carbon");
@@ -75,12 +76,13 @@ function PlaygroundInner() {
         groundwater_stress_pct: `${d} reference value`, rainfall_mm_avg: `${d} reference value` });
       setPicked(null);
       setError(null);
+      setBlocked(null);
     } catch (e: any) {
       setError(e.message);
     }
   }
 
-  async function pickPoint(lat: number, lon: number) {
+  async function pickPoint(lat: number, lon: number, reportErrors = true) {
     try {
       const r = await postJSON<ResolveResult>("/api/lab/resolve", { lat, lon });
       setDistrict(r.district);
@@ -88,9 +90,10 @@ function PlaygroundInner() {
       setSources(r.sources);
       setPicked([lat, lon]);
       setError(null);
+      setBlocked(null);
       return r;
     } catch (e: any) {
-      setError(e.message);
+      if (reportErrors) setError(e.message);
       return null;
     }
   }
@@ -103,15 +106,28 @@ function PlaygroundInner() {
       if (claimId) {
         try {
           const { claim } = await getJSON<{ claim: Claim }>(`/api/claims/${claimId}`);
-          const notes = [];
-          if (claim.lat != null && claim.lon != null) await pickPoint(claim.lat, claim.lon);
-          else notes.push("no coordinates, so district defaults are used");
+          const notes: string[] = [];
+          const resolved = claim.lat != null && claim.lon != null ? await pickPoint(claim.lat, claim.lon, false) : null;
+          if (!resolved) {
+            const known = claim.district && DISTRICT_FILES[claim.district];
+            if (known) {
+              await loadDistrict(claim.district as string);
+              notes.push(claim.lat != null
+                ? `its coordinates fall outside the ${claim.district} boundary the models use, so ${claim.district} district averages are shown`
+                : `no coordinates, so ${claim.district} district averages are shown`);
+            } else {
+              setBlocked(`This claim is in ${claim.district ?? "an unknown district"}, outside the 7 districts the models were trained on, so it can't be scored reliably. The scores below are for the inputs on the left, not for this claim.`);
+            }
+          }
           setInputs((p) => ({
             ...p,
             land_area_ha: claim.land_area ? Math.min(4, Math.max(0.2, claim.land_area)) : p.land_area_ha,
             claim_type: (claim.claim_type as ClaimType) || p.claim_type,
           }));
           if (!claim.claim_type) notes.push("no claim type stored, IFR assumed: change it below");
+          if (claim.land_area != null && (claim.land_area > 4 || claim.land_area < 0.2))
+            notes.push(`its ${claim.land_area} ha is outside the 0.2–4 ha the models were trained on, so it is scored at ${Math.min(4, Math.max(0.2, claim.land_area))} ha`);
+          if (claim.land_area == null) notes.push("no land area stored, 1.5 ha assumed");
           setContext(`Claim #${claim.id}: ${claim.patta_holder ?? ""} ${claim.village ? `· ${claim.village}` : ""}${notes.length ? ` (${notes.join("; ")})` : ""}`);
         } catch (e: any) {
           setError(e.message);
@@ -163,6 +179,7 @@ function PlaygroundInner() {
         subtitle="Change a plot's inputs and watch all six models (and the rule they were trained to reproduce) respond. Pick a district, or click anywhere inside one on the map to use that spot's nearest real soil reading."
       />
       {context && <Note tone="blue">{context}</Note>}
+      {blocked && <Note tone="amber">{blocked}</Note>}
       <ErrorBox error={error} />
 
       <div className="grid gap-5 xl:grid-cols-[340px_minmax(0,1fr)]">
