@@ -1,7 +1,7 @@
-# FRA Atlas backend (FastAPI + OCR + DSS model).
+# FRA Atlas backend: ML lab API, DSS models, claims, OCR + spaCy NER.
 # Build context is the REPO ROOT (it needs ml/artifacts and the district
-# GeoJSON too); docker-compose.yml sets this up. No secrets are baked in:
-# JWT_SECRET etc. come from .env at run time.
+# GeoJSON too); docker-compose.yml sets this up. Settings come from .env at
+# run time; nothing is baked in.
 FROM python:3.12.10-slim-bookworm
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -25,6 +25,8 @@ COPY ml/data/labeled_dataset.csv ./ml/data/labeled_dataset.csv
 
 ENV DATABASE_URL=sqlite+aiosqlite:////data/fra_atlas.db \
     ML_MODEL_PATH=/app/ml/artifacts/model.joblib \
+    ML_ALL_MODELS_PATH=/app/ml/artifacts/all_models.joblib \
+    ML_DASHBOARD_DIR=/app/ml/artifacts/dashboard \
     ML_SCHEMA_PATH=/app/ml/artifacts/feature_schema.json \
     ML_REFERENCE_DATA=/app/ml/data/labeled_dataset.csv \
     DISTRICT_GEOJSON_DIR=/app/geojson/districts

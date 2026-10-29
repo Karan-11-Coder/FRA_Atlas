@@ -3,6 +3,7 @@
 **Artifact:** `ml/artifacts/model.joblib` (one joblib object: a dict with one fitted scikit-learn `Pipeline` per target, plus metadata). Input contract: `ml/artifacts/feature_schema.json`.
 **Built by:** `ml/notebooks/02_regression.ipynb` (seed 42). Checked against an MLP in `04_neural_net.ipynb`.
 **Environment:** scikit-learn 1.9.1, Python 3.12. Load it with the same scikit-learn version.
+**Dashboard bundle:** `ml/artifacts/all_models.joblib` holds *every* model family for every scheme (not just the chosen ones), refitted by `ml/export_dashboard.py` with the same tuned parameters, split and seed, for side-by-side comparison in the dashboard. The MLP for PM-KISAN, JJM and PMFBY exists only in that bundle: notebook 04 evaluated the MLP on the three primary schemes only, and its settings were applied to the other three.
 
 ## Read this first
 

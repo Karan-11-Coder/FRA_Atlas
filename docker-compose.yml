@@ -1,23 +1,26 @@
-# FRA Atlas: one command to run everything.
-#   cp .env.example .env    (then set JWT_SECRET; see README)
+# FRA Atlas ML dashboard: one command to run everything.
 #   docker compose up --build
-# Frontend http://localhost:3000, backend http://localhost:8000 (API docs at /docs).
-# All configuration comes from .env; nothing secret is baked into the images.
+# Dashboard http://localhost:3000, API http://localhost:8000 (docs at /docs).
+# Optional settings go in .env (template: .env.example); nothing is baked into the images.
+# There is no authentication: anyone who can reach these ports can read and edit claims.
 
 services:
   backend:
     build:
       context: .
       dockerfile: fra-atlas/backend/Dockerfile
-    env_file: .env
+    env_file:
+      - path: .env
+        required: false
     environment:
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000}
       SEED_DEMO: ${SEED_DEMO:-1}
+      GEOCODE_VILLAGES: ${GEOCODE_VILLAGES:-1}
     ports:
       - "8000:8000"
     volumes:
-      - fra_data:/data              # SQLite database
-      - fra_uploads:/app/uploads    # uploaded claim documents (may contain PII)
+      - fra_data:/data              # SQLite database (claims, villages)
+      - fra_uploads:/app/uploads    # uploaded claim documents (may contain personal data)
     restart: unless-stopped
 
   frontend:
