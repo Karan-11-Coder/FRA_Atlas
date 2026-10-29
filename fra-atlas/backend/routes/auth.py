@@ -79,7 +79,10 @@ async def get_user_by_username(username: str):
         conn = get_db_conn()
         cur = conn.cursor()
         cur.execute(
-            "SELECT id, username, hashed_password, full_name, role FROM officers WHERE username = ?",
+            # Deactivated officers (is_active = 0) are treated as unknown: they
+            # can't log in, and tokens issued before deactivation stop working.
+            "SELECT id, username, hashed_password, full_name, role FROM officers "
+            "WHERE username = ? AND COALESCE(is_active, 1) = 1",
             (username,),
         )
         row = cur.fetchone()
