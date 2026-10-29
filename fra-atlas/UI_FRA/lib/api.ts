@@ -1,293 +1,181 @@
-// UI_FRA/lib/api.ts
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8000";
-const TOKEN_KEY = "fra_atlas_token";
+// UI_FRA/lib/api.ts: thin client for the FRA Atlas backend (no auth: the dashboard is open by design).
+"use client";
 
-interface ApiResponse<T = any> {
-  data?: T;
-  error?: string;
-  status: number;
-}
+import { useCallback, useEffect, useState } from "react";
 
-class ApiError extends Error {
+export const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8000";
+
+export class ApiError extends Error {
   constructor(public status: number, message: string) {
     super(message);
     this.name = "ApiError";
   }
 }
 
-// Simple loginRequest (matches your requested lightweight function)
-export async function loginRequest(username: string, password: string) {
-  const res = await fetch(`${API_BASE}/api/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username, password }),
-  });
-
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({ detail: "Login failed" }));
-    throw new Error(err.detail || "Login failed");
-  }
-  return res.json();
-}
-
-// Token helpers
-export function setToken(token: string): void {
-  if (typeof window !== "undefined") {
-    localStorage.setItem("fra_atlas_token", token);
-  }
-}
-export function getToken(): string | null {
-  if (typeof window !== "undefined") {
-    return localStorage.getItem(TOKEN_KEY);
-  }
-  return null;
-}
-export function clearToken(): void {
-  if (typeof window !== "undefined") {
-    localStorage.removeItem(TOKEN_KEY);
-  }
-}
-
-// Base fetch wrapper with JWT auth
-export const apiFetch = async <T = any>(endpoint: string, options: RequestInit = {}): Promise<T> => {
-  const token = getToken();
-  const url = `${API_BASE}${endpoint}`;
-
-  const config: RequestInit = {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...(token && { Authorization: `Bearer ${token}` }),
-      ...(options.headers || {}),
-    },
-  };
-
+async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
+  let res: Response;
   try {
-    const response = await fetch(url, config);
-
-    // Handle 401 - redirect to login
-    if (response.status === 401) {
-      clearToken();
-      if (typeof window !== "undefined") {
-        window.location.href = "/login?message=Session expired - please sign in again";
-      }
-      throw new ApiError(401, "Session expired");
-    }
-
-    // If no JSON body (204, etc.) return empty
-    const text = await response.text();
-    const data = text ? JSON.parse(text) : {};
-
-    if (!response.ok) {
-      throw new ApiError(response.status, data?.detail || data?.message || "API request failed");
-    }
-
-    return data as T;
-  } catch (error) {
-    if (error instanceof ApiError) throw error;
-
-    // Network / parsing error
-    throw new ApiError(0, "Unable to reach FRA Atlas server. Check your network.");
+    res = await fetch(`${API_BASE}${path}`, init);
+  } catch {
+    throw new ApiError(0, `Can't reach the backend at ${API_BASE}. Is it running?`);
   }
-};
-
-// Multipart upload wrapper — apiFetch always forces Content-Type: application/json,
-// which breaks FormData bodies (the browser needs to set its own boundary).
-export const apiUpload = async <T = any>(endpoint: string, form: FormData): Promise<T> => {
-  const token = getToken();
-  const response = await fetch(`${API_BASE}${endpoint}`, {
-    method: "POST",
-    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-    body: form,
-  });
-
-  if (response.status === 401) {
-    clearToken();
-    if (typeof window !== "undefined") {
-      window.location.href = "/login?message=Session expired - please sign in again";
-    }
-    throw new ApiError(401, "Session expired");
+  const text = await res.text();
+  let data: any = {};
+  try {
+    data = text ? JSON.parse(text) : {};
+  } catch {
+    data = { detail: text };
   }
-
-  const text = await response.text();
-  const data = text ? JSON.parse(text) : {};
-  if (!response.ok) {
-    throw new ApiError(response.status, data?.detail || data?.message || "Upload failed");
+  if (!res.ok) {
+    const detail = typeof data?.detail === "string" ? data.detail : JSON.stringify(data?.detail ?? data);
+    throw new ApiError(res.status, detail || `Request failed (${res.status})`);
   }
   return data as T;
-};
+}
 
-export type Claim = { id: number | string } & Record<string, any>;
+export const getJSON = <T,>(path: string) => request<T>(path);
+export const postJSON = <T,>(path: string, body: unknown) =>
+  request<T>(path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+export const putJSON = <T,>(path: string, body: unknown) =>
+  request<T>(path, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+export const del = <T,>(path: string) => request<T>(path, { method: "DELETE" });
+export function upload<T>(path: string, file: File): Promise<T> {
+  const form = new FormData();
+  form.append("file", file);
+  return request<T>(path, { method: "POST", body: form });
+}
+
+/** GET with loading/error state; pass null to skip. */
+export function useApi<T>(path: string | null) {
+  const [data, setData] = useState<T | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(!!path);
+  const [tick, setTick] = useState(0);
+  const reload = useCallback(() => setTick((t) => t + 1), []);
+
+  useEffect(() => {
+    if (!path) return;
+    let cancelled = false;
+    setLoading(true);
+    setError(null);
+    getJSON<T>(path)
+      .then((d) => !cancelled && setData(d))
+      .catch((e: Error) => !cancelled && setError(e.message))
+      .finally(() => !cancelled && setLoading(false));
+    return () => {
+      cancelled = true;
+    };
+  }, [path, tick]);
+
+  return { data, error, loading, reload };
+}
+
+// ---------------------------------------------------------------------------
+// Types for the lab views (ml/export_dashboard.py) and live endpoints
+// ---------------------------------------------------------------------------
+export type Target =
+  | "pm_kisan_score"
+  | "mgnrega_score"
+  | "jjm_score"
+  | "pmfby_score"
+  | "pmksy_score"
+  | "soil_health_card_score";
 
 export type ClaimType = "IFR" | "CFR" | "CR";
 
-export interface DiagnosticsRequest {
-  claim_id?: number;
-  lat?: number;
-  lon?: number;
-  land_area?: number;
-  claim_type?: ClaimType;
+export interface Inputs {
+  land_area_ha: number;
+  claim_type: ClaimType;
+  soil_ph: number;
+  soil_organic_carbon: number;
+  groundwater_stress_pct: number;
+  rainfall_mm_avg: number;
 }
 
-export interface SchemeScore {
-  key: string;
-  name: string;
-  score: number;
-  reasons: string[];
-  top_inputs: Array<{ input: string; label: string; effect: number }>;
+export interface ModelRow {
+  target: Target;
   model: string;
-  typical_error: number;
-  test_r2: number;
+  params: Record<string, unknown>;
+  train_R2: number;
+  cv_R2: number;
+  test_R2: number;
+  test_MAE: number;
+  test_RMSE: number;
+  test_R2_ci: [number, number];
+  lodo_R2: number;
+  test_oracle_R2: number;
+  ceiling: number;
+  rule_gap_MAE: number;
+  chosen: boolean;
+  source: string;
 }
 
-export interface DiagnosticsResponse {
-  claim_id: number | null;
+export interface ModelsView {
+  targets: Target[];
+  short: Record<Target, string>;
+  models: string[];
+  chosen: Record<Target, string>;
+  raw_features: (keyof Inputs)[];
+  rows: ModelRow[];
+  baselines: { target: Target; model: string; cv_R2: number; test_R2: number; test_MAE: number }[];
+  noise_sd: Record<Target, number>;
+  train_rows: number;
+  test_rows: number;
+}
+
+export interface DistrictSummary {
   state: string;
   district: string;
-  input: Record<string, any>;
-  metrics: Record<string, any>;
-  estimated_inputs: Array<{ input: string; label: string; value: number | string; source: string }>;
-  notes: string[];
-  recommendations: SchemeScore[];
-  disclaimer: string;
-  model_info: Record<string, any>;
+  plots: number;
+  rainfall_mm_avg: number;
+  groundwater_stress_pct: number;
+  soil_ph_mean: number;
+  soil_oc_mean: number;
+  imputed_share: number;
+  label_mean: Record<Target, number>;
+  pred_mean: Record<Target, number>;
+  rule_mean: Record<Target, number>;
 }
 
-// API endpoints
-export const api = {
-  // Authentication — uses the robust apiFetch (returns same shape as your backend)
-  login: (credentials: { username: string; password: string }) =>
-    apiFetch<{ access_token: string; token_type?: string; expires_in?: number; user?: any }>("/api/login", {
-      method: "POST",
-      body: JSON.stringify(credentials),
-    }),
+export interface Claim {
+  id: number;
+  state: string | null;
+  district: string | null;
+  block?: string | null;
+  village: string | null;
+  patta_holder: string | null;
+  address?: string | null;
+  land_area: number | null;
+  claim_type: ClaimType | null;
+  status: string | null;
+  date?: string | null;
+  lat: number | null;
+  lon: number | null;
+  source?: string | null;
+  created_at?: string | null;
+}
 
-  // Villages data
-  getVillages: () =>
-    apiFetch<
-      Array<{ id: string; state: string; district: string; block: string | null; village: string; lat: number | null; lon: number | null }>
-    >("/api/villages"),
+export interface PredictResult {
+  inputs: Inputs;
+  scores: Record<Target, Record<string, number>>;
+  models: string[];
+  chosen: Record<Target, string>;
+  notes: string[];
+  disclaimer: string;
+}
 
-  // Claims data
-  getClaims: (params: { state?: string; district?: string; village?: string; status?: string } = {}) => {
-    const searchParams = new URLSearchParams();
-    Object.entries(params).forEach(([key, value]) => {
-      if (value) searchParams.append(key, value);
-    });
-    const qs = searchParams.toString();
-    return apiFetch<Claim[]>(`/api/claims${qs ? `?${qs}` : ""}`);
-  },
+export interface SweepResult {
+  feature: keyof Inputs;
+  grid: (number | string)[];
+  curves: Record<Target, Record<string, number[]>>;
+  current: number | string;
+  models: string[];
+  chosen: Record<Target, string>;
+}
 
-  getClaimsCount: (village: string) =>
-    apiFetch<{ count: number }>(`/api/claims/count?village=${encodeURIComponent(village)}`),
-
-  // Single claim details
-  getClaim: (id: string | number) =>
-    apiFetch<{ claim: Claim }>(`/api/claims/${id}`),
-
-  createClaim: (payload: Partial<Claim>) =>
-    apiFetch<{ success: boolean; claim: Claim }>("/api/claims", {
-      method: "POST",
-      body: JSON.stringify(payload),
-    }),
-
-  updateClaim: (id: string | number, payload: Partial<Claim>) =>
-    apiFetch<Claim>(`/api/claims/${id}`, {
-      method: "PUT",
-      body: JSON.stringify(payload),
-    }),
-
-  deleteClaim: (id: string | number) =>
-    apiFetch<void>(`/api/claims/${id}`, { method: "DELETE" }),
-
-  bulkDeleteClaims: (ids: Array<string | number>) =>
-    apiFetch<{ deleted: number }>("/api/claims?confirm=true", {
-      method: "DELETE",
-      body: JSON.stringify({ ids }),
-    }),
-
-  // Document upload → OCR → NER → claim creation
-  uploadFra: (file: File) => {
-    const form = new FormData();
-    form.append("file", file);
-    return apiUpload<{ message: string; claim: Claim }>("/api/upload-fra", form);
-  },
-
-  // Preview-only parsing (doesn't write to the DB) — used for the review-before-save flow
-  parseFra: (file: File) => {
-    const form = new FormData();
-    form.append("file", file);
-    return apiUpload<{ filename: string; extracted_text: string; entities: Record<string, any> }>(
-      "/api/claims/parse-fra",
-      form
-    );
-  },
-
-  parseExcel: (file: File) => {
-    const form = new FormData();
-    form.append("file", file);
-    return apiUpload<{ filename: string; rows: Record<string, any>[]; errors: any[] }>(
-      "/api/claims/parse-excel",
-      form
-    );
-  },
-
-  commitParsed: (tmpFilename: string) =>
-    apiFetch<{ claim: Claim }>(`/api/claims/commit-parsed?tmp_filename=${encodeURIComponent(tmpFilename)}`, {
-      method: "POST",
-    }),
-
-  deleteTempFile: (tmpFilename: string) =>
-    apiFetch<{ ok: boolean }>(`/api/claims/temp/${encodeURIComponent(tmpFilename)}`, { method: "DELETE" }),
-
-  // Direct bulk import (skips the preview step) — used for .xlsx/.csv uploads
-  importExcel: (file: File) => {
-    const form = new FormData();
-    form.append("file", file);
-    return apiUpload<{ success: boolean; count: number; claims: Claim[]; errors: any[] }>(
-      "/api/claims/import-excel",
-      form
-    );
-  },
-
-  importJson: (rows: Record<string, any>[]) =>
-    apiFetch<{ success: boolean; count: number; claims: Claim[]; errors: any[] }>("/api/claims/import-json", {
-      method: "POST",
-      body: JSON.stringify({ rows }),
-    }),
-
-  // DSS scheme-suitability scores from the trained models (backend/services/ml_inference.py).
-  // Rule-derived suitability, not an eligibility decision — see ml/MODEL_CARD.md.
-  getDiagnostics: (payload: DiagnosticsRequest) =>
-    apiFetch<DiagnosticsResponse>("/api/diagnostics", { method: "POST", body: JSON.stringify(payload) }),
-
-  // Current authenticated officer (validated server-side from the bearer token)
-  getMe: () => apiFetch<{ user: { id: string; username: string; full_name: string; role: string } }>("/api/me"),
-
-  // Claim actions — the backend only exposes a generic PUT for status changes,
-  // there's no dedicated /verify or /reject route. `comment`/`reason` aren't
-  // persisted anywhere server-side yet, so they're accepted here but dropped.
-  verifyClaim: (id: string, _comment?: string) =>
-    apiFetch(`/api/claims/${id}`, {
-      method: "PUT",
-      body: JSON.stringify({ status: "Granted" }),
-    }),
-
-  rejectClaim: (id: string, _reason: string) =>
-    apiFetch(`/api/claims/${id}`, {
-      method: "PUT",
-      body: JSON.stringify({ status: "Rejected" }),
-    }),
-
-  // Export
-  exportCsv: (params: { state?: string; district?: string } = {}) => {
-    const searchParams = new URLSearchParams();
-    Object.entries(params).forEach(([key, value]) => {
-      if (value) searchParams.append(key, value);
-    });
-    return `${API_BASE}/api/export/claims.csv?${searchParams.toString()}`;
-  },
-};
-
-// Backwards-compat: keep default export if other parts import it
-export default api;
+export interface ResolveResult {
+  state: string;
+  district: string;
+  values: Pick<Inputs, "soil_ph" | "soil_organic_carbon" | "groundwater_stress_pct" | "rainfall_mm_avg">;
+  sources: Record<string, string>;
+}
